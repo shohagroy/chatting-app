@@ -2,11 +2,16 @@ import { createBrowserRouter } from "react-router-dom";
 import Inbox from "../pages/Conversation";
 import Login from "../pages/Login";
 import Register from "../pages/Register";
+import PrivateRoute from "./PrivateRoute";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Inbox />,
+    element: (
+      <PrivateRoute>
+        <Inbox />
+      </PrivateRoute>
+    ),
   },
   {
     path: "/login",

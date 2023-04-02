@@ -1,6 +1,41 @@
-import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useLoginMutation } from "../features/auth/authApi";
 
 export default function Login() {
+  const [error, setError] = useState("");
+
+  const [userInfo, setUserInfo] = useState({
+    email: "",
+    password: "",
+  });
+
+  const navigate = useNavigate();
+  const location = useLocation();
+  const path = location.state?.path?.pathname || "/";
+
+  const [login, { data, isLoading, isError, error: authError, isSuccess }] =
+    useLoginMutation();
+
+  useEffect(() => {
+    if (!isLoading && !isError && isSuccess) {
+      setError("");
+      toast.success(data.message);
+      navigate(path, { relative: true });
+    }
+  }, [data, isLoading, isError, isSuccess]);
+
+  useEffect(() => {
+    setError(authError?.data?.error);
+  }, [authError]);
+
+  const loginHandelar = (e) => {
+    e.preventDefault();
+
+    login(userInfo);
+  };
+
   return (
     <div className="grid place-items-center h-screen bg-[#F9FAFB">
       <div className="min-h-full flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
@@ -19,7 +54,7 @@ export default function Login() {
               Sign in to your account
             </h2>
           </div>
-          <form className="mt-8 space-y-6">
+          <form onSubmit={loginHandelar} className="mt-8 space-y-6">
             <input type="hidden" name="remember" value="true" />
             <div className="rounded-md shadow-sm -space-y-px">
               <div>
@@ -27,6 +62,9 @@ export default function Login() {
                   Email address
                 </label>
                 <input
+                  onChange={(e) =>
+                    setUserInfo({ ...userInfo, email: e.target.value })
+                  }
                   id="email-address"
                   name="email"
                   type="email"
@@ -41,6 +79,9 @@ export default function Login() {
                   Password
                 </label>
                 <input
+                  onChange={(e) =>
+                    setUserInfo({ ...userInfo, password: e.target.value })
+                  }
                   id="password"
                   name="password"
                   type="password"
@@ -68,10 +109,16 @@ export default function Login() {
                 type="submit"
                 className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-violet-600 hover:bg-violet-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-violet-500"
               >
-                Sign in
+                {isLoading ? "Loading..." : "Log in"}
               </button>
             </div>
           </form>
+
+          <div className="flex items-center justify-center">
+            <div className="text-xl">
+              <p className="font-medium text-red-600 ">{error}</p>
+            </div>
+          </div>
         </div>
       </div>
     </div>

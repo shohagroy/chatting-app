@@ -1,6 +1,13 @@
+import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
+import { userLoggedOut } from "../../features/auth/authSlice";
 
 export default function Navigation() {
+  const dispatch = useDispatch();
+  const logOurHandelar = () => {
+    dispatch(userLoggedOut());
+    localStorage.clear();
+  };
   return (
     <nav className="border-general sticky top-0 z-40 border-b bg-violet-700 transition-colors">
       <div className="max-w-7xl mx-auto">
@@ -31,7 +38,12 @@ export default function Navigation() {
 
             <ul className="p-6">
               <li className="text-white">
-                <button className="text-xl font-semibold">Logout</button>
+                <button
+                  onClick={logOurHandelar}
+                  className="text-xl font-semibold"
+                >
+                  Logout
+                </button>
               </li>
             </ul>
           </div>

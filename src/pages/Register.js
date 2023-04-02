@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useRegisterMutation } from "../features/auth/authApi";
 
 export default function Register() {
   const [registerData, setRegisterData] = useState({
@@ -8,24 +10,38 @@ export default function Register() {
     password: "",
     confirmPassword: "",
   });
-
   const [error, setError] = useState("");
   const navigate = useNavigate();
+  const location = useLocation();
+  const path = location.state?.path?.pathname || "/";
+
+  const [register, { data, isLoading, isError, isSuccess, error: authError }] =
+    useRegisterMutation();
+
+  useEffect(() => {
+    if (authError) {
+      setError(authError?.data?.message);
+    }
+  }, [authError]);
+
+  useEffect(() => {
+    if (!isLoading && !isError && isSuccess) {
+      setError("");
+      toast.success(data.message);
+      navigate(path, { relative: true });
+    }
+  }, [data, isLoading, isError, isSuccess]);
 
   const registerHandelar = (e) => {
     e.preventDefault();
     setError("");
 
     if (registerData.password === registerData.confirmPassword) {
-      console.log(registerData);
+      register(registerData);
     } else {
       setError("Password did not match!");
     }
   };
-
-  useEffect(() => {
-    setError("");
-  }, []);
 
   return (
     <div className="grid place-items-center h-screen bg-[#F9FAFB">
@@ -144,15 +160,20 @@ export default function Register() {
 
             <div>
               <button
-                disabled={!registerData.agreed}
                 type="submit"
                 className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-violet-600 hover:bg-violet-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-violet-500"
               >
                 <span className="absolute left-0 inset-y-0 flex items-center pl-3"></span>
-                Sign up
+                {isLoading ? "Loading..." : "Register"}
               </button>
             </div>
           </form>
+
+          <div className="flex items-center justify-center">
+            <div className="text-xl">
+              <p className="font-medium text-red-600 ">{error}</p>
+            </div>
+          </div>
         </div>
       </div>
     </div>
