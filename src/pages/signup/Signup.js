@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import swal from "sweetalert";
 import { useRegisterMutation } from "../../features/auth/authApi";
 
@@ -10,6 +10,10 @@ const SignUp = () => {
     password: "",
     confirmPassword: "",
   });
+
+  const navigate = useNavigate();
+  const location = useLocation();
+  const path = location.state?.path?.pathname || "/";
 
   const [register, { data, isLoading, isError, isSuccess, error }] =
     useRegisterMutation();
@@ -29,9 +33,10 @@ const SignUp = () => {
     if (isSuccess && data?.success) {
       toast.success(data?.message);
       document.cookie = `free_chat=${data?.data?.token}; Path=/;`;
+      navigate(path, { relative: true });
       setUserInfo({ email: "", password: "", confirmPassword: "" });
     }
-  }, [isSuccess, data]);
+  }, [isSuccess, data, navigate, path]);
 
   useEffect(() => {
     if (isError && !error?.data?.success) {
