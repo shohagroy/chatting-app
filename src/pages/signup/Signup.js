@@ -26,14 +26,15 @@ const SignUp = () => {
   };
 
   useEffect(() => {
-    if (isSuccess && data?.status) {
+    if (isSuccess && data?.success) {
       toast.success(data?.message);
+      document.cookie = `free_chat=${data?.data?.token}; Path=/;`;
       setUserInfo({ email: "", password: "", confirmPassword: "" });
     }
   }, [isSuccess, data]);
 
   useEffect(() => {
-    if (isError && !error?.data?.status) {
+    if (isError && !error?.data?.success) {
       toast.error(error?.data?.message);
       setUserInfo({ email: "", password: "", confirmPassword: "" });
     }

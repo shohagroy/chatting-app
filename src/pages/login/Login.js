@@ -16,14 +16,17 @@ const Login = () => {
   };
 
   useEffect(() => {
-    if (isSuccess && data?.status) {
+    if (isSuccess && data?.success) {
       toast.success(data?.message);
+
+      console.log(data?.data);
+      document.cookie = `free_chat=${data?.data?.token}; Path=/;`;
       setLoginInfo({ email: "", password: "" });
     }
   }, [isSuccess, data, setLoginInfo]);
 
   useEffect(() => {
-    if (isError && !error?.data?.status) {
+    if (isError && !error?.data?.success) {
       toast.error(error?.data?.message);
       setLoginInfo({ email: "", password: "" });
     }

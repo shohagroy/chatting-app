@@ -1,8 +1,27 @@
 import { apiSlice } from "../api/apiSlice";
-import { userLoggedIn } from "./authSlice";
 
 export const authApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
+    getLoginUser: builder.query({
+      query: () => ({
+        url: `/auth/login-user`,
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }),
+      // invalidatesTags: ["users"],
+      // providesTags: ["users"],
+      // async onQueryStarted(arg, { queryFulfilled, dispatch }) {
+      //   try {
+      //     const result = await queryFulfilled;
+      //     if (result?.data?.data?._id) {
+      //       // return dispatch(loginUserFound(result?.data?.data));
+      //     }
+      //   } catch (err) {}
+      // },
+    }),
+
     register: builder.mutation({
       query: (data) => ({
         url: "/auth/signup",
@@ -67,4 +86,5 @@ export const authApi = apiSlice.injectEndpoints({
   }),
 });
 
-export const { useRegisterMutation, useLoginMutation } = authApi;
+export const { useRegisterMutation, useLoginMutation, useGetLoginUserQuery } =
+  authApi;
