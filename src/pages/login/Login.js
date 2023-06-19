@@ -1,16 +1,33 @@
 import { useEffect, useState } from "react";
-import swal from "sweetalert";
 import toast from "react-hot-toast";
 import { Link } from "react-router-dom";
+import { useLoginMutation } from "../../features/auth/authApi";
 
 const Login = () => {
   const [loginInfo, setLoginInfo] = useState({});
 
+  const [login, { data, isLoading, isError, isSuccess, error }] =
+    useLoginMutation();
+
   const handleLogin = (e) => {
     e.preventDefault();
-    console.log("button click");
+
+    login(loginInfo);
   };
 
+  useEffect(() => {
+    if (isSuccess && data?.status) {
+      toast.success(data?.message);
+      setLoginInfo({ email: "", password: "" });
+    }
+  }, [isSuccess, data, setLoginInfo]);
+
+  useEffect(() => {
+    if (isError && !error?.data?.status) {
+      toast.error(error?.data?.message);
+      setLoginInfo({ email: "", password: "" });
+    }
+  }, [isError, error, setLoginInfo]);
   return (
     <main>
       <div className="h-screen w-full flex border-b-2 bg-gray-100">
@@ -76,6 +93,7 @@ const Login = () => {
                                 email: e.target.value,
                               })
                             }
+                            value={loginInfo?.email}
                             type="email"
                             name="email"
                             placeholder="Email"
@@ -104,6 +122,7 @@ const Login = () => {
                                 password: e.target.value,
                               })
                             }
+                            value={loginInfo?.password}
                             className="w-full p-2 pl-10 text-gray-800 placeholder-gray-600 rounded-md  border focus:outline-none focus:ring-2 focus:ring-blue-300"
                             type="password"
                             name="password"
@@ -127,8 +146,7 @@ const Login = () => {
                         </div>
                         <div>
                           <button className="w-full p-2 text-sm font-semibold text-center text-white transition duration-100 rounded-md md:text-lg font-nunito bg-gradient-to-r from-blue-600 to-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-300 hover:shadow-lg">
-                            {/* {isLoading ? "Loading..." : "Sign In"} */}
-                            Login
+                            {isLoading ? "Loading..." : "Login"}
                           </button>
                         </div>
                       </div>
