@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { Link } from "react-router-dom";
 import swal from "sweetalert";
+import { useRegisterMutation } from "../../features/auth/authApi";
 
 const SignUp = () => {
   const [userInfo, setUserInfo] = useState({
@@ -10,11 +11,33 @@ const SignUp = () => {
     confirmPassword: "",
   });
 
+  const [register, { data, isLoading, isError, isSuccess, error }] =
+    useRegisterMutation();
+
   const userSignUpHandelar = (e) => {
     e.preventDefault();
 
-    console.log("button click");
+    if (userInfo.password !== userInfo.confirmPassword) {
+      swal("Password Not Match!", "", "error");
+    } else {
+      console.log(userInfo);
+      register(userInfo);
+    }
   };
+
+  useEffect(() => {
+    if (isSuccess && data?.status) {
+      toast.success(data?.message);
+      setUserInfo({ email: "", password: "", confirmPassword: "" });
+    }
+  }, [isSuccess, data]);
+
+  useEffect(() => {
+    if (isError && !error?.data?.status) {
+      toast.error(error?.data?.message);
+      setUserInfo({ email: "", password: "", confirmPassword: "" });
+    }
+  }, [isError, error]);
 
   return (
     <main>
@@ -80,6 +103,7 @@ const SignUp = () => {
                                 email: e.target.value,
                               })
                             }
+                            value={userInfo?.email}
                             className="w-full p-2 pl-10 text-gray-800 placeholder-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300 border"
                             type="email"
                             name="email"
@@ -109,6 +133,7 @@ const SignUp = () => {
                                 password: e.target.value,
                               })
                             }
+                            value={userInfo?.password}
                             className="w-full p-2 pl-10 text-gray-800 placeholder-gray-600 rounded-md  border focus:outline-none focus:ring-2 focus:ring-blue-300"
                             type="password"
                             name="password"
@@ -139,6 +164,7 @@ const SignUp = () => {
                                 confirmPassword: e.target.value,
                               })
                             }
+                            value={userInfo?.confirmPassword}
                             className="w-full p-2 pl-10 text-gray-800 placeholder-gray-600 rounded-md  border focus:outline-none focus:ring-2 focus:ring-blue-300"
                             type="password"
                             name="password"
@@ -167,8 +193,7 @@ const SignUp = () => {
                             disabled={false}
                             className="w-full p-2 text-sm font-semibold text-center text-white transition duration-100 rounded-md md:text-lg font-nunito bg-gradient-to-r from-blue-600 to-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-300 hover:shadow-lg"
                           >
-                            {/* {isLoading ? "Loading..." : "Sign Up"} */}
-                            Register
+                            {isLoading ? "Loading..." : "Register"}
                           </button>
                         </div>
                       </div>

@@ -6,7 +6,8 @@ import { Link } from "react-router-dom";
 const Login = () => {
   const [loginInfo, setLoginInfo] = useState({});
 
-  const handleLogin = () => {
+  const handleLogin = (e) => {
+    e.preventDefault();
     console.log("button click");
   };
 
@@ -137,7 +138,7 @@ const Login = () => {
                         {false ? (
                           "Loading..."
                         ) : (
-                          <button className="w-full p-2 text-sm font-normal text-center transition bg-red-600 hover:bg-white text-white duration-300 rounded-md md:text-lg font-roboto focus:outline-none hover:shadow-lg hover:text-black">
+                          <button className="w-full p-2 text-sm font-normal text-center transition bg-[#FB0C78] hover:bg-red-600 text-white duration-300 rounded-md md:text-lg font-roboto focus:outline-none hover:shadow-lg hover:text-black">
                             <span className="flex items-center justify-center gap-4">
                               <img
                                 className="w-5 h-5 text-xs"
