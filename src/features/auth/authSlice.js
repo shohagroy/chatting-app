@@ -1,24 +1,31 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  token: undefined,
-  user: undefined,
+  user: {},
+  isLoading: true,
 };
 
 const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
+    initialLoading: (state) => {
+      state.isLoading = true;
+    },
+
     userLoggedIn: (state, action) => {
-      state.token = action.payload.token;
       state.user = action.payload.user;
+      state.isLoading = false;
     },
     userLoggedOut: (state) => {
-      state.token = undefined;
-      state.user = undefined;
+      document.cookie = `free_chat=${" "}; Path=/;`;
+      state.user = {};
+      state.isLoading = false;
     },
   },
 });
 
-export const { userLoggedIn, userLoggedOut } = authSlice.actions;
+export const { userLoggedIn, userLoggedOut, initialLoading } =
+  authSlice.actions;
+
 export default authSlice.reducer;

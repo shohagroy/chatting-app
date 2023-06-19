@@ -24,7 +24,6 @@ const SignUp = () => {
     if (userInfo.password !== userInfo.confirmPassword) {
       swal("Password Not Match!", "", "error");
     } else {
-      console.log(userInfo);
       register(userInfo);
     }
   };
@@ -33,7 +32,7 @@ const SignUp = () => {
     if (isSuccess && data?.success) {
       toast.success(data?.message);
       document.cookie = `free_chat=${data?.data?.token}; Path=/;`;
-      navigate(path, { relative: true });
+      navigate("/");
       setUserInfo({ email: "", password: "", confirmPassword: "" });
     }
   }, [isSuccess, data, navigate, path]);

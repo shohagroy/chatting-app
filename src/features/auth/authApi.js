@@ -1,4 +1,5 @@
 import { apiSlice } from "../api/apiSlice";
+import { initialLoading, userLoggedIn, userLoggedOut } from "./authSlice";
 
 export const authApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
@@ -10,16 +11,20 @@ export const authApi = apiSlice.injectEndpoints({
           "Content-Type": "application/json",
         },
       }),
-      // invalidatesTags: ["users"],
-      // providesTags: ["users"],
-      // async onQueryStarted(arg, { queryFulfilled, dispatch }) {
-      //   try {
-      //     const result = await queryFulfilled;
-      //     if (result?.data?.data?._id) {
-      //       // return dispatch(loginUserFound(result?.data?.data));
-      //     }
-      //   } catch (err) {}
-      // },
+      invalidatesTags: ["users"],
+      providesTags: ["users"],
+      async onQueryStarted(arg, { queryFulfilled, dispatch }) {
+        dispatch(initialLoading());
+        try {
+          const result = await queryFulfilled;
+
+          if (result?.data?.status === "success") {
+            return dispatch(userLoggedIn(result?.data?.data));
+          }
+        } catch (err) {
+          return dispatch(userLoggedOut());
+        }
+      },
     }),
 
     register: builder.mutation({
@@ -28,29 +33,17 @@ export const authApi = apiSlice.injectEndpoints({
         method: "POST",
         body: data,
       }),
-      // async onQueryStarted(arg, { queryFulfilled, dispatch }) {
-      //   try {
-      //     const result = await queryFulfilled;
+      async onQueryStarted(arg, { queryFulfilled, dispatch }) {
+        try {
+          const result = await queryFulfilled;
 
-      //     localStorage.setItem(
-      //       "auth",
-      //       JSON.stringify({
-      //         token: result.data.token,
-      //         user: result.data.user,
-      //       })
-      //     );
-
-      //     dispatch(
-      //       userLoggedIn({
-      //         token: result.data.token,
-      //         user: result.data.user,
-      //       })
-      //     );
-      //   } catch (err) {
-      //     console.log(err);
-      //     // do nothing
-      //   }
-      // },
+          if (result?.data?.success) {
+            return dispatch(userLoggedIn(result?.data?.data));
+          }
+        } catch (err) {
+          return dispatch(userLoggedOut());
+        }
+      },
     }),
     login: builder.mutation({
       query: (data) => ({
@@ -58,30 +51,16 @@ export const authApi = apiSlice.injectEndpoints({
         method: "POST",
         body: data,
       }),
-
-      // async onQueryStarted(arg, { queryFulfilled, dispatch }) {
-      //   try {
-      //     const result = await queryFulfilled;
-
-      //     localStorage.setItem(
-      //       "auth",
-      //       JSON.stringify({
-      //         token: result.data.token,
-      //         user: result.data.user,
-      //       })
-      //     );
-
-      //     dispatch(
-      //       userLoggedIn({
-      //         token: result.data.token,
-      //         user: result.data.user,
-      //       })
-      //     );
-      //   } catch (err) {
-      //     console.log(err);
-      //     // do nothing
-      //   }
-      // },
+      async onQueryStarted(arg, { queryFulfilled, dispatch }) {
+        try {
+          const result = await queryFulfilled;
+          if (result?.data?.success) {
+            return dispatch(userLoggedIn(result?.data?.data));
+          }
+        } catch (err) {
+          return dispatch(userLoggedOut());
+        }
+      },
     }),
   }),
 });

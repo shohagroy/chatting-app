@@ -1,41 +1,27 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Navigate, useLocation } from "react-router-dom";
-import { useGetLoginUserQuery } from "../features/auth/authApi";
+import { useSelector } from "react-redux";
 
 const PrivateRoute = ({ children }) => {
   const location = useLocation();
+  const { user, isLoading } = useSelector((state) => state.auth);
+  const [showLoading, setShowLoading] = useState(true);
 
-  const { data, isLoading, isError, isSuccess, error } = useGetLoginUserQuery();
+  useEffect(() => {
+    if (!isLoading) {
+      setShowLoading(false);
+    }
+  }, [isLoading]);
 
-  console.log(data, isLoading, isError, isSuccess, error);
-
-  // useEffect(() => {
-  //   setLoading(true);
-  //   const localAuth = localStorage?.getItem("auth");
-
-  //   if (localAuth) {
-  //     const auth = JSON.parse(localAuth);
-  //     if (auth?.token && auth?.user) {
-  //       dispatch(
-  //         userLoggedIn({
-  //           token: auth.token,
-  //           user: auth.user,
-  //         })
-  //       );
-  //     }
-  //   }
-  //   setLoading(false);
-  // }, [dispatch]);
-
-  if (isLoading && !data?.data?._id) {
+  if (showLoading) {
     return <h2>Loading...</h2>;
   }
 
-  if (!data?.data?.email) {
-    return <Navigate to="/login" state={{ path: location }} replace></Navigate>;
-  } else {
-    return children;
+  if (!user?.email) {
+    return <Navigate to="/login" state={{ path: location }} replace />;
   }
+
+  return children;
 };
 
 export default PrivateRoute;

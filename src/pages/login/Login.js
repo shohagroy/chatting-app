@@ -1,14 +1,14 @@
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useLoginMutation } from "../../features/auth/authApi";
 
 const Login = () => {
   const [loginInfo, setLoginInfo] = useState({});
 
   const navigate = useNavigate();
-  const location = useLocation();
-  const path = location.state?.path?.pathname || "/";
+  // const location = useLocation();
+  // const path = location.state?.path?.pathname || "/";
 
   const [login, { data, isLoading, isError, isSuccess, error }] =
     useLoginMutation();
@@ -23,12 +23,11 @@ const Login = () => {
     if (isSuccess && data?.success) {
       toast.success(data?.message);
 
-      console.log(data?.data);
       document.cookie = `free_chat=${data?.data?.token}; Path=/;`;
-      navigate(path, { relative: true });
+      navigate("/");
       setLoginInfo({ email: "", password: "" });
     }
-  }, [isSuccess, data, setLoginInfo, navigate, path]);
+  }, [isSuccess, data, setLoginInfo, navigate]);
 
   useEffect(() => {
     if (isError && !error?.data?.success) {
