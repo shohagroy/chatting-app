@@ -2,7 +2,10 @@ import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import swal from "sweetalert";
-import { useRegisterMutation } from "../../features/auth/authApi";
+import {
+  useGetGoogleCallbankQuery,
+  useRegisterMutation,
+} from "../../features/auth/authApi";
 
 const SignUp = () => {
   const [userInfo, setUserInfo] = useState({
@@ -11,6 +14,9 @@ const SignUp = () => {
     password: "",
     confirmPassword: "",
   });
+
+  const { data: googleCallBack, isLoading: googleLoading } =
+    useGetGoogleCallbankQuery();
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -28,8 +34,6 @@ const SignUp = () => {
       register(userInfo);
     }
   };
-
-  console.log(data);
 
   useEffect(() => {
     if (isSuccess && data?.status) {
@@ -232,16 +236,22 @@ const SignUp = () => {
                       </div>
                     </form>
                     <div className="mt-4">
-                      <button className="w-full p-2 text-sm font-normal text-center transition bg-red-600 hover:bg-white text-white duration-300 rounded-md md:text-lg font-roboto focus:outline-none hover:shadow-lg hover:text-black">
-                        <span className="flex items-center justify-center gap-4">
-                          <img
-                            className="w-5 h-5 text-xs"
-                            src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/800px-Google_%22G%22_Logo.svg.png"
-                            alt="google_logo"
-                          />
-                          <span>Continue with Google</span>
-                        </span>
-                      </button>
+                      <Link to={googleCallBack?.data}>
+                        <button className="w-full p-2 text-sm font-normal text-center transition bg-[#FB0C78] hover:bg-red-600 text-white duration-300 rounded-md md:text-lg font-roboto focus:outline-none hover:shadow-lg hover:text-black">
+                          {googleLoading ? (
+                            "Loading..."
+                          ) : (
+                            <span className="flex items-center justify-center gap-4">
+                              <img
+                                className="w-5 h-5 text-xs"
+                                src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/800px-Google_%22G%22_Logo.svg.png"
+                                alt="google_logo"
+                              />
+                              <span>Continue with Google</span>
+                            </span>
+                          )}
+                        </button>
+                      </Link>
                     </div>
                   </div>
                 </div>

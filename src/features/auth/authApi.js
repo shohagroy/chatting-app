@@ -62,8 +62,18 @@ export const authApi = apiSlice.injectEndpoints({
         }
       },
     }),
+    getGoogleCallbank: builder.query({
+      query: () => ({
+        url: "/auth/google-callback",
+        method: "GET",
+      }),
+    }),
   }),
 });
 
-export const { useRegisterMutation, useLoginMutation, useGetLoginUserQuery } =
-  authApi;
+export const {
+  useRegisterMutation,
+  useLoginMutation,
+  useGetLoginUserQuery,
+  useGetGoogleCallbankQuery,
+} = authApi;

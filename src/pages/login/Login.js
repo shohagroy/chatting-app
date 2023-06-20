@@ -1,13 +1,19 @@
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { Link, useNavigate } from "react-router-dom";
-import { useLoginMutation } from "../../features/auth/authApi";
+import {
+  useGetGoogleCallbankQuery,
+  useLoginMutation,
+} from "../../features/auth/authApi";
 
 const Login = () => {
   const [loginInfo, setLoginInfo] = useState({
     email: "",
     password: "",
   });
+
+  const { data: googleCallBack, isLoading: googleLoading } =
+    useGetGoogleCallbankQuery();
 
   const navigate = useNavigate();
   // const location = useLocation();
@@ -161,12 +167,13 @@ const Login = () => {
                         </div>
                       </div>
                     </form>
+
                     <div className="mt-4">
-                      <a href={"/"}>
-                        {false ? (
-                          "Loading..."
-                        ) : (
-                          <button className="w-full p-2 text-sm font-normal text-center transition bg-[#FB0C78] hover:bg-red-600 text-white duration-300 rounded-md md:text-lg font-roboto focus:outline-none hover:shadow-lg hover:text-black">
+                      <Link to={googleCallBack?.data}>
+                        <button className="w-full p-2 text-sm font-normal text-center transition bg-[#FB0C78] hover:bg-red-600 text-white duration-300 rounded-md md:text-lg font-roboto focus:outline-none hover:shadow-lg hover:text-black">
+                          {googleLoading ? (
+                            "Loading..."
+                          ) : (
                             <span className="flex items-center justify-center gap-4">
                               <img
                                 className="w-5 h-5 text-xs"
@@ -175,9 +182,9 @@ const Login = () => {
                               />
                               <span>Continue with Google</span>
                             </span>
-                          </button>
-                        )}
-                      </a>
+                          )}
+                        </button>
+                      </Link>
                     </div>
                   </div>
                 </div>
