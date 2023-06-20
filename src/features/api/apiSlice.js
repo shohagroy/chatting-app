@@ -14,8 +14,9 @@ export const apiSlice = createApi({
         return acc;
       }, {});
 
+      console.log(cookies); // Output the cookies object to the console
+
       const token = cookies["free_chat"];
-      // console.log(token);
 
       if (token) {
         headers.set("authorization", `Bearer ${token}`);
