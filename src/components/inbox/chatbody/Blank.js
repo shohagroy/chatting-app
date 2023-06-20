@@ -1,6 +1,6 @@
 export default function Blank() {
   return (
-    <div className="relative w-full overflow-y-hiddeen h-[calc(100vh_-_64px)] flex flex-col items-center justify-center text-gray-700 p-5 space-y-5">
+    <div className="relative  w-full overflow-y-hiddeen h-[calc(100vh_-_64px)] flex flex-col items-center justify-center text-gray-700 p-5 space-y-5">
       <div>
         <img
           src={

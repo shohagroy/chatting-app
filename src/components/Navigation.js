@@ -1,4 +1,4 @@
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { userLoggedOut } from "../features/auth/authSlice";
 import { useState } from "react";
@@ -7,10 +7,13 @@ import { AiOutlineLogout } from "react-icons/ai";
 export default function Navigation() {
   const [userMenu, setUserMenu] = useState(false);
 
+  const { user } = useSelector((state) => state.auth);
+
   const dispatch = useDispatch();
   const logOurHandelar = () => {
     dispatch(userLoggedOut());
   };
+
   return (
     <nav className="border-general sticky top-0 z-40 border-b bg-gradient-to-r from-blue-600 to-blue-400 transition-colors">
       <div className="max-w-7xl mx-auto">
@@ -24,7 +27,9 @@ export default function Navigation() {
               <div className="flex flex-wrap gap-x-2 gap-y-2">
                 <ul className="px-6 p-3">
                   <li className="text-white">
-                    <p className="text-xl font-semibold">Wellcome, Shohag</p>
+                    <p className="text-xl font-semibold">
+                      Wellcome, {user?.firstName}
+                    </p>
                   </li>
                 </ul>
 
@@ -33,8 +38,12 @@ export default function Navigation() {
                     <div className="relative flex-shrink-0">
                       <span className="absolute bottom-0 right-0 w-4 h-4 bg-green-600 border rounded-full text-gray-100 border-gray-900"></span>
                       <img
-                        src="https://source.unsplash.com/50x50/?portrait"
-                        alt=""
+                        src={
+                          !user.avatar
+                            ? "https://source.unsplash.com/50x50/?portrait"
+                            : user?.avatar
+                        }
+                        alt={user?.firstName}
                         className="w-12 h-12 border rounded-full bg-gray-500 border-gray-700"
                       />
                     </div>
