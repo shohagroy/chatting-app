@@ -18,7 +18,8 @@ const authSlice = createSlice({
       state.isLoading = false;
     },
     userLoggedOut: (state) => {
-      document.cookie = `free_chat=${" "}; Path=/;`;
+      document.cookie = `${"free_chat"}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=`;
+
       state.user = {};
       state.isLoading = false;
     },
