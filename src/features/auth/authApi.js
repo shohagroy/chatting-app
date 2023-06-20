@@ -18,7 +18,7 @@ export const authApi = apiSlice.injectEndpoints({
         try {
           const result = await queryFulfilled;
 
-          if (result?.data?.status === "success") {
+          if (result?.data?.status) {
             return dispatch(userLoggedIn(result?.data?.data));
           }
         } catch (err) {
@@ -37,7 +37,7 @@ export const authApi = apiSlice.injectEndpoints({
         try {
           const result = await queryFulfilled;
 
-          if (result?.data?.success) {
+          if (result?.data?.status) {
             return dispatch(userLoggedIn(result?.data?.data));
           }
         } catch (err) {
@@ -54,7 +54,7 @@ export const authApi = apiSlice.injectEndpoints({
       async onQueryStarted(arg, { queryFulfilled, dispatch }) {
         try {
           const result = await queryFulfilled;
-          if (result?.data?.success) {
+          if (result?.data?.status) {
             return dispatch(userLoggedIn(result?.data?.data));
           }
         } catch (err) {

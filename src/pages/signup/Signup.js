@@ -6,6 +6,7 @@ import { useRegisterMutation } from "../../features/auth/authApi";
 
 const SignUp = () => {
   const [userInfo, setUserInfo] = useState({
+    name: "",
     email: "",
     password: "",
     confirmPassword: "",
@@ -28,19 +29,21 @@ const SignUp = () => {
     }
   };
 
+  console.log(data);
+
   useEffect(() => {
-    if (isSuccess && data?.success) {
+    if (isSuccess && data?.status) {
       toast.success(data?.message);
       document.cookie = `free_chat=${data?.data?.token}; Path=/;`;
       navigate("/");
-      setUserInfo({ email: "", password: "", confirmPassword: "" });
+      setUserInfo({ name: "", email: "", password: "", confirmPassword: "" });
     }
   }, [isSuccess, data, navigate, path]);
 
   useEffect(() => {
     if (isError && !error?.data?.success) {
       toast.error(error?.data?.message);
-      setUserInfo({ email: "", password: "", confirmPassword: "" });
+      setUserInfo({ name: "", email: "", password: "", confirmPassword: "" });
     }
   }, [isError, error]);
 
@@ -86,6 +89,31 @@ const SignUp = () => {
                       className="text-base font-nunito"
                     >
                       <div className="space-y-4">
+                        <div>
+                          <div className="relative flex items-center">
+                            <svg
+                              className="absolute w-5 h-5 ml-3 text-gray-400"
+                              xmlns="http://www.w3.org/2000/svg"
+                              viewBox="0 0 448 512"
+                            >
+                              <path d="M224 256A128 128 0 1 0 224 0a128 128 0 1 0 0 256zm-45.7 48C79.8 304 0 383.8 0 482.3C0 498.7 13.3 512 29.7 512H418.3c16.4 0 29.7-13.3 29.7-29.7C448 383.8 368.2 304 269.7 304H178.3z" />
+                            </svg>
+                            <input
+                              onChange={(e) =>
+                                setUserInfo({
+                                  ...userInfo,
+                                  name: e.target.value,
+                                })
+                              }
+                              value={userInfo?.name}
+                              className="w-full p-2 pl-10 text-gray-800 placeholder-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300 border"
+                              type="text"
+                              name="name"
+                              placeholder="User Name"
+                              required
+                            />
+                          </div>
+                        </div>
                         <div className="relative flex items-center">
                           <svg
                             className="absolute w-5 h-5 ml-3 text-gray-400"
