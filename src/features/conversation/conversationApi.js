@@ -26,8 +26,22 @@ export const conversationAli = apiSlice.injectEndpoints({
         } catch (err) {}
       },
     }),
+    getLastUserConversations: builder.query({
+      query: (email) => ({
+        url: `/conversations/${email}`,
+        method: "GET",
+      }),
+      async onQueryStarted(arg, { queryFulfilled, dispatch }) {
+        try {
+          //   const result = await queryFulfilled;
+        } catch (err) {}
+      },
+    }),
   }),
 });
 
-export const { useSendMessagesMutation, useGetUserConversationsQuery } =
-  conversationAli;
+export const {
+  useSendMessagesMutation,
+  useGetUserConversationsQuery,
+  useGetLastUserConversationsQuery,
+} = conversationAli;

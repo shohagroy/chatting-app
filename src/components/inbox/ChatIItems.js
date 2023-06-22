@@ -1,6 +1,13 @@
+import { useSelector } from "react-redux";
+import { useGetLastUserConversationsQuery } from "../../features/conversation/conversationApi";
 import ChatItem from "./ChatItem";
 
 export default function ChatItems() {
+  const { user } = useSelector((state) => state.auth);
+
+  const { data } = useGetLastUserConversationsQuery(user?.email);
+  console.log(data);
+
   return (
     <ul>
       <li>
