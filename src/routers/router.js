@@ -16,7 +16,7 @@ const router = createBrowserRouter([
     ),
   },
   {
-    path: "/messages/:id",
+    path: "/messages/:email",
     element: (
       <PrivateRoute>
         <Inbox />

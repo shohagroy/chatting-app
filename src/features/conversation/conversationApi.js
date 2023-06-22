@@ -1,11 +1,12 @@
 import { apiSlice } from "../api/apiSlice";
 
-export const userApi = apiSlice.injectEndpoints({
+export const conversationAli = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
-    getAllUser: builder.query({
-      query: () => ({
-        url: "/users",
-        method: "GET",
+    sendMessages: builder.mutation({
+      query: (data) => ({
+        url: `/conversations`,
+        method: "POST",
+        body: data,
       }),
       async onQueryStarted(arg, { queryFulfilled, dispatch }) {
         try {
@@ -13,9 +14,10 @@ export const userApi = apiSlice.injectEndpoints({
         } catch (err) {}
       },
     }),
-    getUserMessages: builder.query({
+
+    getUserConversations: builder.query({
       query: (data) => ({
-        url: `/users/conversations?${data}`,
+        url: `/conversations?${data}`,
         method: "GET",
       }),
       async onQueryStarted(arg, { queryFulfilled, dispatch }) {
@@ -27,4 +29,5 @@ export const userApi = apiSlice.injectEndpoints({
   }),
 });
 
-export const { useGetAllUserQuery, useGetUserMessagesQuery } = userApi;
+export const { useSendMessagesMutation, useGetUserConversationsQuery } =
+  conversationAli;

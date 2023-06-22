@@ -1,25 +1,38 @@
 // import Blank from "./Blank";
 import { useParams } from "react-router-dom";
-import { useGetUserMessagesQuery } from "../../../features/user/userApi";
 import ChatHead from "./ChatHead";
 import Messages from "./Messages";
 import Options from "./Options";
+import { useSelector } from "react-redux";
+import {
+  useGetUserConversationsQuery,
+  useSendMessagesMutation,
+} from "../../../features/conversation/conversationApi";
 
 export default function ChatBody() {
-  const { id } = useParams();
+  const { email } = useParams();
+  const { user } = useSelector((state) => state.auth);
 
-  const { data } = useGetUserMessagesQuery(id);
+  const [sendMessages, isLoading] = useSendMessagesMutation();
 
-  console.log(data);
+  const query = `user=${user?.email}&partner=${email}`;
 
-  const { avatar, email, firstName, lastName } = data?.data;
+  const { data } = useGetUserConversationsQuery(query);
+
+  //   const { data } = useGetUserMessagesQuery(query);
+
+  const { partner } = data?.data || {};
 
   return (
     <div className="w-full lg:col-span-2 lg:block">
       <div className="w-full grid conversation-row-grid">
-        <ChatHead avatar={avatar} name={`${firstName} ${lastName}`} />
+        <ChatHead user={partner} />
         <Messages />
-        <Options />
+        <Options
+          sendMessages={sendMessages}
+          isLoading={isLoading}
+          data={data?.data}
+        />
         {/* <Blank /> */}
       </div>
     </div>
