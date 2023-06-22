@@ -1,9 +1,11 @@
 import React from "react";
+import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { useGetAllUserQuery } from "../../features/user/userApi";
 
 const ActiveUsers = () => {
-  const { data } = useGetAllUserQuery();
+  const { user } = useSelector((state) => state.auth);
+  const { data } = useGetAllUserQuery(user?._id);
 
   return (
     <div>
@@ -19,19 +21,21 @@ const ActiveUsers = () => {
               >
                 <div className="relative flex-shrink-0">
                   <span className="absolute bottom-0 right-0 w-4 h-4 bg-green-600 border rounded-full text-gray-100 border-gray-900"></span>
-                  <img
-                    src={
-                      avatar
-                        ? avatar
-                        : "https://source.unsplash.com/50x50/?portrait"
-                    }
-                    alt={firstName}
-                    className="w-12 h-12 border rounded-full bg-gray-500 border-gray-700"
-                  />
+                  {avatar ? (
+                    <img
+                      src={avatar}
+                      alt={firstName}
+                      className="w-12 h-12 border rounded-full bg-gray-500 border-gray-700"
+                    />
+                  ) : (
+                    <p className="w-12 h-12 border rounded-full bg-blue-500 border-gray-700 text-white flex justify-center items-center  text-2xl uppercase font-serif">
+                      {firstName?.split("")[0]}
+                    </p>
+                  )}
                 </div>
                 <div className="w-full pb-2 hidden md:block">
                   <div className="flex justify-between">
-                    <span className="block text-xl ml-3 font-bold text-gray-600">
+                    <span className="block text-xl ml-3 font-bold text-gray-600 capitalize">
                       {firstName} {lastName}
                     </span>
                     <span className="block ml-2 text-sm text-gray-600">
