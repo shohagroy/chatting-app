@@ -1,7 +1,7 @@
 import { useSelector } from "react-redux";
 
 export default function Message({ conversation }) {
-  const { createdAt, message, users, participants } = conversation;
+  const { message, users, participants } = conversation;
 
   const { user } = useSelector((state) => state.auth);
   const isSenderEmail = participants.split("-")[0];
@@ -41,7 +41,6 @@ export default function Message({ conversation }) {
         >
           <span className="block">{message}</span>
         </div>
-        {/* <div className="flex justify-end">o</div> */}
       </div>
     </li>
   );

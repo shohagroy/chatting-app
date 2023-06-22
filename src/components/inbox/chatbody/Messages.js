@@ -1,6 +1,17 @@
+import { useSelector } from "react-redux";
 import Message from "./Message";
 
-export default function Messages({ conversations }) {
+export default function Messages({ conversations, isLoading }) {
+  console.log(isLoading);
+
+  const { user } = useSelector((state) => state.auth);
+
+  const lastIndex = conversations?.length;
+  const lastConversation = conversations && conversations[lastIndex - 1];
+
+  const isSenderEmail = lastConversation?.participants.split("-")[0];
+  console.log(isSenderEmail);
+
   return (
     <div className="relative w-full h-[calc(100vh_-_197px)] p-6 overflow-y-auto flex flex-col-reverse">
       <ul className="space-y-2">
@@ -14,6 +25,12 @@ export default function Messages({ conversations }) {
             />
           );
         })}
+
+        {isSenderEmail === user?.email && (
+          <div className="flex justify-end text-blue-500 text-sm">
+            <span>{isLoading ? "sending..." : "send"}</span>
+          </div>
+        )}
       </ul>
     </div>
   );
