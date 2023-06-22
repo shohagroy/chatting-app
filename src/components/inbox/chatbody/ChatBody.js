@@ -1,4 +1,3 @@
-// import Blank from "./Blank";
 import { useParams } from "react-router-dom";
 import ChatHead from "./ChatHead";
 import Messages from "./Messages";
@@ -18,20 +17,17 @@ export default function ChatBody() {
   const query = `user=${user?.email}&partner=${email}`;
 
   const { data } = useGetUserConversationsQuery(query);
-
-  //   const { data } = useGetUserMessagesQuery(query);
-
-  const { partner } = data?.data || {};
+  const { partner, conversations } = data?.data || {};
 
   return (
     <div className="w-full lg:col-span-2 lg:block">
       <div className="w-full grid conversation-row-grid">
         <ChatHead user={partner} />
-        <Messages />
+        <Messages conversations={conversations} />
         <Options
           sendMessages={sendMessages}
           isLoading={isLoading}
-          data={data?.data}
+          data={partner}
         />
         {/* <Blank /> */}
       </div>
