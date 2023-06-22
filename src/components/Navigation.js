@@ -27,7 +27,7 @@ export default function Navigation() {
               <div className="flex flex-wrap gap-x-2 gap-y-2">
                 <ul className="px-6 p-3">
                   <li className="text-white">
-                    <p className="text-xl font-semibold">
+                    <p className="text-xl font-semibold capitalize">
                       Wellcome, {user?.firstName}
                     </p>
                   </li>
@@ -37,15 +37,18 @@ export default function Navigation() {
                   <button onClick={() => setUserMenu(!userMenu)}>
                     <div className="relative flex-shrink-0">
                       <span className="absolute bottom-0 right-0 w-4 h-4 bg-green-600 border rounded-full text-gray-100 border-gray-900"></span>
-                      <img
-                        src={
-                          !user.avatar
-                            ? "https://source.unsplash.com/50x50/?portrait"
-                            : user?.avatar
-                        }
-                        alt={user?.firstName}
-                        className="w-12 h-12 border rounded-full bg-gray-500 border-gray-700"
-                      />
+
+                      {user?.avatar ? (
+                        <img
+                          src={user?.avatar}
+                          alt={user?.firstName}
+                          className="w-12 h-12 border rounded-full bg-gray-500 border-gray-700"
+                        />
+                      ) : (
+                        <p className="w-12 h-12 border rounded-full bg-blue-500 border-gray-700 text-white flex justify-center items-center  text-2xl uppercase font-serif">
+                          {user?.firstName?.split("")[0]}
+                        </p>
+                      )}
                     </div>
                   </button>
 
