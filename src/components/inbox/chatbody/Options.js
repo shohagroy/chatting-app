@@ -15,7 +15,6 @@ export default function Options({ data, sendMessages }) {
     e.preventDefault();
 
     sendMessages(conversations);
-    console.log(conversations);
     setTextMessages("");
   };
 

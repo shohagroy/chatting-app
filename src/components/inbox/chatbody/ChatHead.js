@@ -2,7 +2,7 @@ export default function ChatHead({ user }) {
   const { avatar, firstName, lastName } = user || {};
 
   return (
-    <div className="relative flex items-center p-3 border-b border-gray-300">
+    <div className="relative flex items-center p-2 border-b border-gray-300">
       {avatar ? (
         <img
           src={avatar}

@@ -7,6 +7,7 @@ import {
   useGetUserConversationsQuery,
   useSendMessagesMutation,
 } from "../../../features/conversation/conversationApi";
+import NoConversation from "./NoConversation";
 
 export default function ChatBody() {
   const { email } = useParams();
@@ -23,7 +24,11 @@ export default function ChatBody() {
     <div className="w-full lg:col-span-2 lg:block">
       <div className="w-full grid conversation-row-grid">
         <ChatHead user={partner} />
-        <Messages isLoading={isLoading} conversations={conversations} />
+        {conversations?.length ? (
+          <Messages isLoading={isLoading} conversations={conversations} />
+        ) : (
+          <NoConversation />
+        )}
         <Options sendMessages={sendMessages} data={partner} />
         {/* <Blank /> */}
       </div>
