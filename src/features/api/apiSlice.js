@@ -14,8 +14,6 @@ export const apiSlice = createApi({
         return acc;
       }, {});
 
-      console.log(cookies);
-
       const token = cookies["free_chat"];
 
       if (token) {
