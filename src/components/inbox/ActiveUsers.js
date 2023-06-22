@@ -11,12 +11,12 @@ const ActiveUsers = () => {
       <ul>
         <li>
           {data?.data?.map((user) => {
-            const { _id, avatar, email, firstName, lastName } = user;
+            const { _id, avatar, firstName, lastName } = user;
             return (
               <Link
                 key={_id}
                 className="flex items-center px-3 py-2 text-sm transition duration-150 ease-in-out border-b border-gray-300 cursor-pointer hover:bg-gray-100 focus:outline-none"
-                to="/"
+                to={`/messages/${_id}`}
               >
                 <div className="relative flex-shrink-0">
                   <span className="absolute bottom-0 right-0 w-4 h-4 bg-green-600 border rounded-full text-gray-100 border-gray-900"></span>
