@@ -3,9 +3,8 @@ import { Link } from "react-router-dom";
 import { useGetAllUserQuery } from "../../features/user/userApi";
 
 const ActiveUsers = () => {
-  const { data, isLoading, isError, isSuccess, error } = useGetAllUserQuery();
+  const { data } = useGetAllUserQuery();
 
-  console.log(data, isLoading, isError, isSuccess, error);
   return (
     <div>
       <ul>

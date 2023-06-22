@@ -13,7 +13,18 @@ export const userApi = apiSlice.injectEndpoints({
         } catch (err) {}
       },
     }),
+    getUserMessages: builder.query({
+      query: (id) => ({
+        url: `/users/messages/${id}`,
+        method: "GET",
+      }),
+      async onQueryStarted(arg, { queryFulfilled, dispatch }) {
+        try {
+          //   const result = await queryFulfilled;
+        } catch (err) {}
+      },
+    }),
   }),
 });
 
-export const { useGetAllUserQuery } = userApi;
+export const { useGetAllUserQuery, useGetUserMessagesQuery } = userApi;
