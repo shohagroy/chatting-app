@@ -1,12 +1,38 @@
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import moment from "moment";
 
 export default function ChatItem({ lastMessage }) {
   const { createdAt, message, users } = lastMessage || {};
 
   const { user } = useSelector((state) => state.auth);
-
   const receivedBar = users?.find((el) => el.email !== user?.email);
+
+  const currentTime = moment();
+  const givenTime = moment(createdAt);
+
+  const duration = moment.duration(currentTime.diff(givenTime));
+
+  const minutes = parseInt(duration.asMinutes());
+  const hours = parseInt(duration.asHours());
+  const days = parseInt(duration.asDays());
+  const weeks = parseInt(duration.asWeeks());
+  const months = parseInt(duration.asMonths());
+
+  let messageTime;
+  if (minutes < 60) {
+    messageTime = `${minutes}m`;
+  } else if (hours < 24) {
+    messageTime = `${hours}h`;
+  } else if (days < 7) {
+    messageTime = `${days}d`;
+  } else if (weeks < 5) {
+    messageTime = `${weeks}w`;
+  } else if (months < 12) {
+    messageTime = `${months}m`;
+  } else {
+    messageTime = null;
+  }
 
   return (
     <Link
@@ -29,7 +55,9 @@ export default function ChatItem({ lastMessage }) {
           <span className="block ml-2 font-semibold text-gray-600 capitalize">
             {receivedBar?.firstName} {receivedBar?.lastName}
           </span>
-          <span className="block ml-2 text-sm text-gray-600">{createdAt}</span>
+          <span className="block ml-2 text-sm text-gray-600">
+            {messageTime}
+          </span>
         </div>
         <span className="block ml-2 text-sm text-gray-600">{message}</span>
       </div>
