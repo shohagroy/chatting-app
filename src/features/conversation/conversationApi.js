@@ -41,7 +41,9 @@ export const conversationAli = apiSlice.injectEndpoints({
           socket.on("message", (data) => {
             updateCachedData((draft) => {
               const isReciver = draft.data.conversations.find(
-                (el) => el.participants == data.conversations.participants
+                (el) =>
+                  JSON.stringify(el.participants) ===
+                  JSON.stringify(data.conversations.participants)
               );
 
               if (isReciver) {
