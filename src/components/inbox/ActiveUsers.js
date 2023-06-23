@@ -16,7 +16,7 @@ const ActiveUsers = () => {
             return (
               <Link
                 key={_id}
-                className="flex items-center px-3 py-2 text-sm transition duration-150 ease-in-out border-b border-gray-300 cursor-pointer hover:bg-gray-100 focus:outline-none"
+                className="flex items-center px-1 lg:px-3 py-2 text-sm transition duration-150 ease-in-out border-b border-gray-300 cursor-pointer hover:bg-gray-100 focus:outline-none"
                 to={`/messages/${email}`}
               >
                 <div className="relative flex-shrink-0">

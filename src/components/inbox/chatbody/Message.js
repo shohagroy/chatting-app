@@ -15,18 +15,6 @@ export default function Message({ conversation }) {
         isSenderEmail === user?.email && "flex-row-reverse"
       }`}
     >
-      {/* {avatar ? (
-        <img
-          src={avatar}
-          alt={firstName}
-          className="w-12 h-12 border rounded-full bg-gray-500 border-gray-700"
-        />
-      ) : (
-        <p className="w-12 h-12 border rounded-full bg-blue-500 border-gray-700 text-white flex justify-center items-center  text-2xl uppercase font-serif">
-          {firstName?.split("")[0]}
-        </p>
-      )} */}
-
       {isSenderEmail !== user?.email && (
         <div>
           {receivedBar?.avatar ? (
@@ -37,7 +25,7 @@ export default function Message({ conversation }) {
               title={receivedBar?.firstName}
             />
           ) : (
-            <p className="w-12 h-12 border rounded-full bg-blue-500 border-gray-700 text-white flex justify-center items-center  text-2xl uppercase font-serif mx-3">
+            <p className="w-12 h-12 border rounded-full bg-blue-500 border-gray-700 text-white flex justify-center items-center  text-2xl uppercase font-serif lg:mx-3">
               {receivedBar?.firstName?.split("")[0]}
             </p>
           )}
@@ -46,7 +34,7 @@ export default function Message({ conversation }) {
 
       <div>
         <div
-          className={`relative max-w-xl px-4 py-2 rounded shadow ${
+          className={`relative max-w-xl px-2 lg:px-4 py-1 lg:py-2 rounded shadow ${
             isSenderEmail === user?.email
               ? "bg-blue-500 text-white"
               : "text-gray-700"
