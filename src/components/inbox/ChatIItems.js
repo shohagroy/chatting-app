@@ -6,7 +6,6 @@ export default function ChatItems() {
   const { user } = useSelector((state) => state.auth);
 
   const { data } = useGetLastUserConversationsQuery(user?.email);
-  console.log(data);
 
   return (
     <ul>

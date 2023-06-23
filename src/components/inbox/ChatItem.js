@@ -20,7 +20,10 @@ export default function ChatItem({ lastMessage }) {
   const months = parseInt(duration.asMonths());
 
   let messageTime;
-  if (minutes < 60) {
+
+  if (minutes < 1) {
+    messageTime = "now";
+  } else if (minutes < 60) {
     messageTime = `${minutes}m`;
   } else if (hours < 24) {
     messageTime = `${hours}h`;

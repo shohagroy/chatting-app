@@ -9,9 +9,20 @@ export const conversationAli = apiSlice.injectEndpoints({
         body: data,
       }),
       async onQueryStarted(arg, { queryFulfilled, dispatch }) {
-        try {
-          //   const result = await queryFulfilled;
-        } catch (err) {}
+        const chatEmails = arg.participants.split("-");
+        const data = `user=${chatEmails[0]}&partner=${chatEmails[1]}`;
+        arg._id = arg.message;
+
+        dispatch(
+          apiSlice.util.updateQueryData(
+            "getUserConversations",
+            data,
+            (draft) => {
+              draft.data.conversations = [...draft.data.conversations, arg];
+              return draft;
+            }
+          )
+        );
       },
     }),
 
