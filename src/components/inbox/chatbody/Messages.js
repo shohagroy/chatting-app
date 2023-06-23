@@ -3,7 +3,12 @@ import { useSelector } from "react-redux";
 import socket from "../../../socket/socker.config";
 import Message from "./Message";
 
-export default function Messages({ conversations, isLoading }) {
+export default function Messages({
+  conversations,
+  isLoading,
+  isSuccess,
+  isError,
+}) {
   const { user } = useSelector((state) => state.auth);
   const [isTypeing, setIsTYpeing] = useState(false);
 
@@ -33,9 +38,8 @@ export default function Messages({ conversations, isLoading }) {
           return (
             <Message
               conversation={conversation}
-              key={conversation?._id}
+              key={conversation?.uniqId}
               position={true}
-              message={"gknkjnlk.mlml"}
             />
           );
         })}
@@ -45,7 +49,11 @@ export default function Messages({ conversations, isLoading }) {
 
           {isSenderEmail === user?.email && (
             <div className="flex justify-end text-blue-500 text-sm">
-              <span>{isLoading ? "sending..." : "send"}</span>
+              <span>{isLoading && "sending..."}</span>
+              <span>{isSuccess && "send"}</span>
+              <span className="text-red-600">
+                {isError && "something wrong"}
+              </span>
             </div>
           )}
         </div>

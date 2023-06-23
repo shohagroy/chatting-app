@@ -13,7 +13,8 @@ export default function ChatBody() {
   const { email } = useParams();
   const { user } = useSelector((state) => state.auth);
 
-  const [sendMessages, { isLoading }] = useSendMessagesMutation();
+  const [sendMessages, { isLoading, isSuccess, isError }] =
+    useSendMessagesMutation();
 
   const query = `user=${user?.email}&partner=${email}`;
 
@@ -25,7 +26,12 @@ export default function ChatBody() {
       <div className="w-full grid conversation-row-grid">
         <ChatHead user={partner} />
         {conversations?.length ? (
-          <Messages isLoading={isLoading} conversations={conversations} />
+          <Messages
+            isLoading={isLoading}
+            conversations={conversations}
+            isSuccess={isSuccess}
+            isError={isError}
+          />
         ) : (
           <NoConversation />
         )}

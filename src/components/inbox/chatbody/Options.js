@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import socket from "../../../socket/socker.config";
+import uniqid from "uniqid";
 
 export default function Options({ data, sendMessages }) {
   const { user } = useSelector((state) => state.auth);
@@ -12,7 +13,10 @@ export default function Options({ data, sendMessages }) {
     }
   }, [textMessage, user]);
 
+  const id = uniqid();
+
   const conversations = {
+    uniqId: id,
     participants: `${user.email}-${data?.email}`,
     users: [user, data],
     message: textMessage,

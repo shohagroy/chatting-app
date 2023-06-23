@@ -9,22 +9,22 @@ export const conversationAli = apiSlice.injectEndpoints({
         method: "POST",
         body: data,
       }),
-      async onQueryStarted(arg, { queryFulfilled, dispatch }) {
-        const chatEmails = arg.participants.split("-");
-        const data = `user=${chatEmails[0]}&partner=${chatEmails[1]}`;
-        // arg._id = arg.message;
+      // async onQueryStarted(arg, { queryFulfilled, dispatch }) {
+      //   const chatEmails = arg.participants.split("-");
+      //   const data = `user=${chatEmails[0]}&partner=${chatEmails[1]}`;
+      //   // arg._id = arg.message;
 
-        dispatch(
-          apiSlice.util.updateQueryData(
-            "getUserConversations",
-            data,
-            (draft) => {
-              draft.data.conversations = [...draft.data.conversations, arg];
-              return draft;
-            }
-          )
-        );
-      },
+      //   dispatch(
+      //     apiSlice.util.updateQueryData(
+      //       "getUserConversations",
+      //       data,
+      //       (draft) => {
+      //         draft.data.conversations = [...draft.data.conversations, arg];
+      //         return draft;
+      //       }
+      //     )
+      //   );
+      // },
     }),
 
     getUserConversations: builder.query({
