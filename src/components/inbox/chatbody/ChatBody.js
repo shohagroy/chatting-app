@@ -8,8 +8,6 @@ import {
   useSendMessagesMutation,
 } from "../../../features/conversation/conversationApi";
 import NoConversation from "./NoConversation";
-import { useEffect } from "react";
-import socket from "../../../socket/socker.config";
 
 export default function ChatBody() {
   const { email } = useParams();

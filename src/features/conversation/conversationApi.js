@@ -36,24 +36,22 @@ export const conversationAli = apiSlice.injectEndpoints({
         arg,
         { updateCachedData, cacheDataLoaded, cacheEntryRemoved }
       ) {
-        // create socket
-
         try {
           await cacheDataLoaded;
-          socket.on("conversation", (data) => {
-            console.log(data);
-            // updateCachedData((draft) => {
-            //   const conversation = draft.data.find(
-            //     (c) => c.id == data?.data?.id
-            //   );
+          socket.on("message", (data) => {
+            updateCachedData((draft) => {
+              const isReciver = draft.data.conversations.find(
+                (el) => el.participants == data.conversations.participants
+              );
 
-            //   if (conversation?.id) {
-            //     conversation.message = data?.data?.message;
-            //     conversation.timestamp = data?.data?.timestamp;
-            //   } else {
-            //     // do nothing
-            //   }
-            // });
+              if (isReciver) {
+                draft.data.conversations = [
+                  ...draft.data.conversations,
+                  data.conversations,
+                ];
+                return draft;
+              }
+            });
           });
         } catch (err) {}
 
