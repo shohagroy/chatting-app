@@ -11,7 +11,7 @@ export const conversationAli = apiSlice.injectEndpoints({
       async onQueryStarted(arg, { queryFulfilled, dispatch }) {
         const chatEmails = arg.participants.split("-");
         const data = `user=${chatEmails[0]}&partner=${chatEmails[1]}`;
-        arg._id = arg.message;
+        // arg._id = arg.message;
 
         dispatch(
           apiSlice.util.updateQueryData(
