@@ -1,9 +1,16 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+import socket from "../../../socket/socker.config";
 
 export default function Options({ data, sendMessages }) {
   const { user } = useSelector((state) => state.auth);
   const [textMessage, setTextMessages] = useState("");
+
+  useEffect(() => {
+    if (textMessage) {
+      socket.emit("typing", { room: "chatRoom1", user: user?.email });
+    }
+  }, [textMessage, user]);
 
   const conversations = {
     participants: `${user.email}-${data?.email}`,
@@ -14,6 +21,7 @@ export default function Options({ data, sendMessages }) {
   const sendMessageHandler = (e) => {
     e.preventDefault();
 
+    socket.emit("conversation", { room: "chatRoom1", conversations });
     sendMessages(conversations);
     setTextMessages("");
   };

@@ -1,3 +1,4 @@
+import socket from "../../socket/socker.config";
 import { apiSlice } from "../api/apiSlice";
 
 export const conversationAli = apiSlice.injectEndpoints({
@@ -31,10 +32,33 @@ export const conversationAli = apiSlice.injectEndpoints({
         url: `/conversations?${data}`,
         method: "GET",
       }),
-      async onQueryStarted(arg, { queryFulfilled, dispatch }) {
+      async onCacheEntryAdded(
+        arg,
+        { updateCachedData, cacheDataLoaded, cacheEntryRemoved }
+      ) {
+        // create socket
+
         try {
-          //   const result = await queryFulfilled;
+          await cacheDataLoaded;
+          socket.on("conversation", (data) => {
+            console.log(data);
+            // updateCachedData((draft) => {
+            //   const conversation = draft.data.find(
+            //     (c) => c.id == data?.data?.id
+            //   );
+
+            //   if (conversation?.id) {
+            //     conversation.message = data?.data?.message;
+            //     conversation.timestamp = data?.data?.timestamp;
+            //   } else {
+            //     // do nothing
+            //   }
+            // });
+          });
         } catch (err) {}
+
+        await cacheEntryRemoved;
+        socket.close();
       },
     }),
     getLastUserConversations: builder.query({
