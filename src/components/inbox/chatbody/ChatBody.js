@@ -35,6 +35,7 @@ export default function ChatBody() {
         ) : (
           <NoConversation />
         )}
+
         <Options sendMessages={sendMessages} data={partner} />
         {/* <Blank /> */}
       </div>

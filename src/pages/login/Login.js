@@ -16,8 +16,6 @@ const Login = () => {
     useGetGoogleCallbankQuery();
 
   const navigate = useNavigate();
-  // const location = useLocation();
-  // const path = location.state?.path?.pathname || "/";
 
   const [login, { data, isLoading, isError, isSuccess, error }] =
     useLoginMutation();
@@ -31,10 +29,9 @@ const Login = () => {
   useEffect(() => {
     if (isSuccess && data?.success) {
       toast.success(data?.message);
-
       document.cookie = `free_chat=${data?.data?.token}; Path=/;`;
-      navigate("/");
       setLoginInfo({ email: "", password: "" });
+      navigate("/");
     }
   }, [isSuccess, data, setLoginInfo, navigate]);
 

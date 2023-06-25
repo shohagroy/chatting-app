@@ -9,6 +9,7 @@ export const conversationAli = apiSlice.injectEndpoints({
         method: "POST",
         body: data,
       }),
+      invalidatesTags: ["sendMessages"],
       // async onQueryStarted(arg, { queryFulfilled, dispatch }) {
       //   const chatEmails = arg.participants.split("-");
       //   const data = `user=${chatEmails[0]}&partner=${chatEmails[1]}`;
@@ -32,6 +33,8 @@ export const conversationAli = apiSlice.injectEndpoints({
         url: `/conversations?${data}`,
         method: "GET",
       }),
+      providesTags: ["sendMessages"],
+
       async onCacheEntryAdded(
         arg,
         { updateCachedData, cacheDataLoaded, cacheEntryRemoved }
@@ -45,12 +48,8 @@ export const conversationAli = apiSlice.injectEndpoints({
                   JSON.stringify(el.participants) ===
                   JSON.stringify(data.conversations.participants)
               );
-
               if (isReciver) {
-                draft.data.conversations = [
-                  ...draft.data.conversations,
-                  data.conversations,
-                ];
+                draft.data.conversations.push(data.conversations);
                 return draft;
               }
             });

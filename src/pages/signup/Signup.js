@@ -39,8 +39,8 @@ const SignUp = () => {
     if (isSuccess && data?.success) {
       toast.success(data?.message);
       document.cookie = `free_chat=${data?.data?.token}; Path=/;`;
-      navigate("/");
       setUserInfo({ name: "", email: "", password: "", confirmPassword: "" });
+      navigate("/");
     }
   }, [isSuccess, data, navigate, path]);
 

@@ -22,6 +22,6 @@ export const apiSlice = createApi({
       return headers;
     },
   }),
-  tagTypes: [],
+  tagTypes: ["sendMessages"],
   endpoints: (builder) => ({}),
 });
