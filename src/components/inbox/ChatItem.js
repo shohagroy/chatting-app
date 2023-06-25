@@ -1,6 +1,7 @@
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import moment from "moment";
+import Avatar from "../Avatar";
 
 export default function ChatItem({ lastMessage }) {
   const { createdAt, message, users } = lastMessage || {};
@@ -42,7 +43,8 @@ export default function ChatItem({ lastMessage }) {
       className="flex items-center px-1 lg:px-3 py-2 text-sm transition duration-150 ease-in-out border-b border-gray-300 cursor-pointer hover:bg-gray-100 focus:outline-none w-full"
       to={`/messages/${receivedBar?.email}`}
     >
-      {receivedBar?.avatar ? (
+      <Avatar user={receivedBar} />
+      {/* {receivedBar?.avatar ? (
         <img
           src={receivedBar?.avatar}
           alt={receivedBar?.firstName}
@@ -52,7 +54,7 @@ export default function ChatItem({ lastMessage }) {
         <p className="lg:w-14 w-12 h-12 border rounded-full bg-blue-500 border-gray-700 text-white flex justify-center items-center  text-2xl uppercase font-serif">
           {receivedBar?.firstName?.split("")[0]}
         </p>
-      )}
+      )} */}
       <div className="w-full pb-2 hidden md:block">
         <div className="flex justify-between">
           <span className="block ml-2 font-semibold text-gray-600 capitalize">

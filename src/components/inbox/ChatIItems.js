@@ -3,9 +3,9 @@ import { useGetLastUserConversationsQuery } from "../../features/conversation/co
 import ChatItem from "./ChatItem";
 
 export default function ChatItems() {
-  const { user } = useSelector((state) => state.auth);
+  const { user: me } = useSelector((state) => state.auth);
 
-  const { data } = useGetLastUserConversationsQuery(user?.email);
+  const { data } = useGetLastUserConversationsQuery(me?.email);
 
   return (
     <ul>

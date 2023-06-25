@@ -1,8 +1,9 @@
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { userLoggedOut } from "../features/auth/authSlice";
-import { useState } from "react";
+import { getActiveUser, userLoggedOut } from "../features/auth/authSlice";
+import { useEffect, useState } from "react";
 import { AiOutlineLogout } from "react-icons/ai";
+import socket from "../socket/socker.config";
 
 export default function Navigation() {
   const [userMenu, setUserMenu] = useState(false);
@@ -11,8 +12,17 @@ export default function Navigation() {
 
   const dispatch = useDispatch();
   const logOurHandelar = () => {
+    socket.emit("offline", user._id);
     dispatch(userLoggedOut());
   };
+
+  useEffect(() => {
+    socket.emit("join", user._id);
+
+    socket.on("get-actives", (users) => {
+      dispatch(getActiveUser(users));
+    });
+  }, [dispatch, user]);
 
   return (
     <nav className="border-general sticky top-0 z-40 border-b bg-gradient-to-r from-blue-600 to-blue-400 transition-colors">

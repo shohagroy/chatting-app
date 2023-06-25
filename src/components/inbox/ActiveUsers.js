@@ -2,24 +2,32 @@ import React from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { useGetAllUserQuery } from "../../features/user/userApi";
+import Avatar from "../Avatar";
 
 const ActiveUsers = () => {
-  const { user } = useSelector((state) => state.auth);
-  const { data } = useGetAllUserQuery(user?._id);
+  const { user: me } = useSelector((state) => state.auth);
+  const { data } = useGetAllUserQuery(me?._id);
 
   return (
     <div>
       <ul>
         <li>
           {data?.data?.map((user) => {
-            const { _id, avatar, firstName, lastName, email } = user || {};
+            const { _id, firstName, lastName, email } = user || {};
             return (
               <Link
                 key={_id}
                 className="flex items-center px-1 lg:px-3 py-2 text-sm transition duration-150 ease-in-out border-b border-gray-300 cursor-pointer hover:bg-gray-100 focus:outline-none"
                 to={`/messages/${email}`}
               >
-                <div className="relative flex-shrink-0">
+                {/* <div className="relative flex items-center p-2 border-b border-gray-300">
+                  <span className="block ml-2 font-bold text-gray-600 capitalize">
+                    {firstName} {lastName}
+                  </span>
+                </div> */}
+
+                <Avatar user={user} />
+                {/* <div className="relative flex-shrink-0">
                   <span className="absolute bottom-0 right-0 w-4 h-4 bg-green-600 border rounded-full text-gray-100 border-gray-900"></span>
                   {avatar ? (
                     <img
@@ -32,7 +40,7 @@ const ActiveUsers = () => {
                       {firstName?.split("")[0]}
                     </p>
                   )}
-                </div>
+                </div> */}
                 <div className="w-full pb-2 hidden md:block">
                   <div className="flex justify-between">
                     <span className="block text-xl ml-3 font-bold text-gray-600 capitalize">

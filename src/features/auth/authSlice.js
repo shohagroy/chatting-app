@@ -1,9 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
-import socket from "../../socket/socker.config";
 
 const initialState = {
   user: {},
   isLoading: true,
+  activeUsers: [],
 };
 
 const authSlice = createSlice({
@@ -17,19 +17,20 @@ const authSlice = createSlice({
     userLoggedIn: (state, action) => {
       state.user = action.payload.user;
       state.isLoading = false;
-      socket.emit("join", "chatRoom1");
+    },
+    getActiveUser: (state, action) => {
+      state.activeUsers = action.payload;
     },
     userLoggedOut: (state) => {
       document.cookie = `${"free_chat"}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=`;
 
       state.user = {};
       state.isLoading = false;
-      socket.disconnect();
     },
   },
 });
 
-export const { userLoggedIn, userLoggedOut, initialLoading } =
+export const { userLoggedIn, userLoggedOut, initialLoading, getActiveUser } =
   authSlice.actions;
 
 export default authSlice.reducer;
