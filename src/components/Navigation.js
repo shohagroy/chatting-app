@@ -29,7 +29,8 @@ export default function Navigation() {
       <div className="max-w-7xl mx-auto">
         <div className="flex justify-between h-16 items-center">
           <Link to="/">
-            <img className="h-10" src={""} alt="Logo." />
+            {/* <img className="h-10" src={""} alt="FreeChat." /> */}
+            <p className="text-2xl font-bold text-white mx-2">FreeChat</p>
           </Link>
 
           <div className="flex items-center">
