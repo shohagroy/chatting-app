@@ -29,7 +29,6 @@ export default function Navigation() {
       <div className="max-w-7xl mx-auto">
         <div className="flex justify-between h-16 items-center">
           <Link to="/">
-            {/* <img className="h-10" src={""} alt="FreeChat." /> */}
             <p className="text-2xl font-bold text-white mx-2">FreeChat</p>
           </Link>
 
@@ -38,7 +37,7 @@ export default function Navigation() {
               <div className="flex flex-wrap gap-x-2 gap-y-2">
                 <ul className="px-6 p-3">
                   <li className="text-white">
-                    <p className="text-xl font-semibold capitalize">
+                    <p className="text-xl hidden lg:block font-semibold capitalize">
                       Wellcome, {user?.firstName}
                     </p>
                   </li>
