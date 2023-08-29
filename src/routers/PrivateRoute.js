@@ -14,7 +14,11 @@ const PrivateRoute = ({ children }) => {
   }, [isLoading]);
 
   if (showLoading) {
-    return <h2>Loading...</h2>;
+    return (
+      <div className="h-screen flex justify-center items-center text-2xl">
+        Please Wait..
+      </div>
+    );
   }
 
   if (!user?.email) {

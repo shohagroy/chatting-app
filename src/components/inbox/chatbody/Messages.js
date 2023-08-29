@@ -22,7 +22,6 @@ export default function Messages({
     });
 
     socket.on("typing", (email) => {
-      console.log(email);
       if (
         `${user?.email}-${email}` === lastConversation?.participants ||
         `${email}-${user?.email}` === lastConversation?.participants
