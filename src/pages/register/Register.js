@@ -1,4 +1,4 @@
-import { Flex, Image } from "antd";
+import { Divider, Flex, Image } from "antd";
 import Card from "antd/es/card/Card";
 import React, { useState } from "react";
 import { Helmet } from "react-helmet";
@@ -7,7 +7,12 @@ import ChatLogo from "../../assets/chatting-app.png";
 
 import { UserOutlined, MailOutlined, LockOutlined } from "@ant-design/icons"; //<LockOutlined />
 import FormInput from "../../components/form/FormInput";
-import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import {
+  GoogleAuthProvider,
+  createUserWithEmailAndPassword,
+  signInWithPopup,
+  updateProfile,
+} from "firebase/auth";
 import auth from "../../config/firebase/firebase.config";
 import { toast } from "react-hot-toast";
 import { useDispatch } from "react-redux";
@@ -15,6 +20,7 @@ import { loginUser } from "../../features/auth/authSlice";
 
 const Register = () => {
   const [loading, setLoading] = useState(false);
+  const provider = new GoogleAuthProvider();
 
   const dispatch = useDispatch();
 
@@ -41,7 +47,6 @@ const Register = () => {
         await updateProfile(auth.currentUser, {
           displayName: name,
         });
-        setLoading(false);
       }
 
       const userInfo = {
@@ -51,7 +56,26 @@ const Register = () => {
       };
 
       dispatch(loginUser(userInfo));
+      setLoading(false);
     } catch (error) {
+      toast.error(error.code);
+      setLoading(false);
+    }
+  };
+
+  const googleLoginHandelar = async () => {
+    try {
+      const result = await signInWithPopup(auth, provider);
+
+      const userInfo = {
+        name: result?.user?.displayName,
+        email: result?.user?.email,
+        id: result?.user?.uid,
+      };
+
+      dispatch(loginUser(userInfo));
+    } catch (error) {
+      console.log(error);
       toast.error(error.code);
     }
   };
@@ -64,9 +88,9 @@ const Register = () => {
       </Helmet>
 
       <Flex className="h-screen p-2 w-full" justify="center" align="center">
-        <Card className="shadow-lg">
+        <Card className="border-none">
           <div className="w-11/12 m-auto bg-white rounded-lg sm:w-96 bg-opacity-80 ">
-            <div className="space-y-2 px-12 py-4">
+            <div className="space-y-2 py-4">
               <div className="flex justify-center items-center">
                 <Link to="/">
                   <Image
@@ -148,10 +172,35 @@ const Register = () => {
                       {loading ? "Loading..." : "Register"}
                     </button>
 
-                    <div className=" my-12 flex justify-between items-center">
-                      <button className="w-full h-[50px]">Google</button>
-                      <button className="w-full h-[50px]">Facebook</button>
-                      <button className="w-full h-[50px]">Github</button>
+                    <Divider>or use one of these options</Divider>
+
+                    <div className=" my-12 flex justify-around items-center">
+                      <div
+                        onClick={googleLoginHandelar}
+                        className="p-6 border rounded-md shadow-sm hover:shadow-md duration-300 cursor-pointer"
+                      >
+                        <Image
+                          style={{ width: "30px", height: "30px" }}
+                          preview={false}
+                          src="https://imgs.search.brave.com/N8kQ66ubQfMUOKVBt08uJmwIGZLoJEOtx24EMq1O1SU/rs:fit:860:0:0/g:ce/aHR0cHM6Ly9mcmVl/bG9nb3BuZy5jb20v/aW1hZ2VzL2FsbF9p/bWcvMTY1Nzk1MjY0/MWdvb2dsZS1sb2dv/LXBuZy1pbWFnZS5w/bmc"
+                        />
+                      </div>
+
+                      <div className="p-6 border rounded-md shadow-sm hover:shadow-md duration-300 cursor-pointer">
+                        <Image
+                          style={{ width: "30px", height: "30px" }}
+                          preview={false}
+                          src="https://imgs.search.brave.com/OXFPj6F7qLGsqERSGguhGhTEKHmSiEbzhWaHf-CAfWo/rs:fit:860:0:0/g:ce/aHR0cHM6Ly9hc3Nl/dHMuc3RpY2twbmcu/Y29tL2ltYWdlcy81/ODRhYzJkMDNhYzNh/NTcwZjk0YTY2NmQu/cG5n"
+                        />
+                      </div>
+
+                      <div className="p-6 border rounded-md shadow-sm hover:shadow-md duration-300 cursor-pointer">
+                        <Image
+                          style={{ width: "30px", height: "30px" }}
+                          preview={false}
+                          src="https://imgs.search.brave.com/1fQWh1HTRWcKfQHLhg0KeQEAMeaeGDhSJbBrEYsen3g/rs:fit:860:0:0/g:ce/aHR0cHM6Ly9naXRo/dWIuZ2l0aHViYXNz/ZXRzLmNvbS9pbWFn/ZXMvbW9kdWxlcy9s/b2dvc19wYWdlL0dp/dEh1Yi1NYXJrLnBu/Zw"
+                        />
+                      </div>
                     </div>
 
                     {/* <button className="w-full mt-2 p-2 text-sm font-semibold text-center text-white transition duration-100 rounded-md md:text-lg font-nunito bg-gradient-to-r from-blue-600 to-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-300 hover:shadow-lg">
