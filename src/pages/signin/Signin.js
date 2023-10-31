@@ -9,9 +9,8 @@ import { UserOutlined, MailOutlined, LockOutlined } from "@ant-design/icons"; //
 import FormInput from "../../components/form/FormInput";
 
 const Signin = () => {
-  const loginHandelar = (e) => {
+  const loginHandelar = async (e) => {
     e.preventDefault();
-
     const email = e.target.email.value;
     const password = e.target.password.value;
 

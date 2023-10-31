@@ -1,32 +1,66 @@
 import { Flex, Image } from "antd";
 import Card from "antd/es/card/Card";
-import React from "react";
+import React, { useState } from "react";
 import { Helmet } from "react-helmet";
 import { Link } from "react-router-dom";
 import ChatLogo from "../../assets/chatting-app.png";
 
 import { UserOutlined, MailOutlined, LockOutlined } from "@ant-design/icons"; //<LockOutlined />
 import FormInput from "../../components/form/FormInput";
+import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import auth from "../../config/firebase/firebase.config";
+import { toast } from "react-hot-toast";
+import { useDispatch } from "react-redux";
+import { loginUser } from "../../features/auth/authSlice";
 
 const Register = () => {
-  const loginHandelar = (e) => {
+  const [loading, setLoading] = useState(false);
+
+  const dispatch = useDispatch();
+
+  const registerHandelar = async (e) => {
     e.preventDefault();
+    setLoading(true);
 
     const name = e.target.name.value;
     const email = e.target.email.value;
     const password = e.target.password.value;
     const confirnPassword = e.target.confirnPassword.value;
 
-    console.log({ name, email, password, confirnPassword });
+    if (password !== confirnPassword) {
+      return toast.error("Passwords do not match!");
+    }
+    try {
+      const result = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
 
-    console.log("login");
+      if (result?.user?.email) {
+        await updateProfile(auth.currentUser, {
+          displayName: name,
+        });
+        setLoading(false);
+      }
+
+      const userInfo = {
+        name: result?.user?.displayName,
+        email: result?.user?.email,
+        id: result?.user?.uid,
+      };
+
+      dispatch(loginUser(userInfo));
+    } catch (error) {
+      toast.error(error.code);
+    }
   };
 
   return (
     <>
       <Helmet>
         <meta charSet="utf-8" />
-        <title>Login | Chat App</title>
+        <title>Register | Chat App</title>
       </Helmet>
 
       <Flex className="h-screen p-2 w-full" justify="center" align="center">
@@ -50,13 +84,19 @@ const Register = () => {
               <div className="space-x-1 text-sm text-center md:text-base font-nunito">
                 <span>Already have an account?</span>
                 <Link to="/sign-in">
-                  <button className="font-semibold text-blue-500">Login</button>
+                  <button className="font-semibold text-blue-500">
+                    Register
+                  </button>
                 </Link>
               </div>
             </div>
 
             <div className="mt-10 lg:px-6">
-              <form onSubmit={loginHandelar} className="text-base font-nunito">
+              <form
+                onSubmit={registerHandelar}
+                c
+                lassName="text-base font-nunito"
+              >
                 <div className="space-y-4">
                   <FormInput
                     icon={<UserOutlined className="text-gray-400" />}
@@ -101,8 +141,11 @@ const Register = () => {
                     </label>
                   </div>
                   <div>
-                    <button className="w-full mt-2 p-2 text-sm font-semibold text-center text-white transition duration-100 rounded-md md:text-lg font-nunito bg-gradient-to-r from-blue-600 to-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-300 hover:shadow-lg">
-                      Login
+                    <button
+                      disabled={loading}
+                      className="w-full mt-2 p-2 text-sm font-semibold text-center text-white transition duration-100 rounded-md md:text-lg font-nunito bg-gradient-to-r from-blue-600 to-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-300 hover:shadow-lg"
+                    >
+                      {loading ? "Loading..." : "Register"}
                     </button>
 
                     <div className=" my-12 flex justify-between items-center">
