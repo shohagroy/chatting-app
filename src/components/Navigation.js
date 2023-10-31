@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { getActiveUser, userLoggedOut } from "../features/auth/authSlice";
 import { useEffect, useState } from "react";
 import { AiOutlineLogout } from "react-icons/ai";
-import socket from "../socket/socker.config";
+import socket from "../config/socket/socker.config";
 
 export default function Navigation() {
   const [userMenu, setUserMenu] = useState(false);

@@ -6,6 +6,7 @@ import Login from "../pages/login/Login";
 import SignUp from "../pages/signup/Signup";
 import PrivateRoute from "./PrivateRoute";
 import Signin from "../pages/signin/Signin";
+import Register from "../pages/register/Register";
 
 const router = createBrowserRouter([
   {
@@ -34,13 +35,17 @@ const router = createBrowserRouter([
     path: "/demo",
     element: <DemoTest />,
   },
-  {
-    path: "/register",
-    element: <SignUp />,
-  },
+  // {
+  //   path: "/register",
+  //   element: <SignUp />,
+  // },
   {
     path: "/sign-in",
     element: <Signin />,
+  },
+  {
+    path: "/register",
+    element: <Register />,
   },
 ]);
 

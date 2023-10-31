@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import socket from "../../../socket/socker.config";
+import socket from "../../../config/socket/socker.config";
 import Message from "./Message";
 
 export default function Messages({
