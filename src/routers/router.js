@@ -5,6 +5,7 @@ import Conversation from "../pages/Conversation";
 import Login from "../pages/login/Login";
 import SignUp from "../pages/signup/Signup";
 import PrivateRoute from "./PrivateRoute";
+import Signin from "../pages/signin/Signin";
 
 const router = createBrowserRouter([
   {
@@ -36,6 +37,10 @@ const router = createBrowserRouter([
   {
     path: "/register",
     element: <SignUp />,
+  },
+  {
+    path: "/sign-in",
+    element: <Signin />,
   },
 ]);
 
