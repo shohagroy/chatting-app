@@ -3,7 +3,7 @@ import DemoTest from "../pages/demoTest/DemoTest";
 import Inbox from "../pages/Inbox/Inbox";
 import Conversation from "../pages/Conversation";
 import Login from "../pages/login/Login";
-import SignUp from "../pages/signup/Signup";
+// import SignUp from "../pages/signup/Signup";
 import PrivateRoute from "./PrivateRoute";
 import Signin from "../pages/signin/Signin";
 import Register from "../pages/register/Register";

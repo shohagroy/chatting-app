@@ -1,4 +1,4 @@
-import { Button, Divider, Flex, Image } from "antd";
+import { Divider, Flex, Image } from "antd";
 import Card from "antd/es/card/Card";
 import React, { useState } from "react";
 import { Helmet } from "react-helmet";
