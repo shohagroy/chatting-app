@@ -7,19 +7,18 @@ import ChatLogo from "../../assets/chatting-app.png";
 
 import { MailOutlined, LockOutlined } from "@ant-design/icons"; //<LockOutlined />
 import FormInput from "../../components/form/FormInput";
-import { useDispatch } from "react-redux";
-import { loginUser } from "../../features/auth/authSlice";
 import {
   facebookAuthLogin,
   githubAuthLogin,
   googleAuthLogin,
   signInEmailPassword,
 } from "../../config/firebase/auth.provaider";
+import { useCreateUpdateUserMutation } from "../../features/user/userApi";
 
 const Signin = () => {
   const [loading, setLoading] = useState(false);
 
-  const dispatch = useDispatch();
+  const [createUpdateUser] = useCreateUpdateUserMutation();
 
   const loginHandelar = async (e) => {
     e.preventDefault();
@@ -27,33 +26,25 @@ const Signin = () => {
 
     const email = e.target.email.value;
     const password = e.target.password.value;
+
     const userInfo = await signInEmailPassword(email, password);
-
-    console.log(userInfo);
-
-    dispatch(loginUser(userInfo));
+    await createUpdateUser(userInfo);
     setLoading(false);
   };
 
   const googleLoginHandelar = async () => {
     const userInfo = await googleAuthLogin();
-    dispatch(loginUser(userInfo));
-
-    console.log(userInfo);
+    await createUpdateUser(userInfo);
   };
 
   const facebookLoginHandelar = async () => {
     const userInfo = await facebookAuthLogin();
-    dispatch(loginUser(userInfo));
-
-    console.log(userInfo);
+    await createUpdateUser(userInfo);
   };
 
   const githubLoginHandelar = async () => {
     const userInfo = await githubAuthLogin();
-    dispatch(loginUser(userInfo));
-
-    console.log(userInfo);
+    await createUpdateUser(userInfo);
   };
 
   return (
