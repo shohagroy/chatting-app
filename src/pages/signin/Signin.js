@@ -7,23 +7,17 @@ import ChatLogo from "../../assets/chatting-app.png";
 
 import { MailOutlined, LockOutlined } from "@ant-design/icons"; //<LockOutlined />
 import FormInput from "../../components/form/FormInput";
-import {
-  FacebookAuthProvider,
-  GithubAuthProvider,
-  GoogleAuthProvider,
-  signInWithEmailAndPassword,
-  signInWithPopup,
-} from "firebase/auth";
 import { useDispatch } from "react-redux";
-import { toast } from "react-hot-toast";
-import auth from "../../config/firebase/firebase.config";
 import { loginUser } from "../../features/auth/authSlice";
+import {
+  facebookAuthLogin,
+  githubAuthLogin,
+  googleAuthLogin,
+  signInEmailPassword,
+} from "../../config/firebase/auth.provaider";
 
 const Signin = () => {
   const [loading, setLoading] = useState(false);
-  const googleProvider = new GoogleAuthProvider();
-  const facebookProvider = new FacebookAuthProvider();
-  const githubProvider = new GithubAuthProvider();
 
   const dispatch = useDispatch();
 
@@ -33,75 +27,33 @@ const Signin = () => {
 
     const email = e.target.email.value;
     const password = e.target.password.value;
+    const userInfo = await signInEmailPassword(email, password);
 
-    try {
-      const result = await signInWithEmailAndPassword(auth, email, password);
+    console.log(userInfo);
 
-      const userInfo = {
-        name: result?.user?.displayName,
-        email: result?.user?.email,
-        id: result?.user?.uid,
-      };
-
-      console.log(userInfo);
-
-      dispatch(loginUser(userInfo));
-      setLoading(false);
-    } catch (error) {
-      toast.error(error.code);
-      setLoading(false);
-    }
+    dispatch(loginUser(userInfo));
+    setLoading(false);
   };
 
   const googleLoginHandelar = async () => {
-    try {
-      const result = await signInWithPopup(auth, googleProvider);
+    const userInfo = await googleAuthLogin();
+    dispatch(loginUser(userInfo));
 
-      const userInfo = {
-        name: result?.user?.displayName,
-        email: result?.user?.email,
-        id: result?.user?.uid,
-      };
-
-      dispatch(loginUser(userInfo));
-    } catch (error) {
-      console.log(error);
-      toast.error(error.code);
-    }
+    console.log(userInfo);
   };
 
   const facebookLoginHandelar = async () => {
-    try {
-      const result = await signInWithPopup(auth, facebookProvider);
+    const userInfo = await facebookAuthLogin();
+    dispatch(loginUser(userInfo));
 
-      const userInfo = {
-        name: result?.user?.displayName,
-        email: result?.user?.email,
-        id: result?.user?.uid,
-      };
-
-      dispatch(loginUser(userInfo));
-    } catch (error) {
-      console.log(error);
-      toast.error(error.code);
-    }
+    console.log(userInfo);
   };
 
   const githubLoginHandelar = async () => {
-    try {
-      const result = await signInWithPopup(auth, githubProvider);
+    const userInfo = await githubAuthLogin();
+    dispatch(loginUser(userInfo));
 
-      const userInfo = {
-        name: result?.user?.displayName,
-        email: result?.user?.email,
-        id: result?.user?.uid,
-      };
-
-      dispatch(loginUser(userInfo));
-    } catch (error) {
-      console.log(error);
-      toast.error(error.code);
-    }
+    console.log(userInfo);
   };
 
   return (
