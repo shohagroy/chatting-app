@@ -8,6 +8,8 @@ import ChatLogo from "../../assets/chatting-app.png";
 import { UserOutlined, MailOutlined, LockOutlined } from "@ant-design/icons"; //<LockOutlined />
 import FormInput from "../../components/form/FormInput";
 import {
+  FacebookAuthProvider,
+  GithubAuthProvider,
   GoogleAuthProvider,
   createUserWithEmailAndPassword,
   signInWithPopup,
@@ -20,7 +22,9 @@ import { loginUser } from "../../features/auth/authSlice";
 
 const Register = () => {
   const [loading, setLoading] = useState(false);
-  const provider = new GoogleAuthProvider();
+  const googleProvider = new GoogleAuthProvider();
+  const facebookProvider = new FacebookAuthProvider();
+  const githubProvider = new GithubAuthProvider();
 
   const dispatch = useDispatch();
 
@@ -65,7 +69,44 @@ const Register = () => {
 
   const googleLoginHandelar = async () => {
     try {
-      const result = await signInWithPopup(auth, provider);
+      const result = await signInWithPopup(auth, googleProvider);
+
+      const userInfo = {
+        name: result?.user?.displayName,
+        email: result?.user?.email,
+        id: result?.user?.uid,
+      };
+
+      dispatch(loginUser(userInfo));
+    } catch (error) {
+      console.log(error);
+      toast.error(error.code);
+    }
+  };
+
+  const facebookLoginHandelar = async () => {
+    console.log("faceook login");
+    try {
+      const result = await signInWithPopup(auth, facebookProvider);
+
+      const userInfo = {
+        name: result?.user?.displayName,
+        email: result?.user?.email,
+        id: result?.user?.uid,
+      };
+
+      console.log(result);
+
+      dispatch(loginUser(userInfo));
+    } catch (error) {
+      console.log(error);
+      toast.error(error.code);
+    }
+  };
+
+  const githubLoginHandelar = async () => {
+    try {
+      const result = await signInWithPopup(auth, githubProvider);
 
       const userInfo = {
         name: result?.user?.displayName,
@@ -186,7 +227,10 @@ const Register = () => {
                         />
                       </div>
 
-                      <div className="p-6 border rounded-md shadow-sm hover:shadow-md duration-300 cursor-pointer">
+                      <div
+                        onClick={facebookLoginHandelar}
+                        className="p-6 border rounded-md shadow-sm hover:shadow-md duration-300 cursor-pointer"
+                      >
                         <Image
                           style={{ width: "30px", height: "30px" }}
                           preview={false}
@@ -194,7 +238,10 @@ const Register = () => {
                         />
                       </div>
 
-                      <div className="p-6 border rounded-md shadow-sm hover:shadow-md duration-300 cursor-pointer">
+                      <div
+                        onClick={githubLoginHandelar}
+                        className="p-6 border rounded-md shadow-sm hover:shadow-md duration-300 cursor-pointer"
+                      >
                         <Image
                           style={{ width: "30px", height: "30px" }}
                           preview={false}
