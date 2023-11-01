@@ -4,6 +4,7 @@ import Header from "../components/Header/Header";
 import { Flex } from "antd";
 import SideMenu from "../components/sideItems/SideMenu";
 import ConversationCard from "../components/conversation/ConversationCard";
+import { Outlet } from "react-router-dom";
 
 const NewLayout = () => {
   return (
@@ -16,8 +17,9 @@ const NewLayout = () => {
             <div className="w-[550px]">
               <SideMenu />
             </div>
-            <div className="ml-4 w-full hidden h-[800px] lg:block bg-blue-300">
-              <ConversationCard />
+            <div className="ml-4 w-full hidden lg:block ">
+              {/* <ConversationCard /> */}
+              <Outlet />
             </div>
           </Flex>
         </div>

@@ -1,7 +1,7 @@
 import { createBrowserRouter } from "react-router-dom";
 import DemoTest from "../pages/demoTest/DemoTest";
 import Inbox from "../pages/Inbox/Inbox";
-import Conversation from "../pages/Conversation";
+// import Conversation from "../pages/Conversation";
 import Login from "../pages/login/Login";
 // import SignUp from "../pages/signup/Signup";
 import PrivateRoute from "./PrivateRoute";
@@ -9,6 +9,7 @@ import Signin from "../pages/signin/Signin";
 import Register from "../pages/register/Register";
 import NewLayout from "../layout/NewLayout";
 import ProtectedRoute from "./ProtectedRoute";
+import Conversation from "../pages/Conversation/Conversation";
 
 const router = createBrowserRouter([
   // {
@@ -57,6 +58,12 @@ const router = createBrowserRouter([
         <NewLayout />
       </ProtectedRoute>
     ),
+    children: [
+      {
+        path: "/dashboard",
+        element: <Conversation />,
+      },
+    ],
   },
 ]);
 
