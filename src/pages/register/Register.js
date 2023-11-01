@@ -95,8 +95,6 @@ const Register = () => {
         id: result?.user?.uid,
       };
 
-      console.log(result);
-
       dispatch(loginUser(userInfo));
     } catch (error) {
       console.log(error);
