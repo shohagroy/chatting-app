@@ -1,4 +1,4 @@
-import { Divider, Flex, Image } from "antd";
+import { Button, Divider, Flex, Image } from "antd";
 import Card from "antd/es/card/Card";
 import React, { useState } from "react";
 import { Helmet } from "react-helmet";
@@ -85,7 +85,6 @@ const Register = () => {
   };
 
   const facebookLoginHandelar = async () => {
-    console.log("faceook login");
     try {
       const result = await signInWithPopup(auth, facebookProvider);
 
@@ -140,21 +139,16 @@ const Register = () => {
                 </Link>
               </div>
 
-              <h1 className="text-xl font-medium text-center md:text-2xl font-roboto">
-                Welcome to Chat App!
-              </h1>
-
               <div className="space-x-1 text-sm text-center md:text-base font-nunito">
+                <h2 className="font-semibold text-2xl">Wellcome to Chat App</h2>
                 <span>Already have an account?</span>
                 <Link to="/sign-in">
-                  <button className="font-semibold text-blue-500">
-                    Register
-                  </button>
+                  <button className="font-semibold text-blue-500">Login</button>
                 </Link>
               </div>
             </div>
 
-            <div className="mt-10 lg:px-6">
+            <div className="mt-2 lg:px-6">
               <form
                 onSubmit={registerHandelar}
                 c
@@ -247,40 +241,9 @@ const Register = () => {
                         />
                       </div>
                     </div>
-
-                    {/* <button className="w-full mt-2 p-2 text-sm font-semibold text-center text-white transition duration-100 rounded-md md:text-lg font-nunito bg-gradient-to-r from-blue-600 to-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-300 hover:shadow-lg">
-                      Google
-                    </button>
-
-                    <button className="w-full mt-2 p-2 text-sm font-semibold text-center text-white transition duration-100 rounded-md md:text-lg font-nunito bg-gradient-to-r from-blue-600 to-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-300 hover:shadow-lg">
-                      Facebook
-                    </button>
-
-                    <button className="w-full mt-2 p-2 text-sm font-semibold text-center text-white transition duration-100 rounded-md md:text-lg font-nunito bg-gradient-to-r from-blue-600 to-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-300 hover:shadow-lg">
-                      Github
-                    </button> */}
                   </div>
                 </div>
               </form>
-
-              {/* <div className="mt-4">
-                      <Link to={googleCallBack?.data}>
-                        <button className="w-full p-2 text-sm font-normal text-center transition bg-[#FB0C78] hover:bg-red-600 text-white duration-300 rounded-md md:text-lg font-roboto focus:outline-none hover:shadow-lg hover:text-black">
-                          {googleLoading ? (
-                            "Loading..."
-                          ) : (
-                            <span className="flex items-center justify-center gap-4">
-                              <img
-                                className="w-5 h-5 text-xs"
-                                src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/800px-Google_%22G%22_Logo.svg.png"
-                                alt="google_logo"
-                              />
-                              <span>Continue with Google</span>
-                            </span>
-                          )}
-                        </button>
-                      </Link>
-                    </div> */}
             </div>
           </div>
         </Card>
