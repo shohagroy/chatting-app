@@ -5,6 +5,7 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   signInWithPopup,
+  signOut,
   updateProfile,
 } from "firebase/auth";
 import auth from "./firebase.config";
@@ -102,6 +103,17 @@ export const signInEmailPassword = async (email, password) => {
     };
 
     return userInfo;
+  } catch (error) {
+    toast.error(error.code);
+  }
+};
+
+export const userLogOut = async () => {
+  try {
+    const result = await signOut(auth);
+
+    console.log(result);
+    return result;
   } catch (error) {
     toast.error(error.code);
   }

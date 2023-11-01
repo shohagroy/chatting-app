@@ -7,34 +7,36 @@ import Login from "../pages/login/Login";
 import PrivateRoute from "./PrivateRoute";
 import Signin from "../pages/signin/Signin";
 import Register from "../pages/register/Register";
+import NewLayout from "../layout/NewLayout";
+import ProtectedRoute from "./ProtectedRoute";
 
 const router = createBrowserRouter([
-  {
-    path: "/",
-    element: (
-      <PrivateRoute>
-        <Conversation />
-      </PrivateRoute>
-    ),
-  },
-  {
-    path: "/messages/:email",
-    element: (
-      <PrivateRoute>
-        <Inbox />
-      </PrivateRoute>
-    ),
-  },
+  // {
+  //   path: "/",
+  //   element: (
+  //     <PrivateRoute>
+  //       <Conversation />
+  //     </PrivateRoute>
+  //   ),
+  // },
+  // {
+  //   path: "/messages/:email",
+  //   element: (
+  //     <PrivateRoute>
+  //       <Inbox />
+  //     </PrivateRoute>
+  //   ),
+  // },
 
   {
     path: "/login",
     element: <Login />,
   },
 
-  {
-    path: "/demo",
-    element: <DemoTest />,
-  },
+  // {
+  //   path: "/demo",
+  //   element: <DemoTest />,
+  // },
   // {
   //   path: "/register",
   //   element: <SignUp />,
@@ -46,6 +48,15 @@ const router = createBrowserRouter([
   {
     path: "/register",
     element: <Register />,
+  },
+
+  {
+    path: "/dashboard",
+    element: (
+      <ProtectedRoute>
+        <NewLayout />
+      </ProtectedRoute>
+    ),
   },
 ]);
 

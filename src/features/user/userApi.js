@@ -1,6 +1,6 @@
 import { toast } from "react-hot-toast";
 import { apiSlice } from "../api/apiSlice";
-import { getUsersInfo } from "./userSlice";
+import { getUsersInfo, initialLoading, loginInUser } from "./userSlice";
 
 export const userApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
@@ -11,6 +11,7 @@ export const userApi = apiSlice.injectEndpoints({
         body: data,
       }),
       async onQueryStarted(arg, { queryFulfilled, dispatch }) {
+        dispatch(loginInUser(arg));
         try {
           const result = await queryFulfilled;
 
@@ -18,6 +19,7 @@ export const userApi = apiSlice.injectEndpoints({
             dispatch(getUsersInfo(result?.data?.data));
           }
         } catch (err) {
+          dispatch(initialLoading(false));
           toast.error("something went wrong!");
         }
       },

@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   user: {},
-  isLoading: true,
+  loading: false,
   allUsers: [],
 };
 
@@ -10,25 +10,30 @@ const userSlice = createSlice({
   name: "users",
   initialState,
   reducers: {
-    initialLoading: (state) => {
-      state.isLoading = true;
+    initialLoading: (state, action) => {
+      state.loading = action.payload;
     },
 
     getUsersInfo: (state, action) => {
       state.allUsers = action.payload.allUsers;
       state.user = action.payload.loginUser;
-      state.isLoading = false;
+      state.loading = false;
     },
 
-    userLoggedOut: (state) => {
-      document.cookie = `${"free_chat"}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=`;
+    loginInUser: (state, action) => {
+      state.loading = true;
+      state.user = action.payload;
+    },
 
+    userLoggedOut: (state, action) => {
+      console.log("user login put", action?.payload);
       state.user = {};
-      state.isLoading = false;
+      state.loading = false;
     },
   },
 });
 
-export const { getUsersInfo } = userSlice.actions;
+export const { getUsersInfo, initialLoading, userLoggedOut, loginInUser } =
+  userSlice.actions;
 
 export default userSlice.reducer;
