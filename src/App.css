@@ -1,0 +1,40 @@
+/* .custom-scrollbar {
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: #ccc #f1f1f1;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #ccc;
+  border-radius: 4px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #888;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: #f1f1f1;
+} */
+
+/* Hide the scrollbar */
+.custom-scrollbar {
+  overflow-y: auto;
+  scrollbar-width: none; /* Hide the scrollbar */
+}
+
+/* Style the scrollbar thumb (the draggable part) */
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #ccc;
+  border-radius: 4px;
+}
+
+/* Style the scrollbar thumb on hover */
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #888;
+}
+
+/* Style the scrollbar track (the non-draggable area) */
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}

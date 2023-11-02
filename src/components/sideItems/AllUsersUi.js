@@ -18,19 +18,15 @@ const AllUserUi = ({ data }) => {
           <List.Item key={item?._id}>
             <List.Item.Meta
               avatar={
-                <Link to={`/dashboard?conversation=${item?.id}`}>
+                <Link to={`?conversation=${item?.id}`}>
                   <Avatar user={item} />
                 </Link>
               }
-              title={
-                <Link to={`/dashboard?conversation=${item?.id}`}>
-                  {item?.name}
-                </Link>
-              }
+              title={<Link to={`?conversation=${item?.id}`}>{item?.name}</Link>}
               description={item.email}
             />
 
-            <Link to={`/dashboard?conversation=${item?.id}`}>
+            <Link to={`?conversation=${item?.id}`}>
               <Tooltip title={`send a message to ${item?.name.split(" ")[0]}`}>
                 <div className="rotate-">
                   <SendOutlined />

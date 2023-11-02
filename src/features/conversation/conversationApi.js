@@ -1,5 +1,6 @@
 import socket from "../../config/socket/socker.config";
 import { apiSlice } from "../api/apiSlice";
+import { setLastConversations } from "../user/userSlice";
 
 export const conversationAli = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
@@ -10,22 +11,17 @@ export const conversationAli = apiSlice.injectEndpoints({
         body: data,
       }),
       invalidatesTags: ["sendMessages"],
-      // async onQueryStarted(arg, { queryFulfilled, dispatch }) {
-      //   const chatEmails = arg.participants.split("-");
-      //   const data = `user=${chatEmails[0]}&partner=${chatEmails[1]}`;
-      //   // arg._id = arg.message;
+      async onQueryStarted(arg, { queryFulfilled, dispatch }) {
+        try {
+          // const result = await queryFulfilled;
+          dispatch(setLastConversations(arg));
+        } catch (error) {}
 
-      //   dispatch(
-      //     apiSlice.util.updateQueryData(
-      //       "getUserConversations",
-      //       data,
-      //       (draft) => {
-      //         draft.data.conversations = [...draft.data.conversations, arg];
-      //         return draft;
-      //       }
-      //     )
-      //   );
-      // },
+        // socket.emit("conversation", {
+        //   room: "chatRoom1",
+        //   conversations: arg,
+        // });
+      },
     }),
 
     getUserConversations: builder.query({

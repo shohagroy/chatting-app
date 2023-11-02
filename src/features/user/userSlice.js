@@ -4,6 +4,7 @@ const initialState = {
   user: {},
   loading: false,
   allUsers: [],
+  conversations: [],
 };
 
 const userSlice = createSlice({
@@ -17,7 +18,12 @@ const userSlice = createSlice({
     getUsersInfo: (state, action) => {
       state.allUsers = action.payload.allUsers;
       state.user = action.payload.loginUser;
+      state.conversations = action.payload.conversations;
       state.loading = false;
+    },
+
+    setLastConversations: (state, action) => {
+      state.conversations.push(action.payload);
     },
 
     loginInUser: (state, action) => {
@@ -33,7 +39,12 @@ const userSlice = createSlice({
   },
 });
 
-export const { getUsersInfo, initialLoading, userLoggedOut, loginInUser } =
-  userSlice.actions;
+export const {
+  getUsersInfo,
+  initialLoading,
+  userLoggedOut,
+  loginInUser,
+  setLastConversations,
+} = userSlice.actions;
 
 export default userSlice.reducer;

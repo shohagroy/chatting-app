@@ -5,43 +5,29 @@ import { CloseOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 import SendOptions from "./SendOptions";
 import { useSelector } from "react-redux";
+import { useSendMessagesMutation } from "../../features/conversation/conversationApi";
 
 const ConversationCard = ({ conversationId }) => {
-  const { allUsers } = useSelector((state) => state.user);
+  const { user, allUsers, conversations } = useSelector((state) => state.user);
+
+  const conversationUserQuery = `${user?.id}-${conversationId}`;
+  const conversationPartnerQuery = `${conversationId}-${user?.id}`;
+
+  const [sendMessages, { isLoading, isError }] = useSendMessagesMutation();
+
+  const conversationsData = conversations?.filter(
+    (conversation) =>
+      conversation?.participants === conversationUserQuery ||
+      conversation?.participants === conversationPartnerQuery
+  );
 
   const conversationUser = allUsers?.find(
     (user) => user?.id === conversationId
   );
 
-  console.log(conversationUser);
-
-  const messageData = [
-    {
-      isSenderEmail: "user1@example.com",
-      receivedBar: {
-        avatar: "user1-avatar.jpg",
-        firstName: "User 1",
-      },
-      message: "Hello, how are you?",
-    },
-    {
-      isSenderEmail: "user2@example.com",
-      receivedBar: {
-        avatar: "user2-avatar.jpg",
-        firstName: "User 2",
-      },
-      message: "Im doing well, thanks!",
-    },
-  ];
-
-  const user = {
-    email: "your-email@example.com",
-  };
-
   return (
     <div>
       <Card
-        className=""
         title={
           <Flex className="py-2" justify="space-between" align="center">
             <Flex justify="center" align="center">
@@ -59,44 +45,43 @@ const ConversationCard = ({ conversationId }) => {
           </Flex>
         }
       >
-        <List footer={<SendOptions />}>
-          <div className="relative w-full h-[600px] p-6 overflow-y-auto flex flex-col-reverse">
-            <ul className="space-y-2">
-              {messageData.map((messageItem, index) => (
+        <List
+          footer={
+            <SendOptions
+              sendMessages={sendMessages}
+              conversationUser={conversationUser}
+            />
+          }
+        >
+          <div className="relative w-full h-[600px] py-6 px-3 overflow-y-auto flex flex-col-reverse">
+            <ul className="space-y-2 overflow-ellipsis">
+              {conversationsData.map((messageItem, index) => (
                 <li
                   key={index}
                   className={`flex items-cetextblue-500nter ${
-                    messageItem.isSenderEmail === user?.email &&
+                    messageItem.participants === conversationUserQuery &&
                     "flex-row-reverse"
                   }`}
                 >
-                  {messageItem.isSenderEmail !== user?.email && (
-                    <div>
-                      {messageItem.receivedBar?.avatar ? (
-                        <img
-                          className="object-cover w-10 h-10 rounded-full m-3"
-                          src={messageItem.receivedBar?.avatar}
-                          alt={messageItem.receivedBar?.firstName}
-                          title={messageItem.receivedBar?.firstName}
-                        />
-                      ) : (
-                        <p className="w-12 h-12 border rounded-full bg-blue-500 border-gray-700 text-white flex justify-center items-center text-2xl uppercase font-serif lg:mx-3">
-                          {messageItem.receivedBar?.firstName?.split("")[0]}
-                        </p>
+                  {messageItem.participants === conversationPartnerQuery && (
+                    <Avatar
+                      user={messageItem?.users.find(
+                        (user) => user?.id === conversationId
                       )}
-                    </div>
+                    />
                   )}
 
-                  <div>
-                    <div
-                      className={`relative max-w-xl px-2 lg:px-4 py-1 lg:py-2 rounded shadow ${
-                        messageItem.isSenderEmail === user?.email
-                          ? "bg-blue-500 text-white"
-                          : "text-gray-700"
-                      }`}
-                    >
-                      <span className="block">{messageItem.message}</span>
-                    </div>
+                  <div
+                    className={`relative max-w-xl px-2 lg:px-4 py-1 lg:py-2 rounded shadow ${
+                      messageItem.participants === conversationPartnerQuery &&
+                      "ml-3"
+                    } ${
+                      messageItem.participants === conversationUserQuery
+                        ? "bg-blue-500 text-white"
+                        : "text-gray-700"
+                    }`}
+                  >
+                    <span className="block">{messageItem.message}</span>
                   </div>
                 </li>
               ))}
@@ -104,6 +89,17 @@ const ConversationCard = ({ conversationId }) => {
           </div>
 
           {/* messahe box */}
+
+          {/* conversation message  */}
+          <div className="absolute -bottom-2 right-0">
+            {isLoading ? (
+              <p className="text-[14px] text-blue-600">Sending...</p>
+            ) : isError ? (
+              <p className="text-[14px] text-red-600">Something Wrong!</p>
+            ) : (
+              <p className="text-[14px] text-blue-600">Send</p>
+            )}
+          </div>
         </List>
       </Card>
     </div>

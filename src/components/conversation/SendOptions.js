@@ -4,30 +4,32 @@ import socket from "../../config/socket/socker.config";
 import { Button, Input } from "antd";
 import { SendOutlined } from "@ant-design/icons";
 
-const SendOptions = () => {
+import { v4 as uuidv4 } from "uuid";
+
+const SendOptions = ({ conversationUser, sendMessages }) => {
   const { user } = useSelector((state) => state.user);
   const [textMessage, setTextMessages] = useState("");
 
   useEffect(() => {
     if (textMessage) {
-      socket.emit("typing", { room: "chatRoom1", user: user?.email });
+      socket.emit("typing", { room: "chatRoom1", user: user?.id });
     }
   }, [textMessage, user]);
 
-  // const id = uniqid();
+  const id = uuidv4();
 
-  // const conversations = {
-  //   uniqId: id,
-  //   participants: `${user.email}-${data?.email}`,
-  //   users: [user, data],
-  //   message: textMessage,
-  // };
+  const conversations = {
+    conversationId: id,
+    participants: `${user.id}-${conversationUser?.id}`,
+    users: [user, conversationUser],
+    message: textMessage,
+  };
 
   const sendMessageHandler = (e) => {
     e.preventDefault();
 
-    //   socket.emit("conversation", { room: "chatRoom1", conversations });
-    //   sendMessages(conversations);
+    socket.emit("conversation", { room: "chatRoom1", conversations });
+    sendMessages(conversations);
     setTextMessages("");
   };
 
