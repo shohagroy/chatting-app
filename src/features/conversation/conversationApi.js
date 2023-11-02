@@ -18,13 +18,12 @@ export const conversationAli = apiSlice.injectEndpoints({
 
           if (result?.data?.success) {
             dispatch(sendLastConversation(result?.data?.data));
+            socket.emit("unseen", {
+              room: "chatRoom1",
+              new: result?.data?.data,
+            });
           }
         } catch (error) {}
-
-        // socket.emit("conversation", {
-        //   room: "chatRoom1",
-        //   conversations: arg,
-        // });
       },
     }),
 

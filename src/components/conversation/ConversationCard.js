@@ -8,7 +8,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { useSendMessagesMutation } from "../../features/conversation/conversationApi";
 import socket from "../../config/socket/socker.config";
 import { setLastConversations } from "../../features/user/userSlice";
-// import { setLastConversations } from "../../features/user/userSlice";
 
 const ConversationCard = ({ conversationId }) => {
   const { user, allUsers, conversations } = useSelector((state) => state.user);
@@ -30,6 +29,12 @@ const ConversationCard = ({ conversationId }) => {
   const conversationUser = allUsers?.find(
     (user) => user?.id === conversationId
   );
+
+  useEffect(() => {
+    socket.emit("seen", { room: "chatRoom1", conversationPartnerQuery });
+    console.log("cenn");
+    // dispatch(seetConversations(conversationPartnerQuery));
+  }, [conversationPartnerQuery, dispatch]);
 
   useEffect(() => {
     socket.on("message", (data) => {

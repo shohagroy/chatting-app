@@ -10,6 +10,7 @@ export const userApi = apiSlice.injectEndpoints({
         method: "PUT",
         body: data,
       }),
+      // providesTags: ["sendMessages"],
       async onQueryStarted(arg, { queryFulfilled, dispatch }) {
         dispatch(loginInUser(arg));
         try {

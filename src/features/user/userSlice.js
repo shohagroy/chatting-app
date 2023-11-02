@@ -36,19 +36,40 @@ const userSlice = createSlice({
       state.conversations = [...conversation, action.payload];
     },
 
+    // sendLastConversation: (state, action) => {
+    //   const queryOne = action.payload.participants;
+    //   const queryTwo = action.payload.participants
+    //     .split("-")
+    //     .reverse()
+    //     .join("_");
+
+    //   console.log("new");
+
+    //   const conversations = state.lastConversations.filter(
+    //     (el) => el.participants !== queryOne && el.participants !== queryTwo
+    //   );
+
+    //   state.lastConversations = [...conversations, action.payload].sort(
+    //     (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+    //   );
+    // },
+
     sendLastConversation: (state, action) => {
       const queryOne = action.payload.participants;
       const queryTwo = action.payload.participants
         .split("-")
         .reverse()
-        .join("_");
+        .join("-");
 
       const conversations = state.lastConversations.filter(
         (el) => el.participants !== queryOne && el.participants !== queryTwo
       );
-      state.lastConversations = [...conversations, action.payload].sort(
+
+      const newConversations = [...conversations, action.payload].sort(
         (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
       );
+
+      state.lastConversations = newConversations;
     },
 
     loginInUser: (state, action) => {

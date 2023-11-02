@@ -1,40 +1,22 @@
-import { Tooltip, List } from "antd";
-import React from "react";
+import { List } from "antd";
+import React, { useEffect } from "react";
 import VirtualList from "rc-virtual-list";
 import { Link } from "react-router-dom";
-import { SendOutlined } from "@ant-design/icons";
 import Avatar from "../Avatar";
+import getTimeDifference from "../../utils/calculatedTime";
+import socket from "../../config/socket/socker.config";
+import { useDispatch } from "react-redux";
+import { sendLastConversation } from "../../features/user/userSlice";
 
 const MessageUi = ({ user, conversations }) => {
-  // const findLastConversations = (conversations, loginUser) => {
-  //   const lastConversationsMap = new Map();
-  //   for (const conversation of conversations) {
-  //     const participants = conversation.participants.split("-");
-
-  //     if (participants.includes(loginUser.id)) {
-  //       const otherUserId = participants.find(
-  //         (userId) => userId !== loginUser.id
-  //       );
-
-  //       if (lastConversationsMap.has(otherUserId)) {
-  //         const lastConversation = lastConversationsMap.get(otherUserId);
-  //         if (
-  //           new Date(conversation.createdAt) >
-  //           new Date(lastConversation.createdAt)
-  //         ) {
-  //           lastConversationsMap.set(otherUserId, conversation);
-  //         }
-  //       } else {
-  //         lastConversationsMap.set(otherUserId, conversation);
-  //       }
-  //     }
-  //   }
-
-  //   const lastConversations = Array.from(lastConversationsMap.values());
-  //   return lastConversations;
-  // };
-
-  // const lastConversations = findLastConversations(conversations, user);
+  const dispatch = useDispatch();
+  useEffect(() => {
+    socket.on("unseen", (data) => {
+      if (data?.participants.split("-")[1] === user.id) {
+        dispatch(sendLastConversation(data));
+      }
+    });
+  }, [user, dispatch]);
 
   return (
     <List>
@@ -48,29 +30,55 @@ const MessageUi = ({ user, conversations }) => {
           <List.Item key={item?._id}>
             <List.Item.Meta
               avatar={
-                <Link to={``}>
-                  <Avatar user={item?.users.find((el) => el.id !== user.id)} />
-                </Link>
-              }
-              title={
                 <Link
                   to={`?conversation=${
                     item?.users.find((el) => el.id !== user.id).id
                   }`}
                 >
-                  {item?.users.find((el) => el.id !== user.id).name}
+                  <Avatar user={item?.users.find((el) => el.id !== user.id)} />
                 </Link>
               }
-              description={item?.message}
+              title={
+                <Link
+                  className={`${item?.isNotSeen && "font-bold"}`}
+                  to={`?conversation=${
+                    item?.users?.find((el) => el?.id !== user?.id).id
+                  }`}
+                >
+                  {item?.users?.find((el) => el?.id !== user?.id).name}
+                </Link>
+              }
+              description={
+                <p className={`${item?.isNotSeen && "font-bold text-black"}`}>
+                  {item?.message}
+                </p>
+              }
             />
 
-            <Link to={`?conversation=${item?.id}`}>
+            <div>
+              <div className="flex justify-end items-end flex-col">
+                <p>{getTimeDifference(item.createdAt)}</p>
+                {item?.participants.split("-")[0] === user.id ? (
+                  <p className="text-[12px]">
+                    {item.isNotSeen ? "seen" : "send"}
+                  </p>
+                ) : (
+                  <p className="text-[12px]">
+                    {item.isNotSeen ? "new" : "seen"}
+                  </p>
+                )}
+              </div>
+
+              {/* {item.isNotSeen && <p>New</p>} */}
+            </div>
+
+            {/* <Link to={`?conversation=${item?.id}`}>
               <Tooltip title={`send a message to ${"hello"}`}>
                 <div className="rotate-">
                   <SendOutlined />
                 </div>
               </Tooltip>
-            </Link>
+            </Link> */}
           </List.Item>
         )}
       </VirtualList>
