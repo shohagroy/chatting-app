@@ -1,14 +1,16 @@
 import { Button, Card, Flex, List, Tooltip } from "antd";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Avatar from "../Avatar";
 import { CloseOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 import SendOptions from "./SendOptions";
 import { useSelector } from "react-redux";
 import { useSendMessagesMutation } from "../../features/conversation/conversationApi";
+import socket from "../../config/socket/socker.config";
 
 const ConversationCard = ({ conversationId }) => {
   const { user, allUsers, conversations } = useSelector((state) => state.user);
+  const [isTypeing, setIsTYpeing] = useState(false);
 
   const conversationUserQuery = `${user?.id}-${conversationId}`;
   const conversationPartnerQuery = `${conversationId}-${user?.id}`;
@@ -24,6 +26,18 @@ const ConversationCard = ({ conversationId }) => {
   const conversationUser = allUsers?.find(
     (user) => user?.id === conversationId
   );
+
+  useEffect(() => {
+    socket.on("message", (data) => {
+      setIsTYpeing(false);
+    });
+
+    socket.on("typing", (id) => {
+      if (conversationId === id) {
+        setIsTYpeing(true);
+      }
+    });
+  }, [conversationUser, conversationId]);
 
   return (
     <div>
@@ -92,7 +106,9 @@ const ConversationCard = ({ conversationId }) => {
 
           {/* conversation message  */}
           <div className="absolute -bottom-2 right-0">
-            {isLoading ? (
+            {isTypeing ? (
+              <p className="text-[14px] text-blue-600">Typing</p>
+            ) : isLoading ? (
               <p className="text-[14px] text-blue-600">Sending...</p>
             ) : isError ? (
               <p className="text-[14px] text-red-600">Something Wrong!</p>

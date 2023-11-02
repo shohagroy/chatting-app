@@ -2,7 +2,7 @@ import { Divider, Flex, Image } from "antd";
 import Card from "antd/es/card/Card";
 import React, { useState } from "react";
 import { Helmet } from "react-helmet";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import ChatLogo from "../../assets/chatting-app.png";
 
 import { MailOutlined, LockOutlined } from "@ant-design/icons"; //<LockOutlined />
@@ -17,6 +17,9 @@ import { useCreateUpdateUserMutation } from "../../features/user/userApi";
 
 const Signin = () => {
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+  const location = useLocation();
+  const path = location.state?.path?.pathname || "/";
 
   const [createUpdateUser] = useCreateUpdateUserMutation();
 
@@ -30,21 +33,25 @@ const Signin = () => {
     const userInfo = await signInEmailPassword(email, password);
     await createUpdateUser(userInfo);
     setLoading(false);
+    navigate(path);
   };
 
   const googleLoginHandelar = async () => {
     const userInfo = await googleAuthLogin();
     await createUpdateUser(userInfo);
+    navigate(path);
   };
 
   const facebookLoginHandelar = async () => {
     const userInfo = await facebookAuthLogin();
     await createUpdateUser(userInfo);
+    navigate(path);
   };
 
   const githubLoginHandelar = async () => {
     const userInfo = await githubAuthLogin();
     await createUpdateUser(userInfo);
+    navigate(path);
   };
 
   return (
