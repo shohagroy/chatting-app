@@ -22,7 +22,7 @@ const userSlice = createSlice({
       state.activeUsers = action.payload.allUsers.filter(
         (user) => user.isActive
       );
-      state.user = action.payload.loginUser;
+      state.user = { ...action.payload.loginUser, isActive: true };
       state.conversations = action.payload.userConversations;
       state.lastConversations = action.payload.lastConversations;
       state.loading = false;

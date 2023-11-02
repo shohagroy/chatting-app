@@ -1,7 +1,7 @@
 import React from "react";
 
-const Avatar = ({ user }) => {
-  const { photoURL = "", name = "demo", isActive } = user || {};
+const Avatar = ({ user, isActive }) => {
+  const { photoURL = "", name = "demo" } = user || {};
 
   return photoURL ? (
     <div className="relative flex-shrink-0">

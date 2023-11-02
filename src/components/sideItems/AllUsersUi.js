@@ -19,7 +19,7 @@ const AllUserUi = ({ data }) => {
             <List.Item.Meta
               avatar={
                 <Link to={`?conversation=${item?.id}`}>
-                  <Avatar user={item} />
+                  <Avatar user={item} isActive={item?.isActive} />
                 </Link>
               }
               title={<Link to={`?conversation=${item?.id}`}>{item?.name}</Link>}

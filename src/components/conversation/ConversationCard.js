@@ -30,11 +30,11 @@ const ConversationCard = ({ conversationId }) => {
     (user) => user?.id === conversationId
   );
 
-  useEffect(() => {
-    socket.emit("seen", { room: "chatRoom1", conversationPartnerQuery });
-    console.log("cenn");
-    // dispatch(seetConversations(conversationPartnerQuery));
-  }, [conversationPartnerQuery, dispatch]);
+  // useEffect(() => {
+  //   socket.emit("seen", { room: "chatRoom1", conversationPartnerQuery });
+  //   // console.log("cenn");
+  //   // dispatch(seetConversations(conversationPartnerQuery));
+  // }, [conversationPartnerQuery, dispatch]);
 
   useEffect(() => {
     socket.on("message", (data) => {
@@ -58,7 +58,10 @@ const ConversationCard = ({ conversationId }) => {
         title={
           <Flex className="py-2" justify="space-between" align="center">
             <Flex justify="center" align="center">
-              <Avatar user={conversationUser} />
+              <Avatar
+                user={conversationUser}
+                isActive={conversationUser?.isActive}
+              />
               <p className="text-xl ml-4 font-semibold">
                 {conversationUser?.name}
               </p>
@@ -95,6 +98,7 @@ const ConversationCard = ({ conversationId }) => {
                       user={messageItem?.users.find(
                         (user) => user?.id === conversationId
                       )}
+                      isActive={false}
                     />
                   )}
 

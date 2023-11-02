@@ -71,7 +71,7 @@ const Header = () => {
             }}
           >
             <button>
-              <Avatar user={user} />
+              <Avatar user={user} isActive={user?.isActive} />
             </button>
           </Dropdown>
         </div>
