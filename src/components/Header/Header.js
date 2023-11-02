@@ -5,12 +5,15 @@ import { UserOutlined, LogoutOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { userLogOut } from "../../config/firebase/auth.provaider";
+import { useCreateUpdateUserMutation } from "../../features/user/userApi";
 
 const Header = () => {
   const { user } = useSelector((state) => state.user);
+  const [createUpdateUser] = useCreateUpdateUserMutation();
 
   const userSignOutHandelar = async () => {
-    const result = await userLogOut();
+    await userLogOut();
+    const result = await createUpdateUser({ ...user, isActive: false });
 
     console.log(result);
   };

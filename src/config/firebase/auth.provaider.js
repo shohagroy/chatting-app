@@ -24,6 +24,7 @@ export const googleAuthLogin = async () => {
       email: result?.user?.email,
       id: result?.user?.uid,
       photoURL: result?.user?.photoURL,
+      isActive: true,
     };
 
     return userInfo;
@@ -42,6 +43,7 @@ export const facebookAuthLogin = async () => {
       email: result?.user?.email,
       id: result?.user?.uid,
       photoURL: result?.user?.photoURL,
+      isActive: true,
     };
 
     return userInfo;
@@ -60,6 +62,7 @@ export const githubAuthLogin = async () => {
       email: result?.user?.email,
       id: result?.user?.uid,
       photoURL: result?.user?.photoURL,
+      isActive: true,
     };
 
     return userInfo;
@@ -83,6 +86,7 @@ export const createUser = async (email, password, name) => {
       name: result?.user?.displayName,
       email: result?.user?.email,
       id: result?.user?.uid,
+      isActive: true,
     };
 
     return userInfo;
@@ -100,6 +104,7 @@ export const signInEmailPassword = async (email, password) => {
       email: result?.user?.email,
       id: result?.user?.uid,
       photoURL: result?.user?.photoURL,
+      isActive: true,
     };
 
     return userInfo;
@@ -112,7 +117,6 @@ export const userLogOut = async () => {
   try {
     const result = await signOut(auth);
 
-    console.log(result);
     return result;
   } catch (error) {
     toast.error(error.code);

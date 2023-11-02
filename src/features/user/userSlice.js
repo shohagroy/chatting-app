@@ -4,7 +4,9 @@ const initialState = {
   user: {},
   loading: false,
   allUsers: [],
+  activeUsers: [],
   conversations: [],
+  lastConversations: [],
 };
 
 const userSlice = createSlice({
@@ -17,8 +19,12 @@ const userSlice = createSlice({
 
     getUsersInfo: (state, action) => {
       state.allUsers = action.payload.allUsers;
+      state.activeUsers = action.payload.allUsers.filter(
+        (user) => user.isActive
+      );
       state.user = action.payload.loginUser;
-      state.conversations = action.payload.conversations;
+      state.conversations = action.payload.userConversations;
+      state.lastConversations = action.payload.lastConversations;
       state.loading = false;
     },
 
@@ -28,6 +34,21 @@ const userSlice = createSlice({
       );
 
       state.conversations = [...conversation, action.payload];
+    },
+
+    sendLastConversation: (state, action) => {
+      const queryOne = action.payload.participants;
+      const queryTwo = action.payload.participants
+        .split("-")
+        .reverse()
+        .join("_");
+
+      const conversations = state.lastConversations.filter(
+        (el) => el.participants !== queryOne && el.participants !== queryTwo
+      );
+      state.lastConversations = [...conversations, action.payload].sort(
+        (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+      );
     },
 
     loginInUser: (state, action) => {
@@ -49,6 +70,7 @@ export const {
   userLoggedOut,
   loginInUser,
   setLastConversations,
+  sendLastConversation,
 } = userSlice.actions;
 
 export default userSlice.reducer;

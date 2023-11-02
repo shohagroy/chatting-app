@@ -14,7 +14,9 @@ import { useSelector } from "react-redux";
 const SideMenu = () => {
   const [current, setCurrent] = useState("messages");
 
-  const { allUsers } = useSelector((state) => state.user);
+  const { user, allUsers, activeUsers, lastConversations } = useSelector(
+    (state) => state.user
+  );
 
   const onClick = (e) => {
     setCurrent(e.key);
@@ -85,11 +87,11 @@ const SideMenu = () => {
         }
       >
         {current === "messages" ? (
-          <MessageUi data={allUsers} />
+          <MessageUi user={user} conversations={lastConversations} />
         ) : current === "users" ? (
           <AllUserUi data={allUsers} />
         ) : (
-          <ActiveUserUi data={allUsers} />
+          <ActiveUserUi data={activeUsers} />
         )}
       </Card>
     </div>

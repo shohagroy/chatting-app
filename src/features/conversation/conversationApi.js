@@ -1,6 +1,6 @@
 import socket from "../../config/socket/socker.config";
 import { apiSlice } from "../api/apiSlice";
-import { setLastConversations } from "../user/userSlice";
+import { sendLastConversation, setLastConversations } from "../user/userSlice";
 
 export const conversationAli = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
@@ -12,9 +12,13 @@ export const conversationAli = apiSlice.injectEndpoints({
       }),
       invalidatesTags: ["sendMessages"],
       async onQueryStarted(arg, { queryFulfilled, dispatch }) {
+        dispatch(setLastConversations(arg));
         try {
-          // const result = await queryFulfilled;
-          dispatch(setLastConversations(arg));
+          const result = await queryFulfilled;
+
+          if (result?.data?.success) {
+            dispatch(sendLastConversation(result?.data?.data));
+          }
         } catch (error) {}
 
         // socket.emit("conversation", {

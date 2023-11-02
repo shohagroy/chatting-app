@@ -9,7 +9,7 @@ import Signin from "../pages/signin/Signin";
 import Register from "../pages/register/Register";
 import ProtectedRoute from "./ProtectedRoute";
 import Conversation from "../pages/Conversation/Conversation";
-import MainLayout from "../layout/NewLayout";
+import MainLayout from "../layout/MainLayout";
 
 const router = createBrowserRouter([
   {
