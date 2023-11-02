@@ -4,13 +4,17 @@ import Avatar from "../Avatar";
 import { CloseOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 import SendOptions from "./SendOptions";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useSendMessagesMutation } from "../../features/conversation/conversationApi";
 import socket from "../../config/socket/socker.config";
+import { setLastConversations } from "../../features/user/userSlice";
+// import { setLastConversations } from "../../features/user/userSlice";
 
 const ConversationCard = ({ conversationId }) => {
   const { user, allUsers, conversations } = useSelector((state) => state.user);
   const [isTypeing, setIsTYpeing] = useState(false);
+
+  const dispatch = useDispatch();
 
   const conversationUserQuery = `${user?.id}-${conversationId}`;
   const conversationPartnerQuery = `${conversationId}-${user?.id}`;
@@ -29,7 +33,11 @@ const ConversationCard = ({ conversationId }) => {
 
   useEffect(() => {
     socket.on("message", (data) => {
-      setIsTYpeing(false);
+      const partnarId = data?.conversations?.participants?.split("-")[1];
+      if (partnarId === user?.id) {
+        setIsTYpeing(false);
+        dispatch(setLastConversations(data?.conversations));
+      }
     });
 
     socket.on("typing", (id) => {
@@ -37,7 +45,7 @@ const ConversationCard = ({ conversationId }) => {
         setIsTYpeing(true);
       }
     });
-  }, [conversationUser, conversationId]);
+  }, [conversationUser, conversationId, user, dispatch]);
 
   return (
     <div>

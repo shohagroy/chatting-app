@@ -23,7 +23,11 @@ const userSlice = createSlice({
     },
 
     setLastConversations: (state, action) => {
-      state.conversations.push(action.payload);
+      const conversation = state.conversations.filter(
+        (el) => el.conversationId !== action.payload.conversationId
+      );
+
+      state.conversations = [...conversation, action.payload];
     },
 
     loginInUser: (state, action) => {

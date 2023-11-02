@@ -6,7 +6,6 @@ export default function Message({ conversation }) {
   const { user } = useSelector((state) => state.auth);
   const isSenderEmail = participants.split("-")[0];
 
-  //   const sender = users?.find((el) => el._id === user?._id);
   const receivedBar = users?.find((el) => el.email === isSenderEmail);
 
   return (
