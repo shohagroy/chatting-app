@@ -25,7 +25,7 @@ const Avatar = ({ user, isActive }) => {
         ></span>
       )}
 
-      <p className="w-12 h-12 border rounded-full bg-blue-500  text-white flex justify-center items-center  text-2xl uppercase font-serif">
+      <p className="w-12 h-12 border rounded-full bg-[#00475D]  text-white flex justify-center items-center  text-2xl uppercase font-serif">
         {name?.split("")[0]}
       </p>
     </div>

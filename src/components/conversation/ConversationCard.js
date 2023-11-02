@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useSendMessagesMutation } from "../../features/conversation/conversationApi";
 import socket from "../../config/socket/socker.config";
 import { setLastConversations } from "../../features/user/userSlice";
+import EmptyCard from "./EmptyCard";
 
 const ConversationCard = ({ conversationId }) => {
   const { user, allUsers, conversations } = useSelector((state) => state.user);
@@ -29,12 +30,6 @@ const ConversationCard = ({ conversationId }) => {
   const conversationUser = allUsers?.find(
     (user) => user?.id === conversationId
   );
-
-  // useEffect(() => {
-  //   socket.emit("seen", { room: "chatRoom1", conversationPartnerQuery });
-  //   // console.log("cenn");
-  //   // dispatch(seetConversations(conversationPartnerQuery));
-  // }, [conversationPartnerQuery, dispatch]);
 
   useEffect(() => {
     socket.on("message", (data) => {
@@ -68,7 +63,7 @@ const ConversationCard = ({ conversationId }) => {
             </Flex>
 
             <Tooltip title={"Close"}>
-              <Link to={"/dashboard"}>
+              <Link to={"/"}>
                 <Button type="link" danger icon={<CloseOutlined />} />
               </Link>
             </Tooltip>
@@ -76,6 +71,7 @@ const ConversationCard = ({ conversationId }) => {
         }
       >
         <List
+          className="h-[75vh] lg:h-100%"
           footer={
             <SendOptions
               sendMessages={sendMessages}
@@ -83,40 +79,44 @@ const ConversationCard = ({ conversationId }) => {
             />
           }
         >
-          <div className="relative w-full h-[600px] py-6 px-3 overflow-y-auto flex flex-col-reverse">
-            <ul className="space-y-2 overflow-ellipsis">
-              {conversationsData.map((messageItem, index) => (
-                <li
-                  key={index}
-                  className={`flex items-cetextblue-500nter ${
-                    messageItem.participants === conversationUserQuery &&
-                    "flex-row-reverse"
-                  }`}
-                >
-                  {messageItem.participants === conversationPartnerQuery && (
-                    <Avatar
-                      user={messageItem?.users.find(
-                        (user) => user?.id === conversationId
-                      )}
-                      isActive={false}
-                    />
-                  )}
-
-                  <div
-                    className={`relative max-w-xl px-2 lg:px-4 py-1 lg:py-2 rounded shadow ${
-                      messageItem.participants === conversationPartnerQuery &&
-                      "ml-3"
-                    } ${
-                      messageItem.participants === conversationUserQuery
-                        ? "bg-blue-500 text-white"
-                        : "text-gray-700"
+          <div className="relative w-full h-[600px] pb-3 lg:py-6 lg:px-3 overflow-y-auto flex flex-col-reverse">
+            {conversationsData?.length ? (
+              <ul className="space-y-2 overflow-ellipsis">
+                {conversationsData.map((messageItem, index) => (
+                  <li
+                    key={index}
+                    className={`flex items-cetextblue-500nter ${
+                      messageItem.participants === conversationUserQuery &&
+                      "flex-row-reverse"
                     }`}
                   >
-                    <span className="block">{messageItem.message}</span>
-                  </div>
-                </li>
-              ))}
-            </ul>
+                    {messageItem.participants === conversationPartnerQuery && (
+                      <Avatar
+                        user={messageItem?.users.find(
+                          (user) => user?.id === conversationId
+                        )}
+                        isActive={false}
+                      />
+                    )}
+
+                    <div
+                      className={`relative max-w-xl px-2 lg:px-4 py-1 lg:py-2 rounded shadow ${
+                        messageItem.participants === conversationPartnerQuery &&
+                        "ml-3"
+                      } ${
+                        messageItem.participants === conversationUserQuery
+                          ? "bg-blue-500 text-white"
+                          : "text-gray-700"
+                      }`}
+                    >
+                      <span className="block">{messageItem.message}</span>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <EmptyCard message={"Start new conversation!"} border={false} />
+            )}
           </div>
 
           {/* messahe box */}

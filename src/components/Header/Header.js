@@ -50,7 +50,7 @@ const Header = () => {
     },
   ];
   return (
-    <div className="bg-[#00475D] py-3">
+    <div className="bg-[#00475D] py-3 z-50 h-[8vh]">
       <div className="max-w-7xl mx-auto flex h-full justify-between items-center px-2">
         <div>
           <p className="text-2xl font-bold text-white">Chat-App</p>
