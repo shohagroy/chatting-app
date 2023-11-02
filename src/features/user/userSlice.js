@@ -36,23 +36,31 @@ const userSlice = createSlice({
       state.conversations = [...conversation, action.payload];
     },
 
-    // sendLastConversation: (state, action) => {
-    //   const queryOne = action.payload.participants;
-    //   const queryTwo = action.payload.participants
-    //     .split("-")
-    //     .reverse()
-    //     .join("_");
+    userActiveStatus: (state, action) => {
+      const filteredArray = action.payload.filter((id) => id !== state.user.id);
 
-    //   console.log("new");
+      const activeUsers = filteredArray.map((id) => {
+        const isActive = state.allUsers.find((user) => user.id === id);
+        return {
+          ...isActive,
+          isActive: true,
+        };
+      });
 
-    //   const conversations = state.lastConversations.filter(
-    //     (el) => el.participants !== queryOne && el.participants !== queryTwo
-    //   );
+      state.activeUsers = activeUsers;
+      state.allUsers = state.allUsers.map((user) => {
+        const activeUser = filteredArray.find((userid) => user.id === userid);
 
-    //   state.lastConversations = [...conversations, action.payload].sort(
-    //     (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
-    //   );
-    // },
+        if (activeUser) {
+          return {
+            ...user,
+            isActive: true,
+          };
+        }
+
+        return user;
+      });
+    },
 
     sendLastConversation: (state, action) => {
       const queryOne = action.payload.participants;
@@ -92,6 +100,7 @@ export const {
   loginInUser,
   setLastConversations,
   sendLastConversation,
+  userActiveStatus,
 } = userSlice.actions;
 
 export default userSlice.reducer;
