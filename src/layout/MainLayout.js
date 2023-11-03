@@ -34,7 +34,7 @@ const MainLayout = () => {
 
         <div className="max-w-7xl lg:my-4 mx-auto overflow-hidden">
           <Flex justify="center" align="center">
-            <div className="w-[550px]">
+            <div className="w-full lg:w-[550px]">
               <SideMenu />
             </div>
 
@@ -43,7 +43,7 @@ const MainLayout = () => {
             </div>
 
             {conversationId && (
-              <div className={` absolute  lg:hidden top-[8vh] left-0 w-full`}>
+              <div className={`absolute  lg:hidden top-[8vh] left-0 w-full`}>
                 <Outlet />
               </div>
             )}

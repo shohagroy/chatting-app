@@ -61,7 +61,7 @@ const Signin = () => {
         <title>Login | Chat App</title>
       </Helmet>
 
-      <Flex className="h-screen p-2 w-full" justify="center" align="center">
+      <Flex className="h-full p-2 w-full" justify="center" align="center">
         <Card className="border-none">
           <div className="w-11/12 m-auto bg-white rounded-lg sm:w-96 bg-opacity-80 ">
             <div className="space-y-2 py-4">

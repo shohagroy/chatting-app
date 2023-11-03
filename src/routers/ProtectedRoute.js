@@ -4,6 +4,7 @@ import auth from "../config/firebase/firebase.config";
 import { useCreateUpdateUserMutation } from "../features/user/userApi";
 
 import { Navigate, useLocation } from "react-router-dom";
+import DefaultLoading from "../components/loading/DefaultLoading";
 
 const ProtectedRoute = ({ children }) => {
   const [createUpdateUser] = useCreateUpdateUserMutation();
@@ -37,13 +38,13 @@ const ProtectedRoute = ({ children }) => {
   if (isLoading) {
     return (
       <div className="h-screen flex justify-center items-center text-2xl">
-        Please Wait..
+        <DefaultLoading />
       </div>
     );
   }
 
   if (!user?.id) {
-    return <Navigate to="/sign-in" state={{ path: location }} replace />;
+    return <Navigate to="/login" state={{ path: location }} replace />;
   }
 
   return children;

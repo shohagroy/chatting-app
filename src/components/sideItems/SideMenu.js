@@ -1,5 +1,6 @@
-import { Badge, Card, Menu, Tooltip } from "antd";
+import { Badge, Card, Input, Menu, Tooltip } from "antd";
 import React, { useState } from "react";
+import { SearchOutlined } from "@ant-design/icons";
 
 import {
   UsergroupAddOutlined,
@@ -83,26 +84,39 @@ const SideMenu = () => {
   ];
 
   return (
-    <div>
-      <Card
-        title={
+    <Card
+      title={
+        <>
           <Menu
             onClick={onClick}
             selectedKeys={[current]}
             mode="horizontal"
             items={items}
+            className="w-full my-3"
           />
-        }
-      >
-        {current === "messages" ? (
-          <MessageUi user={user} conversations={lastConversations} />
-        ) : current === "users" ? (
-          <AllUserUi data={allUsers} />
-        ) : (
-          <ActiveUserUi data={activeUsers} />
-        )}
-      </Card>
-    </div>
+          <Input
+            className="mb-2"
+            placeholder="Search..."
+            prefix={<SearchOutlined />}
+          />
+        </>
+      }
+    >
+      {current === "messages" ? (
+        <MessageUi user={user} conversations={lastConversations} />
+      ) : current === "users" ? (
+        <div className="">
+          <div className="hidden lg:block">
+            <AllUserUi data={allUsers} height={600} />
+          </div>
+          <div className="lg:hidden">
+            <AllUserUi data={allUsers} height={530} />
+          </div>
+        </div>
+      ) : (
+        <ActiveUserUi data={activeUsers} />
+      )}
+    </Card>
   );
 };
 

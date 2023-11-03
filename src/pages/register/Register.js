@@ -2,7 +2,7 @@ import { Divider, Flex, Image } from "antd";
 import Card from "antd/es/card/Card";
 import React, { useState } from "react";
 import { Helmet } from "react-helmet";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import ChatLogo from "../../assets/chatting-app.png";
 
 import { UserOutlined, MailOutlined, LockOutlined } from "@ant-design/icons"; //<LockOutlined />
@@ -20,6 +20,10 @@ const Register = () => {
   const [loading, setLoading] = useState(false);
   const [createUpdateUser] = useCreateUpdateUserMutation();
 
+  const navigate = useNavigate();
+  const location = useLocation();
+  const path = location.state?.path?.pathname || "/";
+
   const registerHandelar = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -35,22 +39,26 @@ const Register = () => {
 
     const userInfo = await createUser(email, password, name);
     await createUpdateUser(userInfo);
+    navigate(path);
     setLoading(false);
   };
 
   const googleLoginHandelar = async () => {
     const userInfo = await googleAuthLogin();
     await createUpdateUser(userInfo);
+    navigate(path);
   };
 
   const facebookLoginHandelar = async () => {
     const userInfo = await facebookAuthLogin();
     await createUpdateUser(userInfo);
+    navigate(path);
   };
 
   const githubLoginHandelar = async () => {
     const userInfo = await githubAuthLogin();
     await createUpdateUser(userInfo);
+    navigate(path);
   };
 
   return (
@@ -60,7 +68,7 @@ const Register = () => {
         <title>Register | Chat App</title>
       </Helmet>
 
-      <Flex className="h-screen p-2 w-full" justify="center" align="center">
+      <Flex className="full p-2 w-full" justify="center" align="center">
         <Card className="border-none">
           <div className="w-11/12 m-auto bg-white rounded-lg sm:w-96 bg-opacity-80 ">
             <div className="space-y-2 py-4">
