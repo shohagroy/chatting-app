@@ -5,12 +5,10 @@ import { Flex } from "antd";
 import SideMenu from "../components/sideItems/SideMenu";
 import { Outlet, useLocation } from "react-router-dom";
 import socket from "../config/socket/socker.config";
-import { useDispatch, useSelector } from "react-redux";
-import { userActiveStatus } from "../features/user/userSlice";
+import { useSelector } from "react-redux";
 
 const MainLayout = () => {
   const { user } = useSelector((state) => state.user);
-  const dispatch = useDispatch();
 
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
@@ -18,14 +16,7 @@ const MainLayout = () => {
 
   useEffect(() => {
     socket.emit("join", user);
-    socket.on("get-actives", (usersData) => {
-      const activeUsers = usersData.map((info) => {
-        return info.user.id;
-      });
-
-      dispatch(userActiveStatus(activeUsers));
-    });
-  }, [user, dispatch]);
+  }, [user]);
 
   return (
     <div>

@@ -6,7 +6,6 @@ const initialState = {
   allUsers: [],
   activeUsers: [],
   conversations: [],
-  lastConversations: [],
 };
 
 const userSlice = createSlice({
@@ -18,66 +17,39 @@ const userSlice = createSlice({
     },
 
     getUsersInfo: (state, action) => {
-      state.allUsers = action.payload.allUsers;
-      state.activeUsers = action.payload.allUsers.filter(
-        (user) => user.isActive
-      );
       state.user = { ...action.payload.loginUser, isActive: true };
-      state.conversations = action.payload.userConversations;
-      state.lastConversations = action.payload.lastConversations;
       state.loading = false;
     },
 
-    setLastConversations: (state, action) => {
-      const conversation = state.conversations.filter(
-        (el) => el.conversationId !== action.payload.conversationId
-      );
-
-      state.conversations = [...conversation, action.payload];
+    getAllUsers: (state, action) => {
+      state.allUsers = action.payload;
     },
 
-    userActiveStatus: (state, action) => {
-      const filteredArray = action.payload.filter((id) => id !== state.user.id);
+    // setLastConversations: (state, action) => {
+    //   // const conversation = state.conversations.filter(
+    //   //   (el) => el.conversationId !== action.payload.conversationId
+    //   // );
+    //   // state.conversations = [...conversation, action.payload];
+    // },
 
-      const activeUsers = filteredArray.map((id) => {
-        const isActive = state.allUsers.find((user) => user.id === id);
-        return {
-          ...isActive,
-          isActive: true,
-        };
-      });
+    // sendLastConversation: (state, action) => {
+    //   // const queryOne = action.payload.participants;
+    //   // const queryTwo = action.payload.participants
+    //   //   ?.split("-")
+    //   //   ?.reverse()
+    //   //   ?.join("-");
+    //   // const conversations = state.lastConversations.filter(
+    //   //   (el) => el.participants !== queryOne && el.participants !== queryTwo
+    //   // );
+    //   // const newConversations = [...conversations, action.payload].sort(
+    //   //   (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+    //   // );
+    //   // state.lastConversations = newConversations;
+    // },
 
-      state.activeUsers = activeUsers;
-      state.allUsers = state.allUsers.map((user) => {
-        const activeUser = filteredArray.find((userid) => user.id === userid);
-
-        if (activeUser) {
-          return {
-            ...user,
-            isActive: true,
-          };
-        }
-
-        return user;
-      });
-    },
-
-    sendLastConversation: (state, action) => {
-      const queryOne = action.payload.participants;
-      const queryTwo = action.payload.participants
-        .split("-")
-        .reverse()
-        .join("-");
-
-      const conversations = state.lastConversations.filter(
-        (el) => el.participants !== queryOne && el.participants !== queryTwo
-      );
-
-      const newConversations = [...conversations, action.payload].sort(
-        (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
-      );
-
-      state.lastConversations = newConversations;
+    setUserConversations: (state, action) => {
+      state.conversations = action.payload.userAllConversations;
+      state.lastConversations = action.payload.lastConversations;
     },
 
     loginInUser: (state, action) => {
@@ -98,9 +70,10 @@ export const {
   initialLoading,
   userLoggedOut,
   loginInUser,
-  setLastConversations,
-  sendLastConversation,
-  userActiveStatus,
+  // setLastConversations,
+  // sendLastConversation,
+  getAllUsers,
+  setUserConversations,
 } = userSlice.actions;
 
 export default userSlice.reducer;

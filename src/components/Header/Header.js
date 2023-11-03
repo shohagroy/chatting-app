@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { userLogOut } from "../../config/firebase/auth.provaider";
 import { useCreateUpdateUserMutation } from "../../features/user/userApi";
+import socket from "../../config/socket/socker.config";
 
 const Header = () => {
   const { user } = useSelector((state) => state.user);
@@ -13,9 +14,8 @@ const Header = () => {
 
   const userSignOutHandelar = async () => {
     await userLogOut();
-    const result = await createUpdateUser({ ...user, isActive: false });
-
-    console.log(result);
+    await createUpdateUser({ ...user, isActive: false });
+    socket.emit("offline", { user: user });
   };
 
   const items = [

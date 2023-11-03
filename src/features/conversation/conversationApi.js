@@ -1,6 +1,6 @@
 import socket from "../../config/socket/socker.config";
 import { apiSlice } from "../api/apiSlice";
-import { sendLastConversation, setLastConversations } from "../user/userSlice";
+// import { sendLastConversation, setLastConversations } from "../user/userSlice";
 
 export const conversationAli = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
@@ -11,20 +11,20 @@ export const conversationAli = apiSlice.injectEndpoints({
         body: data,
       }),
       invalidatesTags: ["sendMessages"],
-      async onQueryStarted(arg, { queryFulfilled, dispatch }) {
-        dispatch(setLastConversations(arg));
-        try {
-          const result = await queryFulfilled;
+      // async onQueryStarted(arg, { queryFulfilled, dispatch }) {
+      //   dispatch(setLastConversations(arg));
+      //   try {
+      //     const result = await queryFulfilled;
 
-          if (result?.data?.success) {
-            dispatch(sendLastConversation(result?.data?.data));
-            socket.emit("unseen", {
-              room: "chatRoom1",
-              new: result?.data?.data,
-            });
-          }
-        } catch (error) {}
-      },
+      //     if (result?.data?.success) {
+      //       dispatch(sendLastConversation(result?.data?.data));
+      //       socket.emit("unseen", {
+      //         room: "chatRoom1",
+      //         new: result?.data?.data,
+      //       });
+      //     }
+      //   } catch (error) {}
+      // },
     }),
 
     getUserConversations: builder.query({
@@ -59,15 +59,45 @@ export const conversationAli = apiSlice.injectEndpoints({
         socket.close();
       },
     }),
+
     getLastUserConversations: builder.query({
-      query: (email) => ({
-        url: `/conversations/${email}`,
+      query: (id) => ({
+        url: `/conversations/${id}`,
         method: "GET",
       }),
-      async onQueryStarted(arg, { queryFulfilled, dispatch }) {
+      async onCacheEntryAdded(
+        arg,
+        { updateCachedData, cacheDataLoaded, cacheEntryRemoved }
+      ) {
         try {
-          //   const result = await queryFulfilled;
+          await cacheDataLoaded;
+
+          socket.on("message", (data) => {
+            const queryOne = data.conversations.participants;
+            const queryTwo = data.conversations.participants
+              ?.split("-")
+              ?.reverse()
+              ?.join("-");
+
+            updateCachedData((draft) => {
+              const conversations = draft?.data.lastConversations.filter(
+                (el) =>
+                  el.participants !== queryTwo && el.participants !== queryOne
+              );
+
+              draft.data.lastConversations = [
+                data?.conversations,
+                ...conversations,
+              ];
+              draft.data.userConversations.push(data.conversations);
+
+              return draft;
+            });
+          });
         } catch (err) {}
+
+        await cacheEntryRemoved;
+        socket.close();
       },
     }),
   }),

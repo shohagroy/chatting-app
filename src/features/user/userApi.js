@@ -1,6 +1,7 @@
 import { toast } from "react-hot-toast";
 import { apiSlice } from "../api/apiSlice";
 import { getUsersInfo, initialLoading, loginInUser } from "./userSlice";
+import socket from "../../config/socket/socker.config";
 
 export const userApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
@@ -31,10 +32,50 @@ export const userApi = apiSlice.injectEndpoints({
         url: `/users/${id}`,
         method: "GET",
       }),
-      async onQueryStarted(arg, { queryFulfilled, dispatch }) {
+
+      async onCacheEntryAdded(
+        arg,
+        { updateCachedData, cacheDataLoaded, cacheEntryRemoved }
+      ) {
         try {
-          //   const result = await queryFulfilled;
+          await cacheDataLoaded;
+          socket.on("get-actives", (users) => {
+            const activeIds = users.map((info) => info?.user?.id);
+
+            updateCachedData((draft) => {
+              const updatedData = draft?.data?.map((el) => {
+                if (activeIds.includes(el?.id)) {
+                  return {
+                    ...el,
+                    isActive: true,
+                  };
+                }
+
+                return {
+                  ...el,
+                  isActive: false,
+                };
+              });
+
+              draft.data = updatedData;
+
+              return draft;
+              // console.log(JSON.stringify(draft.data));
+              // const isReciver = draft.data.conversations.find(
+              //   (el) =>
+              //     JSON.stringify(el.participants) ===
+              //     JSON.stringify(data.conversations.participants)
+              // );
+              // if (isReciver) {
+              //   draft.data.conversations.push(data.conversations);
+              //   return draft;
+              // }
+            });
+          });
         } catch (err) {}
+
+        await cacheEntryRemoved;
+        socket.close();
       },
     }),
 
@@ -43,11 +84,38 @@ export const userApi = apiSlice.injectEndpoints({
         url: `/users/conversations?${data}`,
         method: "GET",
       }),
-      async onQueryStrted(arg, { queryFulfilled, dispatch }) {
+
+      async onCacheEntryAdded(
+        arg,
+        { updateCachedData, cacheDataLoaded, cacheEntryRemoved }
+      ) {
         try {
-          //   const result = await queryFulfilled;
+          await cacheDataLoaded;
+          socket.on("get-actives", (users) => {
+            console.log(users);
+            // updateCachedData((draft) => {
+            //   const isReciver = draft.data.conversations.find(
+            //     (el) =>
+            //       JSON.stringify(el.participants) ===
+            //       JSON.stringify(data.conversations.participants)
+            //   );
+            //   if (isReciver) {
+            //     draft.data.conversations.push(data.conversations);
+            //     return draft;
+            //   }
+            // });
+          });
         } catch (err) {}
+
+        await cacheEntryRemoved;
+        socket.close();
       },
+      // async onQueryStrted(arg, { queryFulfilled, dispatch }) {
+      //   try {
+      //     // const result = await queryFulfilled;
+      //     // console.log(result.data);
+      //   } catch (err) {}
+      // },
     }),
   }),
 });

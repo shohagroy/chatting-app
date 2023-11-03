@@ -23,6 +23,7 @@ const SendOptions = ({ conversationUser, sendMessages }) => {
     participants: `${user.id}-${conversationUser?.id}`,
     users: [user, conversationUser],
     message: textMessage,
+    isNotSeen: true,
   };
 
   const sendMessageHandler = (e) => {

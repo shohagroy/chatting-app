@@ -7,7 +7,7 @@ import SendOptions from "./SendOptions";
 import { useDispatch, useSelector } from "react-redux";
 import { useSendMessagesMutation } from "../../features/conversation/conversationApi";
 import socket from "../../config/socket/socker.config";
-import { setLastConversations } from "../../features/user/userSlice";
+// import { setLastConversations } from "../../features/user/userSlice";
 import EmptyCard from "./EmptyCard";
 
 const ConversationCard = ({ conversationId }) => {
@@ -36,7 +36,7 @@ const ConversationCard = ({ conversationId }) => {
       const partnarId = data?.conversations?.participants?.split("-")[1];
       if (partnarId === user?.id) {
         setIsTYpeing(false);
-        dispatch(setLastConversations(data?.conversations));
+        // dispatch(setLastConversations(data?.conversations));
       }
     });
 
@@ -77,7 +77,7 @@ const ConversationCard = ({ conversationId }) => {
           />
         }
       >
-        <div className="relative w-full h-[500px] lg:h-[550px]  pb-3 lg:py-6 lg:px-3 overflow-y-auto flex flex-col-reverse">
+        <div className="relative w-full h-[500px] lg:h-[530px]  pb-3 lg:py-6 lg:px-3 overflow-y-auto flex flex-col-reverse">
           {conversationsData?.length ? (
             <ul className="space-y-2 overflow-ellipsis">
               {conversationsData.map((messageItem, index) => (
@@ -98,7 +98,7 @@ const ConversationCard = ({ conversationId }) => {
                   )}
 
                   <div
-                    className={`relative border border-[#00475D] max-w-xl px-2 lg:px-4 py-1 lg:py-2 rounded shadow-md ${
+                    className={`relative border border-[#00475D] max-w-[200px] lg:max-w-md px-2 lg:px-4 py-1 lg:py-2 rounded shadow-md ${
                       messageItem.participants === conversationPartnerQuery &&
                       "ml-3"
                     } ${

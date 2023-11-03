@@ -7,27 +7,38 @@ import Avatar from "../Avatar";
 import EmptyUI from "./EmptyUI";
 
 const ActiveUserUi = ({ data, height }) => {
+  // console.log(data);
+
   return data?.length ? (
     <List>
       <VirtualList data={data} height={height} itemHeight={47} itemKey="_id">
         {(item) => (
           <List.Item key={item?._id}>
-            <List.Item.Meta
-              avatar={
-                <Link to={`?conversation=${item?.id}`}>
-                  <Avatar user={item} isActive={item?.isActive} />
-                </Link>
-              }
-              title={<Link to={`?conversation=${item?.id}`}>{item?.name}</Link>}
-              description={item.email}
-            />
+            <Link
+              className="flex items-center w-full"
+              to={`?conversation=${item?.id}`}
+            >
+              <List.Item.Meta
+                avatar={
+                  <Link to={`?conversation=${item?.id}`}>
+                    <Avatar user={item} isActive={item?.isActive} />
+                  </Link>
+                }
+                title={
+                  <Link to={`?conversation=${item?.id}`}>{item?.name}</Link>
+                }
+                description={item.email}
+              />
 
-            <Link to={`?conversation=${item?.id}`}>
-              <Tooltip title={`send a message to ${item?.name.split(" ")[0]}`}>
-                <div className="rotate-">
-                  <SendOutlined />
-                </div>
-              </Tooltip>
+              <Link to={`?conversation=${item?.id}`}>
+                <Tooltip
+                  title={`send a message to ${item?.name?.split(" ")[0]}`}
+                >
+                  <div className="rotate-">
+                    <SendOutlined />
+                  </div>
+                </Tooltip>
+              </Link>
             </Link>
           </List.Item>
         )}

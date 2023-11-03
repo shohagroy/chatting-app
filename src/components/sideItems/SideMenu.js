@@ -10,14 +10,26 @@ import {
 import MessageUi from "./MessageUi";
 import AllUserUi from "./AllUsersUi";
 import ActiveUserUi from "./ActiveUserUi";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { useGetAllUserQuery } from "../../features/user/userApi";
 import ListLoading from "../loading/ListLoading";
+import { useEffect } from "react";
+import { getAllUsers } from "../../features/user/userSlice";
 
 const SideMenu = () => {
   const [current, setCurrent] = useState("messages");
+  const { user, lastConversations } = useSelector((state) => state.user);
 
-  const { user, allUsers, activeUsers, lastConversations, loading } =
-    useSelector((state) => state.user);
+  const { data, isLoading } = useGetAllUserQuery();
+  const dispatch = useDispatch();
+
+  const allUsers = data?.data || [];
+  const activeUsers =
+    data?.data?.filter((ele) => ele.isActive && ele.id !== user.id) || [];
+
+  useEffect(() => {
+    dispatch(getAllUsers(data?.data));
+  }, [data, dispatch]);
 
   const onClick = (e) => {
     setCurrent(e.key);
@@ -102,7 +114,7 @@ const SideMenu = () => {
         </>
       }
     >
-      {!loading ? (
+      {!isLoading ? (
         current === "messages" ? (
           <div className="">
             <div className="hidden lg:block">
@@ -123,10 +135,10 @@ const SideMenu = () => {
         ) : current === "users" ? (
           <div className="">
             <div className="hidden lg:block">
-              <AllUserUi data={allUsers} height={600} />
+              <AllUserUi allUsers={allUsers} height={600} />
             </div>
             <div className="lg:hidden">
-              <AllUserUi data={allUsers} height={530} />
+              <AllUserUi allUsers={allUsers} height={530} />
             </div>
           </div>
         ) : (
@@ -140,10 +152,11 @@ const SideMenu = () => {
           </div>
         )
       ) : (
-        <div className="">
+        <div>
           <div className="hidden lg:block">
             <ListLoading height={600} />
           </div>
+
           <div className="lg:hidden">
             <ListLoading height={530} />
           </div>

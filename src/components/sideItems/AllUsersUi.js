@@ -6,10 +6,15 @@ import { Link } from "react-router-dom";
 import { SendOutlined } from "@ant-design/icons";
 import EmptyUI from "./EmptyUI";
 
-const AllUserUi = ({ data, height }) => {
-  return data?.length ? (
+const AllUserUi = ({ allUsers, height }) => {
+  return allUsers?.length ? (
     <List>
-      <VirtualList data={data} height={height} itemHeight={47} itemKey="_id">
+      <VirtualList
+        data={allUsers}
+        height={height}
+        itemHeight={47}
+        itemKey="_id"
+      >
         {(item) => (
           <List.Item key={item?._id}>
             <Link
