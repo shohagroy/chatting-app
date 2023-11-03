@@ -7,6 +7,7 @@ import getTimeDifference from "../../utils/calculatedTime";
 import socket from "../../config/socket/socker.config";
 import { useDispatch } from "react-redux";
 import { sendLastConversation } from "../../features/user/userSlice";
+import EmptyUI from "./EmptyUI";
 
 const MessageUi = ({ user, conversations, height }) => {
   const dispatch = useDispatch();
@@ -18,7 +19,7 @@ const MessageUi = ({ user, conversations, height }) => {
     });
   }, [user, dispatch]);
 
-  return (
+  return conversations?.length ? (
     <List>
       <VirtualList
         data={conversations}
@@ -80,6 +81,8 @@ const MessageUi = ({ user, conversations, height }) => {
         )}
       </VirtualList>
     </List>
+  ) : (
+    <EmptyUI height={height} message={"No Conversations Found!"} />
   );
 };
 

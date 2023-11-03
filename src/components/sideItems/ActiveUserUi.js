@@ -4,9 +4,10 @@ import VirtualList from "rc-virtual-list";
 import { Link } from "react-router-dom";
 import { SendOutlined } from "@ant-design/icons";
 import Avatar from "../Avatar";
+import EmptyUI from "./EmptyUI";
 
 const ActiveUserUi = ({ data, height }) => {
-  return (
+  return data?.length ? (
     <List>
       <VirtualList data={data} height={height} itemHeight={47} itemKey="_id">
         {(item) => (
@@ -32,6 +33,8 @@ const ActiveUserUi = ({ data, height }) => {
         )}
       </VirtualList>
     </List>
+  ) : (
+    <EmptyUI height={height} message="No Active Users Found" />
   );
 };
 

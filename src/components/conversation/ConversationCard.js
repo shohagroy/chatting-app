@@ -48,94 +48,89 @@ const ConversationCard = ({ conversationId }) => {
   }, [conversationUser, conversationId, user, dispatch]);
 
   return (
-    <div>
-      <Card
-        title={
-          <Flex className="py-2" justify="space-between" align="center">
-            <Flex justify="center" align="center">
-              <Avatar
-                user={conversationUser}
-                isActive={conversationUser?.isActive}
-              />
-              <p className="text-xl ml-4 font-semibold">
-                {conversationUser?.name}
-              </p>
-            </Flex>
-
-            <Tooltip title={"Close"}>
-              <Link to={"/"}>
-                <Button type="link" danger icon={<CloseOutlined />} />
-              </Link>
-            </Tooltip>
+    <Card
+      title={
+        <Flex className="py-2" justify="space-between" align="center">
+          <Flex justify="center" align="center">
+            <Avatar
+              user={conversationUser}
+              isActive={conversationUser?.isActive}
+            />
+            <p className="text-xl ml-4 font-semibold">
+              {conversationUser?.name}
+            </p>
           </Flex>
+
+          <Tooltip title={"Close"}>
+            <Link to={"/"}>
+              <Button type="link" danger icon={<CloseOutlined />} />
+            </Link>
+          </Tooltip>
+        </Flex>
+      }
+    >
+      <List
+        className=""
+        footer={
+          <SendOptions
+            sendMessages={sendMessages}
+            conversationUser={conversationUser}
+          />
         }
       >
-        <List
-          className="h-[75vh] lg:h-100%"
-          footer={
-            <SendOptions
-              sendMessages={sendMessages}
-              conversationUser={conversationUser}
-            />
-          }
-        >
-          <div className="relative w-full h-[600px] pb-3 lg:py-6 lg:px-3 overflow-y-auto flex flex-col-reverse">
-            {conversationsData?.length ? (
-              <ul className="space-y-2 overflow-ellipsis">
-                {conversationsData.map((messageItem, index) => (
-                  <li
-                    key={index}
-                    className={`flex items-cetextblue-500nter ${
-                      messageItem.participants === conversationUserQuery &&
-                      "flex-row-reverse"
+        <div className="relative w-full h-[600px] pb-3 lg:py-6 lg:px-3 overflow-y-auto flex flex-col-reverse">
+          {conversationsData?.length ? (
+            <ul className="space-y-2 overflow-ellipsis">
+              {conversationsData.map((messageItem, index) => (
+                <li
+                  key={index}
+                  className={`flex items-cetextblue-500nter ${
+                    messageItem.participants === conversationUserQuery &&
+                    "flex-row-reverse"
+                  }`}
+                >
+                  {messageItem.participants === conversationPartnerQuery && (
+                    <Avatar
+                      user={messageItem?.users.find(
+                        (user) => user?.id === conversationId
+                      )}
+                      isActive={false}
+                    />
+                  )}
+
+                  <div
+                    className={`relative max-w-xl px-2 lg:px-4 py-1 lg:py-2 rounded shadow ${
+                      messageItem.participants === conversationPartnerQuery &&
+                      "ml-3"
+                    } ${
+                      messageItem.participants === conversationUserQuery
+                        ? "bg-blue-500 text-white"
+                        : "text-gray-700"
                     }`}
                   >
-                    {messageItem.participants === conversationPartnerQuery && (
-                      <Avatar
-                        user={messageItem?.users.find(
-                          (user) => user?.id === conversationId
-                        )}
-                        isActive={false}
-                      />
-                    )}
+                    <span className="block">{messageItem.message}</span>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <EmptyCard message={"Start new conversation!"} border={false} />
+          )}
+        </div>
 
-                    <div
-                      className={`relative max-w-xl px-2 lg:px-4 py-1 lg:py-2 rounded shadow ${
-                        messageItem.participants === conversationPartnerQuery &&
-                        "ml-3"
-                      } ${
-                        messageItem.participants === conversationUserQuery
-                          ? "bg-blue-500 text-white"
-                          : "text-gray-700"
-                      }`}
-                    >
-                      <span className="block">{messageItem.message}</span>
-                    </div>
-                  </li>
-                ))}
-              </ul>
-            ) : (
-              <EmptyCard message={"Start new conversation!"} border={false} />
-            )}
-          </div>
-
-          {/* messahe box */}
-
-          {/* conversation message  */}
-          <div className="absolute -bottom-2 right-0">
-            {isTypeing ? (
-              <p className="text-[14px] text-blue-600">Typing</p>
-            ) : isLoading ? (
-              <p className="text-[14px] text-blue-600">Sending...</p>
-            ) : isError ? (
-              <p className="text-[14px] text-red-600">Something Wrong!</p>
-            ) : (
-              <p className="text-[14px] text-blue-600">Send</p>
-            )}
-          </div>
-        </List>
-      </Card>
-    </div>
+        <div className="absolute -bottom-2 right-0">
+          {isTypeing ? (
+            <p className="text-[14px] text-blue-600">Typing</p>
+          ) : isLoading ? (
+            <p className="text-[14px] text-blue-600">Sending...</p>
+          ) : isError ? (
+            <p className="text-[14px] text-red-600">Something Wrong!</p>
+          ) : (
+            <p className="text-[14px] text-blue-600">Send</p>
+          )}
+        </div>
+      </List>
+    </Card>
   );
 };
 
