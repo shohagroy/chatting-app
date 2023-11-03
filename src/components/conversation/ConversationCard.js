@@ -70,7 +70,6 @@ const ConversationCard = ({ conversationId }) => {
       }
     >
       <List
-        className=""
         footer={
           <SendOptions
             sendMessages={sendMessages}
@@ -78,13 +77,13 @@ const ConversationCard = ({ conversationId }) => {
           />
         }
       >
-        <div className="relative w-full h-[600px] pb-3 lg:py-6 lg:px-3 overflow-y-auto flex flex-col-reverse">
+        <div className="relative w-full h-[500px] lg:h-[550px]  pb-3 lg:py-6 lg:px-3 overflow-y-auto flex flex-col-reverse">
           {conversationsData?.length ? (
             <ul className="space-y-2 overflow-ellipsis">
               {conversationsData.map((messageItem, index) => (
                 <li
                   key={index}
-                  className={`flex items-cetextblue-500nter ${
+                  className={`flex items-center items-cetextblue-500nter ${
                     messageItem.participants === conversationUserQuery &&
                     "flex-row-reverse"
                   }`}
@@ -99,12 +98,12 @@ const ConversationCard = ({ conversationId }) => {
                   )}
 
                   <div
-                    className={`relative max-w-xl px-2 lg:px-4 py-1 lg:py-2 rounded shadow ${
+                    className={`relative border border-[#00475D] max-w-xl px-2 lg:px-4 py-1 lg:py-2 rounded shadow-md ${
                       messageItem.participants === conversationPartnerQuery &&
                       "ml-3"
                     } ${
                       messageItem.participants === conversationUserQuery
-                        ? "bg-blue-500 text-white"
+                        ? "bg-[#00475D] text-white"
                         : "text-gray-700"
                     }`}
                   >
