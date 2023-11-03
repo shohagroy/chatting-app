@@ -60,25 +60,22 @@ const MessageUi = ({ user, conversations }) => {
                 <p>{getTimeDifference(item.createdAt)}</p>
                 {item?.participants.split("-")[0] === user.id ? (
                   <p className="text-[12px]">
-                    {item.isNotSeen ? "seen" : "send"}
+                    {/* {!item.isNotSeen ? "send" : "seen"} */}
+                    Send
                   </p>
                 ) : (
                   <p className="text-[12px]">
-                    {item.isNotSeen ? "new" : "seen"}
+                    {item.isNotSeen
+                      ? "new"
+                      : new Date(item?.createdAt).toLocaleTimeString("en-US", {
+                          hour: "numeric",
+                          minute: "numeric",
+                          hour12: true,
+                        })}
                   </p>
                 )}
               </div>
-
-              {/* {item.isNotSeen && <p>New</p>} */}
             </div>
-
-            {/* <Link to={`?conversation=${item?.id}`}>
-              <Tooltip title={`send a message to ${"hello"}`}>
-                <div className="rotate-">
-                  <SendOutlined />
-                </div>
-              </Tooltip>
-            </Link> */}
           </List.Item>
         )}
       </VirtualList>

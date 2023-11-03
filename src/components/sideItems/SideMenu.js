@@ -1,4 +1,4 @@
-import { Card, Menu, Tooltip } from "antd";
+import { Badge, Card, Menu, Tooltip } from "antd";
 import React, { useState } from "react";
 
 import {
@@ -25,32 +25,21 @@ const SideMenu = () => {
   const items = [
     {
       label: (
-        <Tooltip title="All Users">
-          <button
-            className={
-              current === "users"
-                ? "font-semibold lg:font-bold"
-                : "lg:font-semibold text-black"
-            }
-          >
-            <UsergroupAddOutlined /> <span>Users</span>
-          </button>
-        </Tooltip>
-      ),
-      key: "users",
-    },
-    {
-      label: (
         <Tooltip title="All Messages">
-          <button
-            className={
-              current === "messages"
-                ? "font-semibold lg:font-bold"
-                : "lg:font-semibold text-black"
-            }
+          <Badge
+            count={lastConversations?.filter((el) => el.isNotSeen).length}
+            offset={[10, -5]}
           >
-            <MessageOutlined /> <span>Messages</span>
-          </button>
+            <button
+              className={
+                current === "messages"
+                  ? "font-semibold lg:font-bold"
+                  : "lg:font-semibold text-black"
+              }
+            >
+              <MessageOutlined /> <span>Messages</span>
+            </button>
+          </Badge>
         </Tooltip>
       ),
       key: "messages",
@@ -59,18 +48,37 @@ const SideMenu = () => {
     {
       label: (
         <Tooltip title="Active Users">
-          <button
-            className={
-              current === "active"
-                ? "font-semibold lg:font-bold"
-                : "lg:font-semibold text-black"
-            }
-          >
-            <UserSwitchOutlined /> <span>Active</span>
-          </button>
+          <Badge count={activeUsers?.length} offset={[10, -5]}>
+            <button
+              className={
+                current === "active"
+                  ? "font-semibold lg:font-bold"
+                  : "lg:font-semibold text-black"
+              }
+            >
+              <UserSwitchOutlined /> <span>Active</span>
+            </button>
+          </Badge>
         </Tooltip>
       ),
       key: "active",
+    },
+    {
+      label: (
+        <Tooltip title="All Users">
+          <button
+            className={`justify-center items-start ${
+              current === "users"
+                ? "font-semibold lg:font-bold"
+                : "lg:font-semibold text-black"
+            }`}
+          >
+            <UsergroupAddOutlined />
+            <span>Users</span>
+          </button>
+        </Tooltip>
+      ),
+      key: "users",
     },
   ];
 
