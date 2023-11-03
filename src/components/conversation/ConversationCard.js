@@ -83,7 +83,7 @@ const ConversationCard = ({ conversationId }) => {
               {conversationsData.map((messageItem, index) => (
                 <li
                   key={index}
-                  className={`flex items-center items-cetextblue-500nter ${
+                  className={`flex items-center  ${
                     messageItem.participants === conversationUserQuery &&
                     "flex-row-reverse"
                   }`}
@@ -117,7 +117,7 @@ const ConversationCard = ({ conversationId }) => {
           )}
         </div>
 
-        <div className="absolute -bottom-2 right-0">
+        <div className=" flex justify-end">
           {isTypeing ? (
             <p className="text-[14px] text-blue-600">Typing</p>
           ) : isLoading ? (
