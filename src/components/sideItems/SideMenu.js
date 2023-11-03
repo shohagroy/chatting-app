@@ -11,13 +11,13 @@ import MessageUi from "./MessageUi";
 import AllUserUi from "./AllUsersUi";
 import ActiveUserUi from "./ActiveUserUi";
 import { useSelector } from "react-redux";
+import ListLoading from "../loading/ListLoading";
 
 const SideMenu = () => {
   const [current, setCurrent] = useState("messages");
 
-  const { user, allUsers, activeUsers, lastConversations } = useSelector(
-    (state) => state.user
-  );
+  const { user, allUsers, activeUsers, lastConversations, loading } =
+    useSelector((state) => state.user);
 
   const onClick = (e) => {
     setCurrent(e.key);
@@ -102,19 +102,52 @@ const SideMenu = () => {
         </>
       }
     >
-      {current === "messages" ? (
-        <MessageUi user={user} conversations={lastConversations} />
-      ) : current === "users" ? (
+      {!loading ? (
+        current === "messages" ? (
+          <div className="">
+            <div className="hidden lg:block">
+              <MessageUi
+                height={600}
+                user={user}
+                conversations={lastConversations}
+              />
+            </div>
+            <div className="lg:hidden">
+              <MessageUi
+                height={530}
+                user={user}
+                conversations={lastConversations}
+              />
+            </div>
+          </div>
+        ) : current === "users" ? (
+          <div className="">
+            <div className="hidden lg:block">
+              <AllUserUi data={allUsers} height={600} />
+            </div>
+            <div className="lg:hidden">
+              <AllUserUi data={allUsers} height={530} />
+            </div>
+          </div>
+        ) : (
+          <div className="">
+            <div className="hidden lg:block">
+              <ActiveUserUi height={600} data={activeUsers} />
+            </div>
+            <div className="lg:hidden">
+              <ActiveUserUi height={530} data={activeUsers} />
+            </div>
+          </div>
+        )
+      ) : (
         <div className="">
           <div className="hidden lg:block">
-            <AllUserUi data={allUsers} height={600} />
+            <ListLoading height={600} />
           </div>
           <div className="lg:hidden">
-            <AllUserUi data={allUsers} height={530} />
+            <ListLoading height={530} />
           </div>
         </div>
-      ) : (
-        <ActiveUserUi data={activeUsers} />
       )}
     </Card>
   );

@@ -5,15 +5,10 @@ import { Link } from "react-router-dom";
 import { SendOutlined } from "@ant-design/icons";
 import Avatar from "../Avatar";
 
-const ActiveUserUi = ({ data }) => {
+const ActiveUserUi = ({ data, height }) => {
   return (
     <List>
-      <VirtualList
-        data={data}
-        className="h-full lg:h-[700px]"
-        itemHeight={80}
-        itemKey="_id"
-      >
+      <VirtualList data={data} height={height} itemHeight={47} itemKey="_id">
         {(item) => (
           <List.Item key={item?._id}>
             <List.Item.Meta

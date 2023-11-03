@@ -8,7 +8,7 @@ import socket from "../../config/socket/socker.config";
 import { useDispatch } from "react-redux";
 import { sendLastConversation } from "../../features/user/userSlice";
 
-const MessageUi = ({ user, conversations }) => {
+const MessageUi = ({ user, conversations, height }) => {
   const dispatch = useDispatch();
   useEffect(() => {
     socket.on("unseen", (data) => {
@@ -22,8 +22,8 @@ const MessageUi = ({ user, conversations }) => {
     <List>
       <VirtualList
         data={conversations}
-        className="h-full lg:h-[700px]"
-        itemHeight={48}
+        height={height}
+        itemHeight={47}
         itemKey="_id"
       >
         {(item) => (
