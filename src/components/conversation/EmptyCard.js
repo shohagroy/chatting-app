@@ -8,7 +8,7 @@ const EmptyCard = ({ message, border = true }) => {
 
   return (
     <Card
-      className={`h-full bg-white flex justify-center items-center ${
+      className={`h-full lg:h-[755px] bg-white flex justify-center items-center ${
         !border ? "border-none" : "border"
       }`}
     >

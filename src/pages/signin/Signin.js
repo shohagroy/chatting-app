@@ -68,7 +68,7 @@ const Signin = () => {
               <div className="flex justify-center items-center">
                 <Link to="/">
                   <Image
-                    style={{ width: "200px" }}
+                    style={{ height: "100px" }}
                     src={ChatLogo}
                     preview={false}
                   />
@@ -120,7 +120,8 @@ const Signin = () => {
                   <div>
                     <button
                       disabled={loading}
-                      className="w-full mt-2 p-2 text-sm font-semibold text-center text-white transition duration-100 rounded-md md:text-lg font-nunito bg-gradient-to-r from-blue-600 to-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-300 hover:shadow-lg"
+                      className="w-full mt-2 p-2 text-sm font-semibold text-center text-white transition duration-100 rounded-md md:text-lg font-nunito bg-[#00475D]
+                      focus:outline-none focus:ring-2 focus:ring-blue-300 hover:shadow-lg"
                     >
                       {loading ? "Loading..." : "Login"}
                     </button>
