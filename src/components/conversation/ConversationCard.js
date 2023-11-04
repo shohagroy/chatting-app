@@ -97,7 +97,7 @@ const ConversationCard = ({ conversationId }) => {
     >
       <div
         style={{ backgroundImage: `url(${Background})` }}
-        className="relative w-full h-[600px] lg:h-[575px] overflow-y-auto flex flex-col-reverse"
+        className="relative w-full h-[580px] lg:h-[575px] overflow-y-auto flex flex-col-reverse"
       >
         {conversationsData?.length ? (
           <ul className="space-y-2 overflow-ellipsis p-3 lg:px-6">

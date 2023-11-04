@@ -11,11 +11,11 @@ const MyConversation = ({ messageItem }) => {
       className={`relative bg-white text-gray-600 border max-w-[300px] lg:max-w-md px-2 lg:px-4 py-1 lg:py-2 rounded-s-xl rounded-tr-xl shadow-md ml-4`}
     >
       {!messageItem.isWrong ? (
-        <div className="flex w-full">
+        <div className="flex justify-end items-end">
           <p className="text-lg">{messageItem?.message}</p>
           <div>
             {messageItem?.createdAt ? (
-              <p className="ml-2 mt-3 text-sm text-gray-400">
+              <p className="ml-2 w-[75px] text-right mt-3 text-sm text-gray-400">
                 {new Date().toLocaleTimeString("en-US", {
                   hour: "numeric",
                   minute: "numeric",
