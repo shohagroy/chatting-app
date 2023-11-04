@@ -60,16 +60,6 @@ export const userApi = apiSlice.injectEndpoints({
               draft.data = updatedData;
 
               return draft;
-              // console.log(JSON.stringify(draft.data));
-              // const isReciver = draft.data.conversations.find(
-              //   (el) =>
-              //     JSON.stringify(el.participants) ===
-              //     JSON.stringify(data.conversations.participants)
-              // );
-              // if (isReciver) {
-              //   draft.data.conversations.push(data.conversations);
-              //   return draft;
-              // }
             });
           });
         } catch (err) {}
@@ -110,12 +100,6 @@ export const userApi = apiSlice.injectEndpoints({
         await cacheEntryRemoved;
         socket.close();
       },
-      // async onQueryStrted(arg, { queryFulfilled, dispatch }) {
-      //   try {
-      //     // const result = await queryFulfilled;
-      //     // console.log(result.data);
-      //   } catch (err) {}
-      // },
     }),
   }),
 });

@@ -14,22 +14,35 @@ import { useDispatch, useSelector } from "react-redux";
 import { useGetAllUserQuery } from "../../features/user/userApi";
 import ListLoading from "../loading/ListLoading";
 import { useEffect } from "react";
-import { getAllUsers } from "../../features/user/userSlice";
+import {
+  getAllUsers,
+  setUserConversations,
+} from "../../features/user/userSlice";
+import { useGetLastUserConversationsQuery } from "../../features/conversation/conversationApi";
 
 const SideMenu = () => {
   const [current, setCurrent] = useState("messages");
   const { user, lastConversations } = useSelector((state) => state.user);
 
-  const { data, isLoading } = useGetAllUserQuery();
+  const { data: userData, isLoading } = useGetAllUserQuery();
   const dispatch = useDispatch();
 
-  const allUsers = data?.data || [];
+  const allUsers = userData?.data.filter((ele) => ele.id !== user.id) || [];
   const activeUsers =
-    data?.data?.filter((ele) => ele.isActive && ele.id !== user.id) || [];
+    userData?.data?.filter((ele) => ele.isActive && ele.id !== user.id) || [];
+
+  const { data: conversationData, isLoading: conversationLoading } =
+    useGetLastUserConversationsQuery(user?.id);
 
   useEffect(() => {
-    dispatch(getAllUsers(data?.data));
-  }, [data, dispatch]);
+    dispatch(getAllUsers(userData?.data));
+    dispatch(
+      setUserConversations({
+        userAllConversations: conversationData?.data?.userConversations,
+        lastConversations: conversationData?.data?.lastConversations,
+      })
+    );
+  }, [userData, conversationData, dispatch]);
 
   const onClick = (e) => {
     setCurrent(e.key);
@@ -126,6 +139,7 @@ const SideMenu = () => {
               <MessageUi
                 height={600}
                 user={user}
+                isLoading={conversationLoading}
                 conversations={lastConversations}
               />
             </div>
@@ -133,6 +147,7 @@ const SideMenu = () => {
               <MessageUi
                 height={530}
                 user={user}
+                isLoading={conversationLoading}
                 conversations={lastConversations}
               />
             </div>

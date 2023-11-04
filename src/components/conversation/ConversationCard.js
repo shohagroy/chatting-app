@@ -1,5 +1,5 @@
 import { Button, Card, Flex, List, Tooltip } from "antd";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import Avatar from "../Avatar";
 import { CloseOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
@@ -7,20 +7,21 @@ import SendOptions from "./SendOptions";
 import { useDispatch, useSelector } from "react-redux";
 import { useSendMessagesMutation } from "../../features/conversation/conversationApi";
 import socket from "../../config/socket/socker.config";
-// import { setLastConversations } from "../../features/user/userSlice";
 import EmptyCard from "./EmptyCard";
 import ConversationItem from "./ConversationItem";
+import { setTyping } from "../../features/user/userSlice";
 
 const ConversationCard = ({ conversationId }) => {
-  const { user, allUsers, conversations } = useSelector((state) => state.user);
-  const [isTypeing, setIsTYpeing] = useState(false);
+  const { user, allUsers, conversations, typing } = useSelector(
+    (state) => state.user
+  );
 
   const dispatch = useDispatch();
 
   const conversationUserQuery = `${user?.id}-${conversationId}`;
   const conversationPartnerQuery = `${conversationId}-${user?.id}`;
 
-  const [sendMessages, { isLoading, isError }] = useSendMessagesMutation();
+  const [sendMessages] = useSendMessagesMutation();
 
   const conversationsData = conversations?.filter(
     (conversation) =>
@@ -36,28 +37,18 @@ const ConversationCard = ({ conversationId }) => {
     socket.on("message", (data) => {
       const partnarId = data?.conversations?.participants?.split("-")[1];
       if (partnarId === user?.id) {
-        setIsTYpeing(false);
-        // dispatch(setLastConversations(data?.conversations));
+        dispatch(setTyping(false));
       }
     });
 
     socket.on("typing", (id) => {
-      if (conversationId === id) {
-        setIsTYpeing(true);
+      if (conversationPartnerQuery === id) {
+        dispatch(setTyping(true));
+      } else {
+        dispatch(setTyping(false));
       }
     });
-  }, [conversationUser, conversationId, user, dispatch]);
-
-  // const seenId = `${conversationId}-${user.id}`;
-
-  // useEffect(() => {
-  // socket.emit("seen", {
-  //   room: "chatRoom1",
-  //   id: seenId,
-  // });
-
-  //   console.log("seen", seenId);
-  // }, [seenId]);
+  }, [conversationPartnerQuery, user, dispatch]);
 
   return (
     <Card
@@ -89,7 +80,7 @@ const ConversationCard = ({ conversationId }) => {
           />
         }
       >
-        <div className="relative w-full h-[500px] lg:h-[530px]  pb-3 lg:py-6 lg:px-3 overflow-y-auto flex flex-col-reverse">
+        <div className="relative w-full h-[500px] lg:h-[550px]  pb-3 lg:py-6 lg:px-3 overflow-y-auto flex flex-col-reverse">
           {conversationsData?.length ? (
             <ul className="space-y-2 overflow-ellipsis">
               {conversationsData.map((messageItem) => (
@@ -107,17 +98,9 @@ const ConversationCard = ({ conversationId }) => {
           )}
         </div>
 
-        {/* <div className=" flex justify-end">
-          {isTypeing ? (
-            <p className="text-[14px] text-blue-600">Typing</p>
-          ) : isLoading ? (
-            <p className="text-[14px] text-blue-600">Sending...</p>
-          ) : isError ? (
-            <p className="text-[14px] text-red-600">Something Wrong!</p>
-          ) : (
-            <p className="text-[14px] text-blue-600">Send</p>
-          )}
-        </div> */}
+        <div className="h-4">
+          {typing && <p className="text-sm text-blue-600">Typing...</p>}
+        </div>
       </List>
     </Card>
   );

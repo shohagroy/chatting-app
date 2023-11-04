@@ -9,7 +9,7 @@ const EmptyCard = ({ message, border = true }) => {
   return (
     <Card
       className={`h-[755px] flex justify-center items-center ${
-        !border && "border-none"
+        !border ? "border-none" : "border"
       }`}
     >
       {loading ? (

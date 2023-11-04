@@ -23,7 +23,7 @@ const MyConversation = ({ messageItem }) => {
                 })}
                 <span
                   className={`ml-2 ${
-                    !messageItem?.isNotSeen && "text-blue-600"
+                    !messageItem?.isNotSeen ? "text-blue-600" : ""
                   }`}
                 >
                   <CheckOutlined />

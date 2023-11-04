@@ -19,26 +19,16 @@ const ActiveUserUi = ({ data, height }) => {
               to={`?conversation=${item?.id}`}
             >
               <List.Item.Meta
-                avatar={
-                  <Link to={`?conversation=${item?.id}`}>
-                    <Avatar user={item} isActive={item?.isActive} />
-                  </Link>
-                }
-                title={
-                  <Link to={`?conversation=${item?.id}`}>{item?.name}</Link>
-                }
+                avatar={<Avatar user={item} isActive={item?.isActive} />}
+                title={item?.name}
                 description={item.email}
               />
 
-              <Link to={`?conversation=${item?.id}`}>
-                <Tooltip
-                  title={`send a message to ${item?.name?.split(" ")[0]}`}
-                >
-                  <div className="rotate-">
-                    <SendOutlined />
-                  </div>
-                </Tooltip>
-              </Link>
+              <Tooltip title={`send a message to ${item?.name?.split(" ")[0]}`}>
+                <div className="rotate-">
+                  <SendOutlined />
+                </div>
+              </Tooltip>
             </Link>
           </List.Item>
         )}

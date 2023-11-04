@@ -7,6 +7,7 @@ const initialState = {
   activeUsers: [],
   conversations: [],
   lastConversations: [],
+  typing: false,
 };
 
 const userSlice = createSlice({
@@ -20,6 +21,10 @@ const userSlice = createSlice({
     getUsersInfo: (state, action) => {
       state.user = { ...action.payload.loginUser, isActive: true };
       state.loading = false;
+    },
+
+    setTyping: (state, action) => {
+      state.typing = action.payload;
     },
 
     getAllUsers: (state, action) => {
@@ -61,7 +66,6 @@ const userSlice = createSlice({
     },
 
     userLoggedOut: (state, action) => {
-      console.log("user login put", action?.payload);
       state.user = {};
       state.loading = false;
     },
@@ -74,10 +78,9 @@ export const {
   userLoggedOut,
   loginInUser,
   setLastConversation,
-  // setLastConversations,
-  // sendLastConversation,
   getAllUsers,
   setUserConversations,
+  setTyping,
 } = userSlice.actions;
 
 export default userSlice.reducer;

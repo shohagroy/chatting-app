@@ -4,16 +4,12 @@ import VirtualList from "rc-virtual-list";
 
 const ListLoading = ({ height }) => {
   const data = [...Array(10)].map((_, i) => i + 1);
+
   return (
     <List>
-      <VirtualList
-        data={data}
-        height={height}
-        itemHeight={47}
-        itemKey="loading"
-      >
+      <VirtualList data={data} height={height} itemHeight={47} itemKey="item">
         {(item) => (
-          <List.Item key={item + 1}>
+          <List.Item key={item}>
             <div className="w-full animate-pulse">
               <List.Item.Meta
                 avatar={

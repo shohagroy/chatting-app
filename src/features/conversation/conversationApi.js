@@ -100,8 +100,6 @@ export const conversationAli = apiSlice.injectEndpoints({
           });
 
           socket.on("seen", (id) => {
-            console.log(id);
-
             updateCachedData((draft) => {
               const conversationIndex = draft.data?.userConversations.findIndex(
                 (el) => el._id === id

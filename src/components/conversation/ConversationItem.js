@@ -16,7 +16,6 @@ const ConversationItem = ({
       messageItem?.isNotSeen &&
       messageItem.participants === conversationPartnerQuery
     ) {
-      console.log("user seend");
       socket.emit("seen", {
         room: "chatRoom1",
         id: messageItem?._id,
@@ -26,8 +25,10 @@ const ConversationItem = ({
 
   return (
     <li
-      className={`flex items-center   ${
-        messageItem.participants === conversationUserQuery && "flex-row-reverse"
+      className={`flex items-center ${
+        messageItem.participants === conversationUserQuery
+          ? "flex-row-reverse"
+          : ""
       }`}
     >
       {messageItem.participants === conversationPartnerQuery && (
@@ -37,23 +38,12 @@ const ConversationItem = ({
         />
       )}
 
-      {/* ${
-          messageItem.participants === conversationPartnerQuery && "ml-3"
-        } ${
-          messageItem.participants === conversationUserQuery
-            ? "bg-[#00475D] text-white"
-            : "text-gray-700"
-        } */}
-
-      <div
-      //
-      >
+      <div>
         {messageItem.participants === conversationUserQuery ? (
           <MyConversation messageItem={messageItem} />
         ) : (
           <UserConversation messageItem={messageItem} />
         )}
-        {/* <span className="block">{messageItem.message}</span> */}
       </div>
     </li>
   );

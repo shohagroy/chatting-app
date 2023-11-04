@@ -10,17 +10,22 @@ const SendOptions = ({ conversationUser, sendMessages }) => {
   const { user } = useSelector((state) => state.user);
   const [textMessage, setTextMessages] = useState("");
 
+  const participantsId = `${user.id}-${conversationUser?.id}`;
+
   useEffect(() => {
     if (textMessage) {
-      socket.emit("typing", { room: "chatRoom1", user: user?.id });
+      socket.emit("typing", {
+        room: "chatRoom1",
+        participants: participantsId,
+      });
     }
-  }, [textMessage, user]);
+  }, [textMessage, participantsId]);
 
   const id = uuidv4();
 
   const conversations = {
     conversationId: id,
-    participants: `${user.id}-${conversationUser?.id}`,
+    participants: participantsId,
     users: [user, conversationUser],
     message: textMessage,
     isNotSeen: true,

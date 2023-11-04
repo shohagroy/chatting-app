@@ -5,39 +5,21 @@ import { Link } from "react-router-dom";
 import Avatar from "../Avatar";
 import getTimeDifference from "../../utils/calculatedTime";
 import EmptyUI from "./EmptyUI";
-import { useGetLastUserConversationsQuery } from "../../features/conversation/conversationApi";
-import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { setUserConversations } from "../../features/user/userSlice";
 import {
   LoadingOutlined,
   CheckOutlined,
   CloseOutlined,
 } from "@ant-design/icons";
 
-const MessageUi = ({ user, height }) => {
-  const { data, isLoading } = useGetLastUserConversationsQuery(user?.id);
-  const dispatch = useDispatch();
-
-  const { lastConversations } = useSelector((state) => state.user);
-
-  useEffect(() => {
-    dispatch(
-      setUserConversations({
-        userAllConversations: data?.data?.userConversations,
-        lastConversations: data?.data?.lastConversations,
-      })
-    );
-  }, [dispatch, data]);
-
+const MessageUi = ({ user, height, isLoading, conversations }) => {
   if (isLoading) {
     return <EmptyUI height={height} />;
   }
 
-  return lastConversations?.length ? (
+  return conversations?.length ? (
     <List>
       <VirtualList
-        data={lastConversations}
+        data={conversations}
         height={height}
         itemHeight={47}
         itemKey="item"
@@ -52,29 +34,20 @@ const MessageUi = ({ user, height }) => {
             >
               <List.Item.Meta
                 avatar={
-                  <Link
-                    to={`?conversation=${
-                      item?.users.find((el) => el?.id !== user.id)?.id
-                    }`}
-                  >
-                    <Avatar
-                      user={item?.users.find((el) => el?.id !== user?.id)}
-                    />
-                  </Link>
+                  <Avatar
+                    user={item?.users.find((el) => el?.id !== user?.id)}
+                  />
                 }
                 title={
-                  <Link
+                  <p
                     className={`${
                       item?.isNotSeen &&
                       item?.participants.split("-")[0] !== user?.id &&
                       "font-bold"
                     }`}
-                    to={`?conversation=${
-                      item?.users?.find((el) => el?.id !== user?.id)?.id
-                    }`}
                   >
                     {item?.users?.find((el) => el?.id !== user?.id)?.name}
-                  </Link>
+                  </p>
                 }
                 description={
                   <p
@@ -100,7 +73,7 @@ const MessageUi = ({ user, height }) => {
                   <div>
                     {item.isWrong ? (
                       <p className="text-[12px]  text-red-600 font-semibold">
-                        Something Wrong!
+                        Something Wrong! <CloseOutlined />
                       </p>
                     ) : (
                       <div>
@@ -142,25 +115,6 @@ const MessageUi = ({ user, height }) => {
                       </div>
                     )}
                   </div>
-                  {/* {item?.participants.split("-")[0] === user?.id ? (
-                    <p className="text-[12px]">
-                      {!item.isNotSeen ? "send" : "seen"}
-                      Send
-                    </p>
-                  ) : (
-                    <p className="text-[12px]">
-                      {item.isNotSeen
-                        ? "new"
-                        : new Date(item?.createdAt).toLocaleTimeString(
-                            "en-US",
-                            {
-                              hour: "numeric",
-                              minute: "numeric",
-                              hour12: true,
-                            }
-                          )}
-                    </p>
-                  )} */}
                 </div>
               </div>
             </Link>
