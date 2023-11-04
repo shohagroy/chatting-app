@@ -29,7 +29,6 @@ const SendOptions = ({ conversationUser, sendMessages }) => {
   const sendMessageHandler = (e) => {
     e.preventDefault();
 
-    socket.emit("conversation", { room: "chatRoom1", conversations });
     sendMessages(conversations);
     setTextMessages("");
   };

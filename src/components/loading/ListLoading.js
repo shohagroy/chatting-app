@@ -6,9 +6,14 @@ const ListLoading = ({ height }) => {
   const data = [...Array(10)].map((_, i) => i + 1);
   return (
     <List>
-      <VirtualList data={data} height={height} itemHeight={47} itemKey="_id">
+      <VirtualList
+        data={data}
+        height={height}
+        itemHeight={47}
+        itemKey="loading"
+      >
         {(item) => (
-          <List.Item key={item}>
+          <List.Item key={item + 1}>
             <div className="w-full animate-pulse">
               <List.Item.Meta
                 avatar={

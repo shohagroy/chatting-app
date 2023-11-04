@@ -9,6 +9,7 @@ import { useSendMessagesMutation } from "../../features/conversation/conversatio
 import socket from "../../config/socket/socker.config";
 // import { setLastConversations } from "../../features/user/userSlice";
 import EmptyCard from "./EmptyCard";
+import ConversationItem from "./ConversationItem";
 
 const ConversationCard = ({ conversationId }) => {
   const { user, allUsers, conversations } = useSelector((state) => state.user);
@@ -47,6 +48,17 @@ const ConversationCard = ({ conversationId }) => {
     });
   }, [conversationUser, conversationId, user, dispatch]);
 
+  // const seenId = `${conversationId}-${user.id}`;
+
+  // useEffect(() => {
+  // socket.emit("seen", {
+  //   room: "chatRoom1",
+  //   id: seenId,
+  // });
+
+  //   console.log("seen", seenId);
+  // }, [seenId]);
+
   return (
     <Card
       title={
@@ -80,36 +92,13 @@ const ConversationCard = ({ conversationId }) => {
         <div className="relative w-full h-[500px] lg:h-[530px]  pb-3 lg:py-6 lg:px-3 overflow-y-auto flex flex-col-reverse">
           {conversationsData?.length ? (
             <ul className="space-y-2 overflow-ellipsis">
-              {conversationsData.map((messageItem, index) => (
-                <li
-                  key={index}
-                  className={`flex items-center  ${
-                    messageItem.participants === conversationUserQuery &&
-                    "flex-row-reverse"
-                  }`}
-                >
-                  {messageItem.participants === conversationPartnerQuery && (
-                    <Avatar
-                      user={messageItem?.users.find(
-                        (user) => user?.id === conversationId
-                      )}
-                      isActive={false}
-                    />
-                  )}
-
-                  <div
-                    className={`relative border border-[#00475D] max-w-[200px] lg:max-w-md px-2 lg:px-4 py-1 lg:py-2 rounded shadow-md ${
-                      messageItem.participants === conversationPartnerQuery &&
-                      "ml-3"
-                    } ${
-                      messageItem.participants === conversationUserQuery
-                        ? "bg-[#00475D] text-white"
-                        : "text-gray-700"
-                    }`}
-                  >
-                    <span className="block">{messageItem.message}</span>
-                  </div>
-                </li>
+              {conversationsData.map((messageItem) => (
+                <ConversationItem
+                  messageItem={messageItem}
+                  conversationUserQuery={conversationUserQuery}
+                  conversationPartnerQuery={conversationPartnerQuery}
+                  conversationId={conversationId}
+                />
               ))}
             </ul>
           ) : (

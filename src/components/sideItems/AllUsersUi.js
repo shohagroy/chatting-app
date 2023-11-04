@@ -13,7 +13,7 @@ const AllUserUi = ({ allUsers, height }) => {
         data={allUsers}
         height={height}
         itemHeight={47}
-        itemKey="_id"
+        itemKey="users"
       >
         {(item) => (
           <List.Item key={item?._id}>

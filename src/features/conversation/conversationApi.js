@@ -1,6 +1,6 @@
 import socket from "../../config/socket/socker.config";
 import { apiSlice } from "../api/apiSlice";
-// import { sendLastConversation, setLastConversations } from "../user/userSlice";
+import { setLastConversation } from "../user/userSlice";
 
 export const conversationAli = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
@@ -11,20 +11,24 @@ export const conversationAli = apiSlice.injectEndpoints({
         body: data,
       }),
       invalidatesTags: ["sendMessages"],
-      // async onQueryStarted(arg, { queryFulfilled, dispatch }) {
-      //   dispatch(setLastConversations(arg));
-      //   try {
-      //     const result = await queryFulfilled;
+      async onQueryStarted(arg, { queryFulfilled, dispatch }) {
+        dispatch(setLastConversation(arg));
+        try {
+          const result = await queryFulfilled;
 
-      //     if (result?.data?.success) {
-      //       dispatch(sendLastConversation(result?.data?.data));
-      //       socket.emit("unseen", {
-      //         room: "chatRoom1",
-      //         new: result?.data?.data,
-      //       });
-      //     }
-      //   } catch (error) {}
-      // },
+          if (result.data.success) {
+            const data = result?.data?.data;
+            dispatch(setLastConversation(data));
+            socket.emit("conversation", {
+              room: "chatRoom1",
+              conversations: data,
+            });
+          }
+        } catch (error) {
+          console.log(error);
+          dispatch(setLastConversation({ ...arg, isWrong: true }));
+        }
+      },
     }),
 
     getUserConversations: builder.query({
@@ -79,6 +83,8 @@ export const conversationAli = apiSlice.injectEndpoints({
               ?.reverse()
               ?.join("-");
 
+            console.log("data send");
+
             updateCachedData((draft) => {
               const conversations = draft?.data.lastConversations.filter(
                 (el) =>
@@ -93,6 +99,23 @@ export const conversationAli = apiSlice.injectEndpoints({
 
               return draft;
             });
+
+            // console.log("seen");
+            // socket.on("seen", (data) => {
+            //   console.log("seen", data);
+            //   // console.log(data);
+            //   // updateCachedData((draft) => {
+            //   //   const isReciver = draft.data.conversations.find(
+            //   //     (el) =>
+            //   //       JSON.stringify(el.participants) ===
+            //   //       JSON.stringify(data.conversations.participants)
+            //   //   );
+            //   //   if (isReciver) {
+            //   //     draft.data.conversations.push(data.conversations);
+            //   //     return draft;
+            //   //   }
+            //   // });
+            // });
           });
         } catch (err) {}
 

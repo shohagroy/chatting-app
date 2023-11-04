@@ -40,7 +40,12 @@ const SideMenu = () => {
       label: (
         <Tooltip title="All Messages">
           <Badge
-            count={lastConversations?.filter((el) => el.isNotSeen).length}
+            count={
+              lastConversations?.filter(
+                (el) =>
+                  el.isNotSeen && el?.participants.split("-")[0] !== user?.id
+              ).length
+            }
             offset={[10, -5]}
           >
             <button

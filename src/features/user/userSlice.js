@@ -6,6 +6,7 @@ const initialState = {
   allUsers: [],
   activeUsers: [],
   conversations: [],
+  lastConversations: [],
 };
 
 const userSlice = createSlice({
@@ -25,31 +26,33 @@ const userSlice = createSlice({
       state.allUsers = action.payload;
     },
 
-    // setLastConversations: (state, action) => {
-    //   // const conversation = state.conversations.filter(
-    //   //   (el) => el.conversationId !== action.payload.conversationId
-    //   // );
-    //   // state.conversations = [...conversation, action.payload];
-    // },
-
-    // sendLastConversation: (state, action) => {
-    //   // const queryOne = action.payload.participants;
-    //   // const queryTwo = action.payload.participants
-    //   //   ?.split("-")
-    //   //   ?.reverse()
-    //   //   ?.join("-");
-    //   // const conversations = state.lastConversations.filter(
-    //   //   (el) => el.participants !== queryOne && el.participants !== queryTwo
-    //   // );
-    //   // const newConversations = [...conversations, action.payload].sort(
-    //   //   (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
-    //   // );
-    //   // state.lastConversations = newConversations;
-    // },
-
     setUserConversations: (state, action) => {
       state.conversations = action.payload.userAllConversations;
       state.lastConversations = action.payload.lastConversations;
+    },
+
+    setLastConversation: (state, action) => {
+      const queryOne = action.payload.participants;
+      const queryTwo = action.payload.participants
+        ?.split("-")
+        ?.reverse()
+        ?.join("-");
+
+      const lastRemain = state.lastConversations.filter(
+        (el) => el.participants !== queryOne && el.participants !== queryTwo
+      );
+
+      const index = state.conversations.findIndex(
+        (el) => el.conversationId === action.payload.conversationId
+      );
+
+      if (index > -1) {
+        state.conversations[index] = action.payload;
+      } else {
+        state.conversations.push(action.payload);
+      }
+
+      state.lastConversations = [action.payload, ...lastRemain];
     },
 
     loginInUser: (state, action) => {
@@ -70,6 +73,7 @@ export const {
   initialLoading,
   userLoggedOut,
   loginInUser,
+  setLastConversation,
   // setLastConversations,
   // sendLastConversation,
   getAllUsers,

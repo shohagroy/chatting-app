@@ -11,7 +11,7 @@ const ActiveUserUi = ({ data, height }) => {
 
   return data?.length ? (
     <List>
-      <VirtualList data={data} height={height} itemHeight={47} itemKey="_id">
+      <VirtualList data={data} height={height} itemHeight={47} itemKey="active">
         {(item) => (
           <List.Item key={item?._id}>
             <Link
