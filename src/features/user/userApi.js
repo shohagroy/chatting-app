@@ -11,7 +11,6 @@ export const userApi = apiSlice.injectEndpoints({
         method: "PUT",
         body: data,
       }),
-      // providesTags: ["sendMessages"],
       async onQueryStarted(arg, { queryFulfilled, dispatch }) {
         dispatch(loginInUser(arg));
         try {
@@ -68,43 +67,7 @@ export const userApi = apiSlice.injectEndpoints({
         socket.close();
       },
     }),
-
-    getUserMessages: builder.query({
-      query: (data) => ({
-        url: `/users/conversations?${data}`,
-        method: "GET",
-      }),
-
-      async onCacheEntryAdded(
-        arg,
-        { updateCachedData, cacheDataLoaded, cacheEntryRemoved }
-      ) {
-        try {
-          await cacheDataLoaded;
-          socket.on("get-actives", (users) => {
-            // updateCachedData((draft) => {
-            //   const isReciver = draft.data.conversations.find(
-            //     (el) =>
-            //       JSON.stringify(el.participants) ===
-            //       JSON.stringify(data.conversations.participants)
-            //   );
-            //   if (isReciver) {
-            //     draft.data.conversations.push(data.conversations);
-            //     return draft;
-            //   }
-            // });
-          });
-        } catch (err) {}
-
-        await cacheEntryRemoved;
-        socket.close();
-      },
-    }),
   }),
 });
 
-export const {
-  useGetAllUserQuery,
-  useGetUserMessagesQuery,
-  useCreateUpdateUserMutation,
-} = userApi;
+export const { useGetAllUserQuery, useCreateUpdateUserMutation } = userApi;

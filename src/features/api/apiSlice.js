@@ -7,20 +7,6 @@ export const apiSlice = createApi({
       process.env.REACT_APP_NODE_ENV === "development"
         ? "http://localhost:5000/api/v1"
         : `${process.env.REACT_APP_API_URL}/api/v1`,
-    prepareHeaders: async (headers, { getState, endpoint }) => {
-      const cookies = document.cookie?.split("; ").reduce((acc, cookie) => {
-        const [name, value] = cookie?.split("=");
-        acc[name] = value;
-        return acc;
-      }, {});
-
-      const token = cookies["free_chat"];
-
-      if (token) {
-        headers.set("authorization", `Bearer ${token}`);
-      }
-      return headers;
-    },
   }),
   tagTypes: ["sendMessages"],
   endpoints: (builder) => ({}),
