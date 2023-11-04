@@ -2,12 +2,12 @@ import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyCaVnUx1as_7wSIqdTEXKfVLm6IqQeqbIQ",
-  authDomain: "free-chat--app.firebaseapp.com",
-  projectId: "free-chat--app",
-  storageBucket: "free-chat--app.appspot.com",
-  messagingSenderId: "813075595608",
-  appId: "1:813075595608:web:21605a6043e072f75ae52d",
+  apiKey: process.env.REACT_APP_apiKey,
+  authDomain: process.env.REACT_APP_authDomain,
+  projectId: process.env.REACT_APP_projectId,
+  storageBucket: process.env.REACT_APP_storageBucket,
+  messagingSenderId: process.env.REACT_APP_messagingSenderId,
+  appId: process.env.REACT_APP_appId,
 };
 
 // Initialize Firebase
