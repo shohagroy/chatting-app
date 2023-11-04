@@ -52,6 +52,7 @@ const ConversationCard = ({ conversationId }) => {
 
   return (
     <Card
+      className="shadow-md"
       title={
         <Flex className="py-2" justify="space-between" align="center">
           <div className={conversationUser ? "" : "animate-pulse"}>
@@ -66,7 +67,7 @@ const ConversationCard = ({ conversationId }) => {
               )}
 
               {conversationUser ? (
-                <p className="text-xl ml-4 font-semibold">
+                <p className="text-xl capitalize ml-4 font-semibold">
                   {conversationUser?.name}
                 </p>
               ) : (
@@ -91,7 +92,7 @@ const ConversationCard = ({ conversationId }) => {
           />
         }
       >
-        <div className="relative w-full h-[500px] lg:h-[550px]  pb-3 lg:py-6 lg:px-3 overflow-y-auto flex flex-col-reverse">
+        <div className="relative w-full h-[68vh] lg:h-[550px]  pb-3 lg:py-6 lg:px-3 overflow-y-auto flex flex-col-reverse">
           {conversationsData?.length ? (
             <ul className="space-y-2 overflow-ellipsis">
               {conversationsData.map((messageItem) => (

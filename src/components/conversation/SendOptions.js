@@ -55,12 +55,19 @@ const SendOptions = ({ conversationUser, sendMessages }) => {
 
       <div className=" transform duration-300">
         <Button
-          className="flex justify-start items-center"
+          className=" hidden lg:flex justify-start items-center"
           htmlType="submit"
           type="link"
         >
           Send <SendOutlined />
         </Button>
+
+        <Button
+          className="  lg:hidden "
+          icon={<SendOutlined />}
+          htmlType="submit"
+          type="link"
+        />
       </div>
     </form>
   );

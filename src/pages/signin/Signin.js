@@ -1,4 +1,4 @@
-import { Divider, Flex, Image } from "antd";
+import { Divider, Image } from "antd";
 import Card from "antd/es/card/Card";
 import React, { useState } from "react";
 import { Helmet } from "react-helmet";
@@ -61,8 +61,8 @@ const Signin = () => {
         <title>Login | Chat App</title>
       </Helmet>
 
-      <Flex className="h-full p-2 w-full" justify="center" align="center">
-        <Card className="border-none">
+      <main className="h-screen flex items-center justify-center">
+        <Card className="border-none ">
           <div className="w-11/12 m-auto bg-white rounded-lg sm:w-96 bg-opacity-80 ">
             <div className="space-y-2 py-4">
               <div className="flex justify-center items-center">
@@ -167,7 +167,7 @@ const Signin = () => {
             </div>
           </div>
         </Card>
-      </Flex>
+      </main>
     </>
   );
 };

@@ -1,8 +1,8 @@
 import React from "react";
 import Avatar from "../Avatar";
 import { Button, Dropdown } from "antd";
-import { UserOutlined, LogoutOutlined } from "@ant-design/icons";
-import { Link } from "react-router-dom";
+import { LogoutOutlined } from "@ant-design/icons";
+// import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { userLogOut } from "../../config/firebase/auth.provaider";
 import { useCreateUpdateUserMutation } from "../../features/user/userApi";
@@ -19,20 +19,20 @@ const Header = () => {
   };
 
   const items = [
-    {
-      key: "1",
-      label: (
-        <Link href="/">
-          <Button
-            icon={<UserOutlined />}
-            type="link"
-            style={{ width: "100%", margin: "0px 0", textAlign: "left" }}
-          >
-            Profile
-          </Button>
-        </Link>
-      ),
-    },
+    // {
+    //   key: "1",
+    //   label: (
+    //     <Link href="/">
+    //       <Button
+    //         icon={<UserOutlined />}
+    //         type="link"
+    //         style={{ width: "100%", margin: "0px 0", textAlign: "left" }}
+    //       >
+    //         Profile
+    //       </Button>
+    //     </Link>
+    //   ),
+    // },
 
     {
       key: "5",
@@ -57,7 +57,7 @@ const Header = () => {
         </div>
 
         <div className="flex justify-center items-center">
-          <p className="text-white px-2 text-xl font-semibold">
+          <p className="text-white px-2 capitalize text-xl font-semibold">
             {user?.name?.split(" ")[0]}
           </p>
           <Dropdown

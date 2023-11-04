@@ -115,6 +115,7 @@ const SideMenu = () => {
 
   return (
     <Card
+      className="shadow-md border"
       title={
         <>
           <Menu

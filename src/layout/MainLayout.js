@@ -1,11 +1,13 @@
 import React, { useEffect } from "react";
 import Header from "../components/Header/Header";
+// import Background from "../assets";
 
 import { Flex } from "antd";
 import SideMenu from "../components/sideItems/SideMenu";
 import { Outlet, useLocation } from "react-router-dom";
 import socket from "../config/socket/socker.config";
 import { useSelector } from "react-redux";
+import { Helmet } from "react-helmet";
 
 const MainLayout = () => {
   const { user } = useSelector((state) => state.user);
@@ -19,10 +21,14 @@ const MainLayout = () => {
   }, [user]);
 
   return (
-    <div>
+    <>
+      <Helmet>
+        <meta charSet="utf-8" />
+        <title>Wellcome | Chat App </title>
+      </Helmet>
+
       <main>
         <Header />
-
         <div className="max-w-7xl lg:my-4 mx-auto overflow-hidden">
           <Flex justify="center" align="center">
             <div className="w-full lg:w-[550px]">
@@ -41,7 +47,7 @@ const MainLayout = () => {
           </Flex>
         </div>
       </main>
-    </div>
+    </>
   );
 };
 
