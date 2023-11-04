@@ -83,8 +83,6 @@ export const conversationAli = apiSlice.injectEndpoints({
               ?.reverse()
               ?.join("-");
 
-            console.log("data send");
-
             updateCachedData((draft) => {
               const conversations = draft?.data.lastConversations.filter(
                 (el) =>
@@ -99,23 +97,31 @@ export const conversationAli = apiSlice.injectEndpoints({
 
               return draft;
             });
+          });
 
-            // console.log("seen");
-            // socket.on("seen", (data) => {
-            //   console.log("seen", data);
-            //   // console.log(data);
-            //   // updateCachedData((draft) => {
-            //   //   const isReciver = draft.data.conversations.find(
-            //   //     (el) =>
-            //   //       JSON.stringify(el.participants) ===
-            //   //       JSON.stringify(data.conversations.participants)
-            //   //   );
-            //   //   if (isReciver) {
-            //   //     draft.data.conversations.push(data.conversations);
-            //   //     return draft;
-            //   //   }
-            //   // });
-            // });
+          socket.on("seen", (id) => {
+            console.log(id);
+
+            updateCachedData((draft) => {
+              const conversationIndex = draft.data?.userConversations.findIndex(
+                (el) => el._id === id
+              );
+
+              const lastConversationIndex =
+                draft.data?.lastConversations.findIndex((el) => el._id === id);
+
+              draft.data.userConversations[conversationIndex] = {
+                ...draft.data.userConversations[conversationIndex],
+                isNotSeen: false,
+              };
+
+              draft.data.lastConversations[lastConversationIndex] = {
+                ...draft.data.lastConversations[lastConversationIndex],
+                isNotSeen: false,
+              };
+
+              return draft;
+            });
           });
         } catch (err) {}
 

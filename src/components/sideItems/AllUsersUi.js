@@ -13,10 +13,10 @@ const AllUserUi = ({ allUsers, height }) => {
         data={allUsers}
         height={height}
         itemHeight={47}
-        itemKey="users"
+        itemKey="item"
       >
         {(item) => (
-          <List.Item key={item?._id}>
+          <List.Item key={item?.id}>
             <Link
               className="w-full flex items-center"
               to={`?conversation=${item?.id}`}

@@ -14,20 +14,18 @@ const ConversationItem = ({
   useEffect(() => {
     if (
       messageItem?.isNotSeen &&
-      messageItem?._id &&
       messageItem.participants === conversationPartnerQuery
     ) {
       console.log("user seend");
       socket.emit("seen", {
         room: "chatRoom1",
-        id: messageItem._id,
+        id: messageItem?._id,
       });
     }
-  }, []);
+  }, [messageItem, conversationPartnerQuery]);
 
   return (
     <li
-      key={messageItem.id}
       className={`flex items-center   ${
         messageItem.participants === conversationUserQuery && "flex-row-reverse"
       }`}

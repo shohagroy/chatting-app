@@ -9,6 +9,11 @@ import { useGetLastUserConversationsQuery } from "../../features/conversation/co
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setUserConversations } from "../../features/user/userSlice";
+import {
+  LoadingOutlined,
+  CheckOutlined,
+  CloseOutlined,
+} from "@ant-design/icons";
 
 const MessageUi = ({ user, height }) => {
   const { data, isLoading } = useGetLastUserConversationsQuery(user?.id);
@@ -35,10 +40,10 @@ const MessageUi = ({ user, height }) => {
         data={lastConversations}
         height={height}
         itemHeight={47}
-        itemKey="messages"
+        itemKey="item"
       >
         {(item) => (
-          <List.Item key={item?._id}>
+          <List.Item key={item?.conversationId}>
             <Link
               className="flex items-center w-full"
               to={`?conversation=${
@@ -88,10 +93,58 @@ const MessageUi = ({ user, height }) => {
 
               <div>
                 <div className="flex justify-end items-end flex-col">
-                  <p>{getTimeDifference(item.createdAt)}</p>
-                  {item?.participants.split("-")[0] === user?.id ? (
+                  <p className="capitalize">
+                    {getTimeDifference(item.createdAt)}
+                  </p>
+
+                  <div>
+                    {item.isWrong ? (
+                      <p className="text-[12px]  text-red-600 font-semibold">
+                        Something Wrong!
+                      </p>
+                    ) : (
+                      <div>
+                        {item?.participants.split("-")[0] === user?.id ? (
+                          <div>
+                            {item.createdAt ? (
+                              <div>
+                                <CheckOutlined />{" "}
+                                <span
+                                  className={
+                                    !item?.isNotSeen && "text-blue-600"
+                                  }
+                                >
+                                  {item?.isNotSeen ? "Send" : "Seen"}
+                                </span>
+                              </div>
+                            ) : (
+                              <span className="text-blue-600">
+                                <LoadingOutlined />
+                              </span>
+                            )}
+                          </div>
+                        ) : (
+                          <div>
+                            <p className="text-[12px]">
+                              {item.isNotSeen
+                                ? "new"
+                                : new Date(item?.createdAt).toLocaleTimeString(
+                                    "en-US",
+                                    {
+                                      hour: "numeric",
+                                      minute: "numeric",
+                                      hour12: true,
+                                    }
+                                  )}
+                            </p>
+                          </div>
+                        )}
+                      </div>
+                    )}
+                  </div>
+                  {/* {item?.participants.split("-")[0] === user?.id ? (
                     <p className="text-[12px]">
-                      {/* {!item.isNotSeen ? "send" : "seen"} */}
+                      {!item.isNotSeen ? "send" : "seen"}
                       Send
                     </p>
                   ) : (
@@ -107,7 +160,7 @@ const MessageUi = ({ user, height }) => {
                             }
                           )}
                     </p>
-                  )}
+                  )} */}
                 </div>
               </div>
             </Link>

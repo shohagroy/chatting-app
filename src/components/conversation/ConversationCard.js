@@ -94,6 +94,7 @@ const ConversationCard = ({ conversationId }) => {
             <ul className="space-y-2 overflow-ellipsis">
               {conversationsData.map((messageItem) => (
                 <ConversationItem
+                  key={messageItem?.conversationId}
                   messageItem={messageItem}
                   conversationUserQuery={conversationUserQuery}
                   conversationPartnerQuery={conversationPartnerQuery}
@@ -106,7 +107,7 @@ const ConversationCard = ({ conversationId }) => {
           )}
         </div>
 
-        <div className=" flex justify-end">
+        {/* <div className=" flex justify-end">
           {isTypeing ? (
             <p className="text-[14px] text-blue-600">Typing</p>
           ) : isLoading ? (
@@ -116,7 +117,7 @@ const ConversationCard = ({ conversationId }) => {
           ) : (
             <p className="text-[14px] text-blue-600">Send</p>
           )}
-        </div>
+        </div> */}
       </List>
     </Card>
   );

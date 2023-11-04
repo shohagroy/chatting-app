@@ -11,9 +11,9 @@ const ActiveUserUi = ({ data, height }) => {
 
   return data?.length ? (
     <List>
-      <VirtualList data={data} height={height} itemHeight={47} itemKey="active">
+      <VirtualList data={data} height={height} itemHeight={47} itemKey="item">
         {(item) => (
-          <List.Item key={item?._id}>
+          <List.Item key={item?.id}>
             <Link
               className="flex items-center w-full"
               to={`?conversation=${item?.id}`}
