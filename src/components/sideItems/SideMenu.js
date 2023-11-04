@@ -42,7 +42,7 @@ const SideMenu = () => {
         lastConversations: conversationData?.data?.lastConversations,
       })
     );
-  }, [userData, conversationData, dispatch]);
+  }, [userData, conversationData, dispatch, isLoading, conversationLoading]);
 
   const onClick = (e) => {
     setCurrent(e.key);

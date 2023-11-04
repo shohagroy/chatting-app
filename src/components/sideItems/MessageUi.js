@@ -10,8 +10,10 @@ import {
   CheckOutlined,
   CloseOutlined,
 } from "@ant-design/icons";
+import { useSelector } from "react-redux";
 
 const MessageUi = ({ user, height, isLoading, conversations }) => {
+  const { typing } = useSelector((state) => state.user);
   if (isLoading) {
     return <EmptyUI height={height} />;
   }
@@ -79,7 +81,9 @@ const MessageUi = ({ user, height, isLoading, conversations }) => {
                       <div>
                         {item?.participants.split("-")[0] === user?.id ? (
                           <div>
-                            {item.createdAt ? (
+                            {typing ? (
+                              <p className="text-sm text-blue-600">Typing...</p>
+                            ) : item.createdAt ? (
                               <div>
                                 <CheckOutlined />{" "}
                                 <span

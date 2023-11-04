@@ -82,7 +82,6 @@ export const userApi = apiSlice.injectEndpoints({
         try {
           await cacheDataLoaded;
           socket.on("get-actives", (users) => {
-            console.log(users);
             // updateCachedData((draft) => {
             //   const isReciver = draft.data.conversations.find(
             //     (el) =>

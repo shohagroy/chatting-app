@@ -54,15 +54,26 @@ const ConversationCard = ({ conversationId }) => {
     <Card
       title={
         <Flex className="py-2" justify="space-between" align="center">
-          <Flex justify="center" align="center">
-            <Avatar
-              user={conversationUser}
-              isActive={conversationUser?.isActive}
-            />
-            <p className="text-xl ml-4 font-semibold">
-              {conversationUser?.name}
-            </p>
-          </Flex>
+          <div className={conversationUser ? "" : "animate-pulse"}>
+            <Flex justify="center" align="center">
+              {conversationUser ? (
+                <Avatar
+                  user={conversationUser}
+                  isActive={conversationUser?.isActive}
+                />
+              ) : (
+                <div className="flex-shrink-0 w-12 h-12 rounded-full bg-gray-200"></div>
+              )}
+
+              {conversationUser ? (
+                <p className="text-xl ml-4 font-semibold">
+                  {conversationUser?.name}
+                </p>
+              ) : (
+                <div className=" mt-4 w-1/2 h-5 rounded bg-gray-200"></div>
+              )}
+            </Flex>
+          </div>
 
           <Tooltip title={"Close"}>
             <Link to={"/"}>

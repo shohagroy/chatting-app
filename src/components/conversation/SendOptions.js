@@ -53,8 +53,14 @@ const SendOptions = ({ conversationUser, sendMessages }) => {
         required
       />
 
-      <div className=" transform duration-300 hover:-rotate-[30deg]">
-        <Button htmlType="submit" icon={<SendOutlined />} type="link" />
+      <div className=" transform duration-300">
+        <Button
+          className="flex justify-start items-center"
+          htmlType="submit"
+          type="link"
+        >
+          Send <SendOutlined />
+        </Button>
       </div>
     </form>
   );
