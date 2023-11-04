@@ -22,6 +22,7 @@ import { useGetLastUserConversationsQuery } from "../../features/conversation/co
 
 const SideMenu = () => {
   const [current, setCurrent] = useState("messages");
+  const [searchUser, setSearchUser] = useState("");
   const { user, lastConversations } = useSelector((state) => state.user);
 
   const { data: userData, isLoading } = useGetAllUserQuery();
@@ -127,6 +128,7 @@ const SideMenu = () => {
           />
           <Input
             className="mb-2"
+            onChange={(e) => setSearchUser(e.target.value)}
             placeholder="Search..."
             prefix={<SearchOutlined />}
           />
@@ -156,19 +158,39 @@ const SideMenu = () => {
         ) : current === "users" ? (
           <div className="">
             <div className="hidden lg:block">
-              <AllUserUi allUsers={allUsers} height={600} />
+              <AllUserUi
+                allUsers={allUsers.filter((el) =>
+                  el?.name?.toLowerCase().includes(searchUser.toLowerCase())
+                )}
+                height={600}
+              />
             </div>
             <div className="lg:hidden">
-              <AllUserUi allUsers={allUsers} height={530} />
+              <AllUserUi
+                allUsers={allUsers.filter((el) =>
+                  el?.name?.toLowerCase().includes(searchUser.toLowerCase())
+                )}
+                height={530}
+              />
             </div>
           </div>
         ) : (
           <div className="">
             <div className="hidden lg:block">
-              <ActiveUserUi height={600} data={activeUsers} />
+              <ActiveUserUi
+                height={600}
+                data={activeUsers.filter((el) =>
+                  el?.name?.toLowerCase().includes(searchUser.toLowerCase())
+                )}
+              />
             </div>
             <div className="lg:hidden">
-              <ActiveUserUi height={530} data={activeUsers} />
+              <ActiveUserUi
+                height={530}
+                data={activeUsers.filter((el) =>
+                  el?.name?.toLowerCase().includes(searchUser.toLowerCase())
+                )}
+              />
             </div>
           </div>
         )
