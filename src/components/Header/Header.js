@@ -1,12 +1,13 @@
 import React from "react";
 import Avatar from "../Avatar";
-import { Button, Dropdown } from "antd";
+import { Button, Dropdown, Image } from "antd";
 import { LogoutOutlined } from "@ant-design/icons";
-// import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { userLogOut } from "../../config/firebase/auth.provaider";
 import { useCreateUpdateUserMutation } from "../../features/user/userApi";
 import socket from "../../config/socket/socker.config";
+import Logo from "../../assets/logo-white.png";
+import { Link } from "react-router-dom";
 
 const Header = () => {
   const { user } = useSelector((state) => state.user);
@@ -53,7 +54,10 @@ const Header = () => {
     <div className="bg-[#00475D] py-3 z-50 h-[8vh]">
       <div className="max-w-7xl mx-auto flex h-full justify-between items-center px-2">
         <div>
-          <p className="text-2xl font-bold text-white">Chat-App</p>
+          <Link to={"/"}>
+            <Image width={100} src={Logo} />
+          </Link>
+          {/* <p className="text-2xl font-bold text-white">Chat-App</p> */}
         </div>
 
         <div className="flex justify-center items-center">

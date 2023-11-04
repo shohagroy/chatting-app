@@ -40,7 +40,7 @@ const MainLayout = () => {
             </div>
 
             {conversationId && (
-              <div className={`absolute  lg:hidden top-[8vh] left-0 w-full`}>
+              <div className={`absolute  lg:hidden top-[7.5vh] left-0 w-full`}>
                 <Outlet />
               </div>
             )}

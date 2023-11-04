@@ -1,4 +1,4 @@
-import { Button, Card, Flex, List, Tooltip } from "antd";
+import { Button, Flex, List, Tooltip } from "antd";
 import React, { useEffect } from "react";
 import Avatar from "../Avatar";
 import { CloseOutlined } from "@ant-design/icons";
@@ -10,6 +10,7 @@ import socket from "../../config/socket/socker.config";
 import EmptyCard from "./EmptyCard";
 import ConversationItem from "./ConversationItem";
 import { setTyping } from "../../features/user/userSlice";
+import Background from "../../assets/new.png";
 
 const ConversationCard = ({ conversationId }) => {
   const { user, allUsers, conversations, typing } = useSelector(
@@ -51,10 +52,14 @@ const ConversationCard = ({ conversationId }) => {
   }, [conversationPartnerQuery, user, dispatch]);
 
   return (
-    <Card
-      className="shadow-md"
-      title={
-        <Flex className="py-2" justify="space-between" align="center">
+    <List
+      className="lg:border bg-white lg:shadow-md lg:rounded-md "
+      header={
+        <Flex
+          className=" m-0 px-3 lg:px-6 "
+          justify="space-between"
+          align="center"
+        >
           <div className={conversationUser ? "" : "animate-pulse"}>
             <Flex justify="center" align="center">
               {conversationUser ? (
@@ -83,38 +88,38 @@ const ConversationCard = ({ conversationId }) => {
           </Tooltip>
         </Flex>
       }
+      footer={
+        <SendOptions
+          sendMessages={sendMessages}
+          conversationUser={conversationUser}
+        />
+      }
     >
-      <List
-        footer={
-          <SendOptions
-            sendMessages={sendMessages}
-            conversationUser={conversationUser}
-          />
-        }
+      <div
+        style={{ backgroundImage: `url(${Background})` }}
+        className="relative w-full h-[600px] lg:h-[575px] p-3 lg:px-6  overflow-y-auto flex flex-col-reverse"
       >
-        <div className="relative w-full h-[68vh] lg:h-[550px]  pb-3 lg:py-6 lg:px-3 overflow-y-auto flex flex-col-reverse">
-          {conversationsData?.length ? (
-            <ul className="space-y-2 overflow-ellipsis">
-              {conversationsData.map((messageItem) => (
-                <ConversationItem
-                  key={messageItem?.conversationId}
-                  messageItem={messageItem}
-                  conversationUserQuery={conversationUserQuery}
-                  conversationPartnerQuery={conversationPartnerQuery}
-                  conversationId={conversationId}
-                />
-              ))}
-            </ul>
-          ) : (
-            <EmptyCard message={"Start new conversation!"} border={false} />
-          )}
-        </div>
+        {conversationsData?.length ? (
+          <ul className="space-y-2 overflow-ellipsis">
+            {conversationsData.map((messageItem) => (
+              <ConversationItem
+                key={messageItem?.conversationId}
+                messageItem={messageItem}
+                conversationUserQuery={conversationUserQuery}
+                conversationPartnerQuery={conversationPartnerQuery}
+                conversationId={conversationId}
+              />
+            ))}
+          </ul>
+        ) : (
+          <EmptyCard message={"Start new conversation!"} border={false} />
+        )}
+      </div>
 
-        <div className="h-4">
-          {typing && <p className="text-sm text-blue-600">Typing...</p>}
-        </div>
-      </List>
-    </Card>
+      <div className="h-4">
+        {typing && <p className="text-sm text-blue-600">Typing...</p>}
+      </div>
+    </List>
   );
 };
 

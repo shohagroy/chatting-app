@@ -47,7 +47,7 @@ const SendOptions = ({ conversationUser, sendMessages }) => {
         onChange={(e) => setTextMessages(e.target.value)}
         value={textMessage}
         type="text"
-        placeholder="Message"
+        placeholder="Message.."
         className="block w-full py-2 pl-4 mx-3 bg-gray-100 focus:ring  rounded-full focus:text-gray-700"
         name="message"
         required

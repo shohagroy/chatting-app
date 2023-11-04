@@ -8,7 +8,7 @@ import {
 const MyConversation = ({ messageItem }) => {
   return (
     <div
-      className={`relative bg-white text-gray-600 border max-w-[200px] lg:max-w-md px-2 lg:px-4 py-1 lg:py-2 rounded-s-xl rounded-tr-xl shadow-md ml-4`}
+      className={`relative bg-white text-gray-600 border max-w-[300px] lg:max-w-md px-2 lg:px-4 py-1 lg:py-2 rounded-s-xl rounded-tr-xl shadow-md ml-4`}
     >
       {!messageItem.isWrong ? (
         <div className="flex w-full">
