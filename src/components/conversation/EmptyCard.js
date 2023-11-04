@@ -8,7 +8,7 @@ const EmptyCard = ({ message, border = true }) => {
 
   return (
     <Card
-      className={`h-[755px] flex justify-center items-center ${
+      className={`h-full bg-white flex justify-center items-center ${
         !border ? "border-none" : "border"
       }`}
     >
@@ -16,7 +16,7 @@ const EmptyCard = ({ message, border = true }) => {
         <DefaultLoading />
       ) : (
         <div>
-          <Empty />
+          <Empty className=" " />
           <p className="text-center py-2 text-xl">
             {message || "Select a User to Start Conversation!"}
           </p>
