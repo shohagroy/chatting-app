@@ -75,7 +75,6 @@ export const conversationAli = apiSlice.injectEndpoints({
       ) {
         try {
           await cacheDataLoaded;
-
           socket.on("message", (data) => {
             const queryOne = data.conversations.participants;
             const queryTwo = data.conversations.participants
@@ -84,16 +83,18 @@ export const conversationAli = apiSlice.injectEndpoints({
               ?.join("-");
 
             updateCachedData((draft) => {
-              const conversations = draft?.data.lastConversations.filter(
-                (el) =>
-                  el.participants !== queryTwo && el.participants !== queryOne
-              );
+              if (queryOne?.split("-")[1] === arg) {
+                const conversations = draft?.data.lastConversations.filter(
+                  (el) =>
+                    el.participants !== queryTwo && el.participants !== queryOne
+                );
 
-              draft.data.lastConversations = [
-                data?.conversations,
-                ...conversations,
-              ];
-              draft.data.userConversations.push(data.conversations);
+                draft.data.lastConversations = [
+                  data?.conversations,
+                  ...conversations,
+                ];
+                draft.data.userConversations.push(data.conversations);
+              }
 
               return draft;
             });

@@ -44,9 +44,10 @@ const userSlice = createSlice({
         ?.join("-");
 
       const lastRemain = state.lastConversations.filter(
-        (el) => el.participants !== queryOne && el.participants !== queryTwo
+        (el) => el.participants !== queryOne || el.participants !== queryTwo
       );
 
+      // if()
       const index = state.conversations.findIndex(
         (el) => el.conversationId === action.payload.conversationId
       );
