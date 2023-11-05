@@ -17,6 +17,7 @@ export const userApi = apiSlice.injectEndpoints({
           const result = await queryFulfilled;
 
           if (result?.data?.success) {
+            socket.emit("login", result?.data?.data);
             dispatch(getUsersInfo(result?.data?.data));
           }
         } catch (err) {
