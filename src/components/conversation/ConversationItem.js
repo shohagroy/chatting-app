@@ -18,7 +18,7 @@ const ConversationItem = ({
     ) {
       socket.emit("seen", {
         room: "chatRoom1",
-        id: messageItem?._id,
+        data: messageItem,
       });
     }
   }, [messageItem, conversationPartnerQuery]);

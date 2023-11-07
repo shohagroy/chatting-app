@@ -4,19 +4,18 @@ import { Button, Dropdown, Image } from "antd";
 import { LogoutOutlined } from "@ant-design/icons";
 import { useSelector } from "react-redux";
 import { userLogOut } from "../../config/firebase/auth.provaider";
-import { useCreateUpdateUserMutation } from "../../features/user/userApi";
+// import { useCreateUpdateUserMutation } from "../../features/user/userApi";
 import socket from "../../config/socket/socker.config";
 import Logo from "../../assets/logo-white.png";
 import { Link } from "react-router-dom";
 
 const Header = () => {
   const { user } = useSelector((state) => state.user);
-  const [createUpdateUser] = useCreateUpdateUserMutation();
+  // const [createUpdateUser] = useCreateUpdateUserMutation();
 
   const userSignOutHandelar = async () => {
     await userLogOut();
-    await createUpdateUser({ ...user, isActive: false });
-    socket.emit("offline", { user: user });
+    socket.emit("offline", user.id);
   };
 
   const items = [

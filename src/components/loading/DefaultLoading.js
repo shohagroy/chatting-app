@@ -4,7 +4,7 @@ import { LoadingOutlined } from "@ant-design/icons";
 
 const DefaultLoading = () => {
   return (
-    <Row className="flex-col justify-normal items-center">
+    <Row className="flex-col justify-center items-center">
       <Spin
         indicator={
           <LoadingOutlined

@@ -1,6 +1,9 @@
 import socket from "../../config/socket/socker.config";
 import { apiSlice } from "../api/apiSlice";
-import { setLastConversation } from "../user/userSlice";
+import {
+  seenConversation,
+  setParticipantsConversations,
+} from "./conversationSlice";
 
 export const conversationAli = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
@@ -12,13 +15,13 @@ export const conversationAli = apiSlice.injectEndpoints({
       }),
       invalidatesTags: ["sendMessages"],
       async onQueryStarted(arg, { queryFulfilled, dispatch }) {
-        dispatch(setLastConversation(arg));
+        dispatch(setParticipantsConversations(arg));
         try {
           const result = await queryFulfilled;
 
           if (result.data.success) {
             const data = result?.data?.data;
-            dispatch(setLastConversation(data));
+            dispatch(setParticipantsConversations(data));
             socket.emit("conversation", {
               room: "chatRoom1",
               conversations: data,
@@ -26,36 +29,49 @@ export const conversationAli = apiSlice.injectEndpoints({
           }
         } catch (error) {
           console.log(error);
-          dispatch(setLastConversation({ ...arg, isWrong: true }));
+          dispatch(setParticipantsConversations({ ...arg, isWrong: true }));
         }
       },
     }),
 
-    getUserConversations: builder.query({
-      query: (data) => ({
-        url: `/conversations?${data}`,
+    getParticipantsConversations: builder.query({
+      query: (query) => ({
+        url: `/conversations?query=${query}`,
         method: "GET",
       }),
-      providesTags: ["sendMessages"],
-
       async onCacheEntryAdded(
         arg,
-        { updateCachedData, cacheDataLoaded, cacheEntryRemoved }
+        { cacheDataLoaded, cacheEntryRemoved, dispatch }
       ) {
+        const query = arg.split("-").reverse().join("-");
         try {
           await cacheDataLoaded;
           socket.on("message", (data) => {
-            updateCachedData((draft) => {
-              const isReciver = draft.data.conversations.find(
-                (el) =>
-                  JSON.stringify(el.participants) ===
-                  JSON.stringify(data.conversations.participants)
-              );
-              if (isReciver) {
-                draft.data.conversations.push(data.conversations);
-                return draft;
-              }
-            });
+            if (data?.conversations?.participants === query) {
+              dispatch(setParticipantsConversations(data?.conversations));
+            }
+          });
+        } catch (err) {}
+
+        await cacheEntryRemoved;
+        socket.close();
+      },
+    }),
+
+    lastConversations: builder.query({
+      query: (id) => ({
+        url: `/conversations/last/${id}`,
+        method: "GET",
+      }),
+      async onCacheEntryAdded(
+        arg,
+        { cacheDataLoaded, cacheEntryRemoved, dispatch }
+      ) {
+        try {
+          await cacheDataLoaded;
+
+          socket.on("seen", (data) => {
+            dispatch(seenConversation({ ...data, isNotSeen: false }));
           });
         } catch (err) {}
 
@@ -86,7 +102,7 @@ export const conversationAli = apiSlice.injectEndpoints({
               if (queryOne?.split("-")[1] === arg) {
                 const conversations = draft?.data.lastConversations.filter(
                   (el) =>
-                    el.participants !== queryTwo && el.participants !== queryOne
+                    el.participants !== queryTwo || el.participants !== queryOne
                 );
 
                 draft.data.lastConversations = [
@@ -95,29 +111,6 @@ export const conversationAli = apiSlice.injectEndpoints({
                 ];
                 draft.data.userConversations.push(data.conversations);
               }
-
-              return draft;
-            });
-          });
-
-          socket.on("seen", (id) => {
-            updateCachedData((draft) => {
-              const conversationIndex = draft.data?.userConversations.findIndex(
-                (el) => el._id === id
-              );
-
-              const lastConversationIndex =
-                draft.data?.lastConversations.findIndex((el) => el._id === id);
-
-              draft.data.userConversations[conversationIndex] = {
-                ...draft.data.userConversations[conversationIndex],
-                isNotSeen: false,
-              };
-
-              draft.data.lastConversations[lastConversationIndex] = {
-                ...draft.data.lastConversations[lastConversationIndex],
-                isNotSeen: false,
-              };
 
               return draft;
             });
@@ -133,6 +126,6 @@ export const conversationAli = apiSlice.injectEndpoints({
 
 export const {
   useSendMessagesMutation,
-  useGetUserConversationsQuery,
-  useGetLastUserConversationsQuery,
+  useLastConversationsQuery,
+  useGetParticipantsConversationsQuery,
 } = conversationAli;

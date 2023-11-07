@@ -5,8 +5,6 @@ const initialState = {
   loading: false,
   allUsers: [],
   activeUsers: [],
-  conversations: [],
-  lastConversations: [],
   typing: false,
 };
 
@@ -18,47 +16,25 @@ const userSlice = createSlice({
       state.loading = action.payload;
     },
 
+    //new
     getUsersInfo: (state, action) => {
-      state.user = { ...action.payload.loginUser, isActive: true };
+      state.user = { ...action.payload, isActive: true };
       state.loading = false;
+    },
+
+    //new
+    getActiveUsers: (state, action) => {
+      state.activeUsers = action.payload;
+      // state.allUsers = action.payload;
     },
 
     setTyping: (state, action) => {
       state.typing = action.payload;
     },
 
+    //new
     getAllUsers: (state, action) => {
       state.allUsers = action.payload;
-    },
-
-    setUserConversations: (state, action) => {
-      state.conversations = action.payload.userAllConversations;
-      state.lastConversations = action.payload.lastConversations;
-    },
-
-    setLastConversation: (state, action) => {
-      const queryOne = action.payload.participants;
-      const queryTwo = action.payload.participants
-        ?.split("-")
-        ?.reverse()
-        ?.join("-");
-
-      const lastRemain = state.lastConversations.filter(
-        (el) => el.participants !== queryOne || el.participants !== queryTwo
-      );
-
-      // if()
-      const index = state.conversations.findIndex(
-        (el) => el.conversationId === action.payload.conversationId
-      );
-
-      if (index > -1) {
-        state.conversations[index] = action.payload;
-      } else {
-        state.conversations.push(action.payload);
-      }
-
-      state.lastConversations = [action.payload, ...lastRemain];
     },
 
     loginInUser: (state, action) => {
@@ -78,10 +54,9 @@ export const {
   initialLoading,
   userLoggedOut,
   loginInUser,
-  setLastConversation,
   getAllUsers,
-  setUserConversations,
   setTyping,
+  getActiveUsers,
 } = userSlice.actions;
 
 export default userSlice.reducer;

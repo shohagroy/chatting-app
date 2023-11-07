@@ -1,30 +1,51 @@
 import React, { useEffect } from "react";
 import Header from "../components/Header/Header";
-// import Background from "../assets";
 
 import { Flex } from "antd";
 import SideMenu from "../components/sideItems/SideMenu";
 import { Outlet, useLocation } from "react-router-dom";
-import socket from "../config/socket/socker.config";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Helmet } from "react-helmet";
+import { useGetAllUserQuery } from "../features/user/userApi";
+import { getAllUsers } from "../features/user/userSlice";
 
 const MainLayout = () => {
-  const { user } = useSelector((state) => state.user);
+  const { user, activeUsers } = useSelector((state) => state.user);
+  const dispatch = useDispatch();
 
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const conversationId = queryParams.get("conversation");
 
+  const { data: userData, isLoading: userLoading } = useGetAllUserQuery(
+    user.id
+  );
+
   useEffect(() => {
-    socket.emit("join", user);
-  }, [user]);
+    if (userData?.data.length) {
+      const newUsers = activeUsers.filter(
+        (user) => !userData.data.find((el) => el.id === user?.id)
+      );
+
+      const updatedData = userData.data.map((el) => {
+        if (activeUsers.find((active) => active.id === el.id)) {
+          return {
+            ...el,
+            isActive: true,
+          };
+        } else {
+          return el;
+        }
+      });
+      dispatch(getAllUsers([...updatedData, ...newUsers]));
+    }
+  }, [dispatch, activeUsers, userLoading, userData]);
 
   return (
     <>
       <Helmet>
         <meta charSet="utf-8" />
-        <title>Wellcome | Chat App </title>
+        <title>Chat App</title>
       </Helmet>
 
       <main>

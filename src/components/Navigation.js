@@ -12,12 +12,12 @@ export default function Navigation() {
 
   const dispatch = useDispatch();
   const logOurHandelar = () => {
-    socket.emit("offline", user._id);
+    socket.emit("offline", user.id);
     dispatch(userLoggedOut());
   };
 
   useEffect(() => {
-    socket.emit("join", user._id);
+    socket.emit("join", user.id);
 
     socket.on("get-actives", (users) => {
       dispatch(getActiveUser(users));

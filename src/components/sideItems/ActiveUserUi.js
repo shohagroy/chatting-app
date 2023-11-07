@@ -7,8 +7,6 @@ import Avatar from "../Avatar";
 import EmptyUI from "./EmptyUI";
 
 const ActiveUserUi = ({ data, height }) => {
-  // console.log(data);
-
   return data?.length ? (
     <List>
       <VirtualList data={data} height={height} itemHeight={47} itemKey="item">

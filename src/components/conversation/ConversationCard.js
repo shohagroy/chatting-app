@@ -11,11 +11,11 @@ import EmptyCard from "./EmptyCard";
 import ConversationItem from "./ConversationItem";
 import { setTyping } from "../../features/user/userSlice";
 import Background from "../../assets/new.png";
+import DefaultLoading from "../loading/DefaultLoading";
 
-const ConversationCard = ({ conversationId }) => {
-  const { user, allUsers, conversations, typing } = useSelector(
-    (state) => state.user
-  );
+const ConversationCard = ({ conversationId, isLoading }) => {
+  const { user, allUsers, typing } = useSelector((state) => state.user);
+  const { conversations } = useSelector((state) => state.conversations);
 
   const dispatch = useDispatch();
 
@@ -23,12 +23,6 @@ const ConversationCard = ({ conversationId }) => {
   const conversationPartnerQuery = `${conversationId}-${user?.id}`;
 
   const [sendMessages] = useSendMessagesMutation();
-
-  const conversationsData = conversations?.filter(
-    (conversation) =>
-      conversation?.participants === conversationUserQuery ||
-      conversation?.participants === conversationPartnerQuery
-  );
 
   const conversationUser = allUsers?.find(
     (user) => user?.id === conversationId
@@ -50,6 +44,14 @@ const ConversationCard = ({ conversationId }) => {
       }
     });
   }, [conversationPartnerQuery, user, dispatch]);
+
+  if (isLoading) {
+    return (
+      <div>
+        <DefaultLoading />
+      </div>
+    );
+  }
 
   return (
     <List
@@ -99,9 +101,9 @@ const ConversationCard = ({ conversationId }) => {
         style={{ backgroundImage: `url(${Background})` }}
         className="relative w-full h-[70vh] lg:h-[575px] overflow-y-auto flex flex-col-reverse"
       >
-        {conversationsData?.length ? (
+        {conversations?.length ? (
           <ul className="space-y-2 overflow-ellipsis p-3 lg:px-6">
-            {conversationsData.map((messageItem) => (
+            {conversations?.map((messageItem) => (
               <ConversationItem
                 key={messageItem?.conversationId}
                 messageItem={messageItem}
@@ -117,7 +119,7 @@ const ConversationCard = ({ conversationId }) => {
       </div>
 
       <div className="h-4">
-        {typing && <p className="text-sm text-blue-600">Typing...</p>}
+        {typing && <p className="text-sm text-blue-600 px-2">Typing...</p>}
       </div>
     </List>
   );

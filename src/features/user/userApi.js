@@ -1,6 +1,6 @@
 import { toast } from "react-hot-toast";
 import { apiSlice } from "../api/apiSlice";
-import { getUsersInfo, initialLoading, loginInUser } from "./userSlice";
+import { initialLoading, loginInUser } from "./userSlice";
 import socket from "../../config/socket/socker.config";
 
 export const userApi = apiSlice.injectEndpoints({
@@ -17,8 +17,7 @@ export const userApi = apiSlice.injectEndpoints({
           const result = await queryFulfilled;
 
           if (result?.data?.success) {
-            socket.emit("login", result?.data?.data);
-            dispatch(getUsersInfo(result?.data?.data));
+            socket.emit("join", result?.data?.data);
           }
         } catch (err) {
           dispatch(initialLoading(false));
@@ -32,41 +31,6 @@ export const userApi = apiSlice.injectEndpoints({
         url: `/users/${id}`,
         method: "GET",
       }),
-
-      async onCacheEntryAdded(
-        arg,
-        { updateCachedData, cacheDataLoaded, cacheEntryRemoved }
-      ) {
-        try {
-          await cacheDataLoaded;
-          socket.on("get-actives", (users) => {
-            const activeIds = users.map((info) => info?.user?.id);
-
-            updateCachedData((draft) => {
-              const updatedData = draft?.data?.map((el) => {
-                if (activeIds.includes(el?.id)) {
-                  return {
-                    ...el,
-                    isActive: true,
-                  };
-                }
-
-                return {
-                  ...el,
-                  isActive: false,
-                };
-              });
-
-              draft.data = updatedData;
-
-              return draft;
-            });
-          });
-        } catch (err) {}
-
-        await cacheEntryRemoved;
-        socket.close();
-      },
     }),
   }),
 });

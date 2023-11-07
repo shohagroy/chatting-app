@@ -11,39 +11,25 @@ import MessageUi from "./MessageUi";
 import AllUserUi from "./AllUsersUi";
 import ActiveUserUi from "./ActiveUserUi";
 import { useDispatch, useSelector } from "react-redux";
-import { useGetAllUserQuery } from "../../features/user/userApi";
 import ListLoading from "../loading/ListLoading";
 import { useEffect } from "react";
-import {
-  getAllUsers,
-  setUserConversations,
-} from "../../features/user/userSlice";
-import { useGetLastUserConversationsQuery } from "../../features/conversation/conversationApi";
+import { useLastConversationsQuery } from "../../features/conversation/conversationApi";
+import { userLastConversations } from "../../features/conversation/conversationSlice";
 
 const SideMenu = () => {
   const [current, setCurrent] = useState("messages");
   const [searchUser, setSearchUser] = useState("");
-  const { user, lastConversations } = useSelector((state) => state.user);
+  const { user, activeUsers, allUsers } = useSelector((state) => state.user);
+  const { lastConversations } = useSelector((state) => state.conversations);
 
-  const { data: userData, isLoading } = useGetAllUserQuery();
+  const { data: lastConversationsInfo, isLoading } = useLastConversationsQuery(
+    user?.id
+  );
   const dispatch = useDispatch();
 
-  const allUsers = userData?.data.filter((ele) => ele.id !== user.id) || [];
-  const activeUsers =
-    userData?.data?.filter((ele) => ele.isActive && ele.id !== user.id) || [];
-
-  const { data: conversationData, isLoading: conversationLoading } =
-    useGetLastUserConversationsQuery(user?.id);
-
   useEffect(() => {
-    dispatch(getAllUsers(userData?.data));
-    dispatch(
-      setUserConversations({
-        userAllConversations: conversationData?.data?.userConversations,
-        lastConversations: conversationData?.data?.lastConversations,
-      })
-    );
-  }, [userData, conversationData, dispatch, isLoading, conversationLoading]);
+    dispatch(userLastConversations(lastConversationsInfo?.data));
+  }, [lastConversationsInfo, dispatch]);
 
   const onClick = (e) => {
     setCurrent(e.key);
@@ -142,16 +128,24 @@ const SideMenu = () => {
               <MessageUi
                 height={600}
                 user={user}
-                isLoading={conversationLoading}
-                conversations={lastConversations}
+                isLoading={isLoading}
+                conversations={lastConversations?.filter((el) =>
+                  el?.users[1].name
+                    ?.toLowerCase()
+                    .includes(searchUser.toLowerCase())
+                )}
               />
             </div>
             <div className="lg:hidden">
               <MessageUi
                 height={530}
                 user={user}
-                isLoading={conversationLoading}
-                conversations={lastConversations}
+                isLoading={isLoading}
+                conversations={lastConversations?.filter((el) =>
+                  el?.users[1].name
+                    ?.toLowerCase()
+                    .includes(searchUser.toLowerCase())
+                )}
               />
             </div>
           </div>
@@ -159,7 +153,7 @@ const SideMenu = () => {
           <div className="">
             <div className="hidden lg:block">
               <AllUserUi
-                allUsers={allUsers.filter((el) =>
+                allUsers={allUsers?.filter((el) =>
                   el?.name?.toLowerCase().includes(searchUser.toLowerCase())
                 )}
                 height={600}
@@ -167,7 +161,7 @@ const SideMenu = () => {
             </div>
             <div className="lg:hidden">
               <AllUserUi
-                allUsers={allUsers.filter((el) =>
+                allUsers={allUsers?.filter((el) =>
                   el?.name?.toLowerCase().includes(searchUser.toLowerCase())
                 )}
                 height={530}
@@ -179,7 +173,7 @@ const SideMenu = () => {
             <div className="hidden lg:block">
               <ActiveUserUi
                 height={600}
-                data={activeUsers.filter((el) =>
+                data={activeUsers?.filter((el) =>
                   el?.name?.toLowerCase().includes(searchUser.toLowerCase())
                 )}
               />
@@ -187,7 +181,7 @@ const SideMenu = () => {
             <div className="lg:hidden">
               <ActiveUserUi
                 height={530}
-                data={activeUsers.filter((el) =>
+                data={activeUsers?.filter((el) =>
                   el?.name?.toLowerCase().includes(searchUser.toLowerCase())
                 )}
               />

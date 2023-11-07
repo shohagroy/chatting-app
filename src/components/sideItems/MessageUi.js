@@ -14,6 +14,7 @@ import { useSelector } from "react-redux";
 
 const MessageUi = ({ user, height, isLoading, conversations }) => {
   const { typing } = useSelector((state) => state.user);
+
   if (isLoading) {
     return <EmptyUI height={height} />;
   }
