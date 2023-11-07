@@ -80,47 +80,47 @@ export const conversationAli = apiSlice.injectEndpoints({
       },
     }),
 
-    getLastUserConversations: builder.query({
-      query: (id) => ({
-        url: `/conversations/${id}`,
-        method: "GET",
-      }),
-      async onCacheEntryAdded(
-        arg,
-        { updateCachedData, cacheDataLoaded, cacheEntryRemoved }
-      ) {
-        try {
-          await cacheDataLoaded;
-          socket.on("message", (data) => {
-            const queryOne = data.conversations.participants;
-            const queryTwo = data.conversations.participants
-              ?.split("-")
-              ?.reverse()
-              ?.join("-");
+    // getLastUserConversations: builder.query({
+    //   query: (id) => ({
+    //     url: `/conversations/${id}`,
+    //     method: "GET",
+    //   }),
+    //   async onCacheEntryAdded(
+    //     arg,
+    //     { updateCachedData, cacheDataLoaded, cacheEntryRemoved }
+    //   ) {
+    //     try {
+    //       await cacheDataLoaded;
+    //       socket.on("message", (data) => {
+    //         const queryOne = data.conversations.participants;
+    //         const queryTwo = data.conversations.participants
+    //           ?.split("-")
+    //           ?.reverse()
+    //           ?.join("-");
 
-            updateCachedData((draft) => {
-              if (queryOne?.split("-")[1] === arg) {
-                const conversations = draft?.data.lastConversations.filter(
-                  (el) =>
-                    el.participants !== queryTwo || el.participants !== queryOne
-                );
+    //         updateCachedData((draft) => {
+    //           if (queryOne?.split("-")[1] === arg) {
+    //             const conversations = draft?.data.lastConversations.filter(
+    //               (el) =>
+    //                 el.participants !== queryTwo || el.participants !== queryOne
+    //             );
 
-                draft.data.lastConversations = [
-                  data?.conversations,
-                  ...conversations,
-                ];
-                draft.data.userConversations.push(data.conversations);
-              }
+    //             draft.data.lastConversations = [
+    //               data?.conversations,
+    //               ...conversations,
+    //             ];
+    //             draft.data.userConversations.push(data.conversations);
+    //           }
 
-              return draft;
-            });
-          });
-        } catch (err) {}
+    //           return draft;
+    //         });
+    //       });
+    //     } catch (err) {}
 
-        await cacheEntryRemoved;
-        socket.close();
-      },
-    }),
+    //     await cacheEntryRemoved;
+    //     socket.close();
+    //   },
+    // }),
   }),
 });
 

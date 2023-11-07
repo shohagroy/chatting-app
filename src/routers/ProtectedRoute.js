@@ -7,11 +7,7 @@ import { Navigate, useLocation } from "react-router-dom";
 import DefaultLoading from "../components/loading/DefaultLoading";
 import socket from "../config/socket/socker.config";
 import { useDispatch } from "react-redux";
-import {
-  getActiveUsers,
-  getUsersInfo,
-  loginInUser,
-} from "../features/user/userSlice";
+import { getActiveUsers, getUsersInfo } from "../features/user/userSlice";
 
 const ProtectedRoute = ({ children }) => {
   const [createUpdateUser] = useCreateUpdateUserMutation();
