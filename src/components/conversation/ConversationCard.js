@@ -47,7 +47,7 @@ const ConversationCard = ({ conversationId, isLoading }) => {
 
   if (isLoading) {
     return (
-      <div>
+      <div className="h-[90vh] lg:h-[575px] w-full flex justify-center items-center bg-white">
         <DefaultLoading />
       </div>
     );
