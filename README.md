@@ -91,8 +91,6 @@ Future plans for the Free Chat app include:
 
 ---
 
-## Additional Information (Optional)
-
 ### Message Sent and Seen
 
 This Application provides indicators for message delivery and seen status. Messages show two checkmarks when delivered and turn blue when seen by the recipient.
@@ -114,8 +112,8 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 1. Clone the repository.
 
 ```bash
-git clone https://github.com/your-username/your-repo-name.git
-cd your-repo-name
+git clone https://github.com/shohagroy/chatting-app.git
+cd chatting-app
 
 
 ```
